@@ -1,0 +1,27 @@
+# Unity generated
+/[Cc]ollage\ [Gg]ame/[Ll]ibrary/
+/[Cc]ollage\ [Gg]ame/[Tt]emp/
+/[Cc]ollage\ [Gg]ame/[Oo]bj/
+/[Cc]ollage\ [Gg]ame/[Bb]uild/
+/[Cc]ollage\ [Gg]ame/[Bb]uilds/
+/[Cc]ollage\ [Gg]ame/[Ll]ogs/
+/[Cc]ollage\ [Gg]ame/[Uu]ser[Ss]ettings/
+/[Cc]ollage\ [Gg]ame/[Mm]emory[Cc]aptures/
+/[Cc]ollage\ [Gg]ame/[Rr]ecordings/
+
+# Visual Studio / Rider / IDE cache
+/[Cc]ollage\ [Gg]ame/.vs/
+/[Cc]ollage\ [Gg]ame/.idea/
+/[Cc]ollage\ [Gg]ame/*.csproj
+/[Cc]ollage\ [Gg]ame/*.unityproj
+/[Cc]ollage\ [Gg]ame/*.sln
+/[Cc]ollage\ [Gg]ame/*.suo
+/[Cc]ollage\ [Gg]ame/*.user
+/[Cc]ollage\ [Gg]ame/*.userprefs
+/[Cc]ollage\ [Gg]ame/*.pidb
+/[Cc]ollage\ [Gg]ame/*.booproj
+
+# OS generated
+.DS_Store
+Thumbs.db
+desktop.ini
