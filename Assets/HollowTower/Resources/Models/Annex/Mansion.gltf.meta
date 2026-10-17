@@ -1,0 +1,1001 @@
+fileFormatVersion: 2
+guid: a8f9db926c8cd5148900037f6290531f
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 715df9372183c47e389bb6e19fbc3b52, type: 3}
+  editorImportSettings:
+    generateSecondaryUVSet: 0
+  importSettings:
+    nodeNameMethod: 1
+    animationMethod: 2
+    generateMipMaps: 1
+    texturesReadable: 0
+    defaultMinFilterMode: 9729
+    defaultMagFilterMode: 9729
+    anisotropicFilterLevel: 1
+  instantiationSettings:
+    mask: -1
+    layer: 0
+    skinUpdateWhenOffscreen: 1
+    lightIntensityFactor: 1
+    sceneObjectCreation: 2
+  assetDependencies:
+  - type: 0
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion.bin
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion.bin
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\71n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\71n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\71c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\71c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\155n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\155n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\155c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\155c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\154n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\154n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\154c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\154c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\117n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\117n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\117c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\117c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\171n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\171n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\171c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\171c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\184c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\184c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\179n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\179n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\179c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\179c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\133n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\133n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\133c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\133c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\20n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\20n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\20c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\20c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\32n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\32n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\32c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\32c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\148c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\148c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\147n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\147n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\147c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\147c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\2c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\2c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\2n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\2n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\86n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\86n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\86c_and_mask.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\86c_and_mask.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\87n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\87n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\87c_and_mask.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\87c_and_mask.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\88n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\88n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\88c_and_mask.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\88c_and_mask.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\141c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\141c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\162n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\162n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\162c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\162c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\168n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\168n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\168c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\168c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\203n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\203n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\203c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\203c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\125n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\125n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\125c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\125c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\16n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\16n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\16c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\16c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\33n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\33n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\33c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\33c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\35n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\35n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\35c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\35c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\124n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\124n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\124c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\124c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\40n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\40n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\40c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\40c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\99n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\99n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\99c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\99c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\29n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\29n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\29c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\29c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\41n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\41n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\41c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\41c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\61n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\61n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\61c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\61c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\46n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\46n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\46c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\46c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\158n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\158n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\158c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\158c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\140n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\140n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\140c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\140c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\112c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\112c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\T_Candle_Tiled_D.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\T_Candle_Tiled_D.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\160n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\160n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\160c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\160c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\106n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\106n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\106c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\106c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\138n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\138n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\138c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\138c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\122n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\122n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\122c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\122c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\131n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\131n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\131c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\131c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\108n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\108n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\108c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\108c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\200c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\200c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\31n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\31n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\31c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\31c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\144n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\144n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\144c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\144c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\62n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\62n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\62cc.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\62cc.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\98n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\98n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\98c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\98c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\50n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\50n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\50c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\50c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\9n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\9n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\9c_and_opac.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\9c_and_opac.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\197n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\197n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\197c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\197c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\135n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\135n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\135c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\135c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\19n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\19n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\19c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\19c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\188n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\188n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\188c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\188c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\y-light_c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\y-light_c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\24c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\24c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\134c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\134c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\51n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\51n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\51c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\51c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\39n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\39n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\39c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\39c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\glass_n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\glass_n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\52emiss.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\52emiss.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\52n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\52n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\52c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\52c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\120n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\120n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\120c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\120c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\25n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\25n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\25c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\25c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\82n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\82n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\82c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\82c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\123n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\123n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\123c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\123c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\96n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\96n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\96c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\96c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\127n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\127n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\127c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\127c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\109n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\109n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\109c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\109c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\110n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\110n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\110c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\110c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\107n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\107n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\107c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\107c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\167n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\167n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\167c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\167c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\70n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\70n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\70c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\70c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\142c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\142c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\191c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\191c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\149c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\149c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\145n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\145n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\145c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\145c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\129c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\129c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\34c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\34c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\159n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\159n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\159c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\159c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\128n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\128n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\128c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\128c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\121n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\121n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\121c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\121c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\173n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\173n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\173c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\173c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\45n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\45n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\45c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\45c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\174n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\174n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\174c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\174c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\172n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\172n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\172c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\172c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\177n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\177n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\177c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\177c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\150c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\150c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\132n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\132n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\132c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\132c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\97n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\97n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\97c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\97c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\115n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\115n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\115c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\115c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\81n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\81n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\81c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\81c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\78n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\78n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\78c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\78c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\80n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\80n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\80c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\80c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\201n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\201n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\201c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\201c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\119n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\119n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\119c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\119c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\195c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\195c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\113n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\113n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\113c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\113c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\137n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\137n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\137c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\137c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\69n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\69n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\69c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\69c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\202n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\202n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\202c_and_mask.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\202c_and_mask.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\44n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\44n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\44c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\44c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\3c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\3c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\63n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\63n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\63c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\63c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\66n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\66n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\66c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\66c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\163n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\163n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\163c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\163c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\136n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\136n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\136c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\136c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\42n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\42n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\42c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\42c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\64n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\64n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\64c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\64c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\175n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\175n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\175c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\175c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\57n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\57n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\57c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\57c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\105n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\105n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\105c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\105c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\146c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\146c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\85c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\85c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\156c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\156c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\89n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\89n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\89c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\89c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\192n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\192n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\192c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\192c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\5n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\5n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\5c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\5c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\118n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\118n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\118c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\118c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\126n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\126n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\126c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\126c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\28n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\28n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\28c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\28c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\68n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\68n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\68c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\68c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\94c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\94c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\176n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\176n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\176c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\176c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\193n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\193n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\193c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\193c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\6n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\6n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\6c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\6c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\79n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\79n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\79c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\79c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\111n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\111n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\111c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\111c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\180n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\180n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\180c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\180c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\77n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\77n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\77c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\77c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\161c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\161c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\114n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\114n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\114c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\114c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\58n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\58n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\58c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\58c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\59n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\59n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\59c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\59c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\60n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\60n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\60c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\60c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\104n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\104n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\104c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\104c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\170n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\170n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\170c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\170c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\102c_and_mask.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\102c_and_mask.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\130c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\130c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\151c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\151c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\67n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\67n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\67c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\67c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\4n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\4n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\4c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\4c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\15n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\15n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\15c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\15c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\17n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\17n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\17c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\17c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\36n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\36n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\36c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\36c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\48n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\48n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\48c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\48c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\55n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\55n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\55c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\55c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\65n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\65n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\65c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\65c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\100n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\100n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\100c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\100c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\90n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\90n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\90c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\90c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\47n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\47n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\47c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\47c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\186c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\186c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\165n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\165n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\165c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\165c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\83n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\83n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\83c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\83c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\91n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\91n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\91c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\91c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\14n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\14n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\14c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\14c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\37n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\37n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\37c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\37c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\38n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\38n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\38c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\38c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\84n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\84n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\84c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\84c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\53n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\53n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\53c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\53c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\30n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\30n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\30c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\30c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\8n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\8n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\8c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\8c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\72n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\72n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\72c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\72c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\178n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\178n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\178c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\178c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\74n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\74n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\74c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\74c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\76n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\76n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\76c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\76c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\27c_and_opac.png
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\27c_and_opac.png
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\92n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\92n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\92c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\92c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\21c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\21c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\22n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\22n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\22c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\22c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\23n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\23n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\23c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\23c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\43n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\43n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\43c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\43c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\181n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\181n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\181c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\181c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\199c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\199c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\169c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\169c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\157c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\157c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\194n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\194n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\194c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\194c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\95n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\95n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\95c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\95c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\198c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\198c.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\103n_Normal.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\103n_Normal.jpg
+  - type: 1
+    originalUri: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\103c.jpg
+    assetPath: Assets\HollowTower\Resources\Models\Annex\Mansion_tex\103c.jpg
+  reportItems:
+  - type: 2
+    code: 20
+    messages:
+    - KHR_materials_specular

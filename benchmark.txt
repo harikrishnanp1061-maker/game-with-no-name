@@ -1,0 +1,19 @@
+Hollow Tower benchmark  17-10-2026 01:10:06
+GPU NVIDIA GeForce RTX 4050 Laptop GPU  Direct3D12  1536x672  ray tracing True  DLSS True  render scale 56%
+F4 open-plan office    avg  42.4 fps   1% low  32.8 fps
+F4 corridor            avg  36.8 fps   1% low   7.4 fps
+F4 server room         avg  44.6 fps   1% low  11.1 fps
+F3 hotel wing          avg  46.9 fps   1% low  39.7 fps
+F3 lounge              avg  45.4 fps   1% low  26.6 fps
+F3 guest corridor      avg  48.0 fps   1% low  39.6 fps
+F2 classroom           avg  45.8 fps   1% low  32.2 fps
+F2 library             avg  45.6 fps   1% low  26.5 fps
+F2 locker corridor     avg  45.1 fps   1% low  30.5 fps
+F1 lobby               avg  40.4 fps   1% low  32.9 fps
+F1 cafeteria           avg  36.2 fps   1% low   2.5 fps
+F1 boiler room         avg  46.3 fps   1% low  36.6 fps
+F1 mansion foyer       avg  42.3 fps   1% low  20.8 fps
+F1 chapel              avg  46.9 fps   1% low  39.4 fps
+F1 hospital corridor   avg  50.6 fps   1% low  42.0 fps
+F1 security hall       avg  49.3 fps   1% low  40.5 fps
+F1 shrine              avg  50.0 fps   1% low  38.4 fps
