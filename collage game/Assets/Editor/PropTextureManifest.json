@@ -1,0 +1,1079 @@
+{
+ "items": [
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Barrel_01_explosive/Barrel_01_explosive_arm_1k.jpg",
+   "prefix": "Barrel_01_explosive"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Barrel_01_explosive/Barrel_01_explosive_diff_1k.jpg",
+   "prefix": "Barrel_01_explosive"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Barrel_01_explosive/Barrel_01_explosive_nor_gl_1k.jpg",
+   "prefix": "Barrel_01_explosive"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Barrel_02/Barrel_02_arm_1k.jpg",
+   "prefix": "Barrel_02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Barrel_02/Barrel_02_diff_1k.jpg",
+   "prefix": "Barrel_02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Barrel_02/Barrel_02_nor_gl_1k.jpg",
+   "prefix": "Barrel_02"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/GothicCabinet_01/GothicCabinet_01_arm_1k.jpg",
+   "prefix": "GothicCabinet_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/GothicCabinet_01/GothicCabinet_01_diff_1k.jpg",
+   "prefix": "GothicCabinet_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/GothicCabinet_01/GothicCabinet_01_nor_gl_1k.jpg",
+   "prefix": "GothicCabinet_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/SchoolChair_01/SchoolChair_01_arm_1k.jpg",
+   "prefix": "SchoolChair_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/SchoolChair_01/SchoolChair_01_diff_1k.jpg",
+   "prefix": "SchoolChair_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/SchoolChair_01/SchoolChair_01_nor_gl_1k.jpg",
+   "prefix": "SchoolChair_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/SchoolDesk_01/SchoolDesk_01_arm_1k.jpg",
+   "prefix": "SchoolDesk_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/SchoolDesk_01/SchoolDesk_01_diff_1k.jpg",
+   "prefix": "SchoolDesk_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/SchoolDesk_01/SchoolDesk_01_nor_gl_1k.jpg",
+   "prefix": "SchoolDesk_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Shelf_01/Shelf_01_arm_1k.jpg",
+   "prefix": "Shelf_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Shelf_01/Shelf_01_diff_1k.jpg",
+   "prefix": "Shelf_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/Shelf_01/Shelf_01_nor_gl_1k.jpg",
+   "prefix": "Shelf_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/WetFloorSign_01/WetFloorSign_01_arm_1k.jpg",
+   "prefix": "WetFloorSign_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/WetFloorSign_01/WetFloorSign_01_diff_1k.jpg",
+   "prefix": "WetFloorSign_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/WetFloorSign_01/WetFloorSign_01_nor_gl_1k.jpg",
+   "prefix": "WetFloorSign_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/bunsen_burner/bunsen_burner_arm_1k.jpg",
+   "prefix": "bunsen_burner"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/bunsen_burner/bunsen_burner_diff_1k.jpg",
+   "prefix": "bunsen_burner"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/bunsen_burner/bunsen_burner_nor_gl_1k.jpg",
+   "prefix": "bunsen_burner"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/caged_hanging_light/caged_hanging_light_arm_1k.jpg",
+   "prefix": "caged_hanging_light"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/caged_hanging_light/caged_hanging_light_diff_1k.jpg",
+   "prefix": "caged_hanging_light"
+  },
+  {
+   "kind": "emissive",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/caged_hanging_light/caged_hanging_light_emissive_1k.jpg",
+   "prefix": "caged_hanging_light"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/caged_hanging_light/caged_hanging_light_nor_gl_1k.jpg",
+   "prefix": "caged_hanging_light"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/cement_bag/cement_bag_arm_1k.jpg",
+   "prefix": "cement_bag"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/cement_bag/cement_bag_diff_1k.jpg",
+   "prefix": "cement_bag"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/cement_bag/cement_bag_nor_gl_1k.jpg",
+   "prefix": "cement_bag"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/chemistry_set/chemistry_set_arm_1k.jpg",
+   "prefix": "chemistry_set"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/chemistry_set/chemistry_set_diff_1k.jpg",
+   "prefix": "chemistry_set"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/chemistry_set/chemistry_set_nor_gl_1k.jpg",
+   "prefix": "chemistry_set"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/classic_laptop/classic_laptop_arm_1k.jpg",
+   "prefix": "classic_laptop"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/classic_laptop/classic_laptop_diff_1k.jpg",
+   "prefix": "classic_laptop"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/classic_laptop/classic_laptop_nor_gl_1k.jpg",
+   "prefix": "classic_laptop"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/crowbar_01/crowbar_01_arm_1k.jpg",
+   "prefix": "crowbar_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/crowbar_01/crowbar_01_diff_1k.jpg",
+   "prefix": "crowbar_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/crowbar_01/crowbar_01_nor_gl_1k.jpg",
+   "prefix": "crowbar_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/dead_tree_trunk_02/dead_tree_trunk_02_arm_1k.jpg",
+   "prefix": "dead_tree_trunk_02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/dead_tree_trunk_02/dead_tree_trunk_02_diff_1k.jpg",
+   "prefix": "dead_tree_trunk_02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/dead_tree_trunk_02/dead_tree_trunk_02_nor_gl_1k.jpg",
+   "prefix": "dead_tree_trunk_02"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/fire_alarm/fire_alarm_arm_1k.jpg",
+   "prefix": "fire_alarm"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/fire_alarm/fire_alarm_diff_1k.jpg",
+   "prefix": "fire_alarm"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/fire_alarm/fire_alarm_nor_gl_1k.jpg",
+   "prefix": "fire_alarm"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_industrial_lamp/hanging_industrial_lamp_arm_1k.jpg",
+   "prefix": "hanging_industrial_lamp"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_industrial_lamp/hanging_industrial_lamp_diff_1k.jpg",
+   "prefix": "hanging_industrial_lamp"
+  },
+  {
+   "kind": "emissive",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_industrial_lamp/hanging_industrial_lamp_emissive_1k.jpg",
+   "prefix": "hanging_industrial_lamp"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_industrial_lamp/hanging_industrial_lamp_nor_gl_1k.jpg",
+   "prefix": "hanging_industrial_lamp"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_industrial_lamp_glass/hanging_industrial_lamp_glass_nor_gl_1k.jpg",
+   "prefix": "hanging_industrial_lamp_glass"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_picture_frame_01/hanging_picture_frame_01_arm_1k.jpg",
+   "prefix": "hanging_picture_frame_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_picture_frame_01/hanging_picture_frame_01_diff_1k.jpg",
+   "prefix": "hanging_picture_frame_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_picture_frame_01/hanging_picture_frame_01_nor_gl_1k.jpg",
+   "prefix": "hanging_picture_frame_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_picture_frame_01_artwork/hanging_picture_frame_01_artwork_diff_1k.jpg",
+   "prefix": "hanging_picture_frame_01_artwork"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_picture_frame_01_artwork/hanging_picture_frame_01_artwork_nor_gl_1k.jpg",
+   "prefix": "hanging_picture_frame_01_artwork"
+  },
+  {
+   "kind": "rough",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/hanging_picture_frame_01_artwork/hanging_picture_frame_01_artwork_roughness_1k.jpg",
+   "prefix": "hanging_picture_frame_01_artwork"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_caged_sconce/industrial_caged_sconce_arm_1k.jpg",
+   "prefix": "industrial_caged_sconce"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_caged_sconce/industrial_caged_sconce_diff_1k.jpg",
+   "prefix": "industrial_caged_sconce"
+  },
+  {
+   "kind": "emissive",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_caged_sconce/industrial_caged_sconce_emissive_1k.jpg",
+   "prefix": "industrial_caged_sconce"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_caged_sconce/industrial_caged_sconce_nor_gl_1k.jpg",
+   "prefix": "industrial_caged_sconce"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp/industrial_wall_lamp_arm_1k.jpg",
+   "prefix": "industrial_wall_lamp"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp/industrial_wall_lamp_diff_1k.jpg",
+   "prefix": "industrial_wall_lamp"
+  },
+  {
+   "kind": "emissive",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp/industrial_wall_lamp_emissive_1k.jpg",
+   "prefix": "industrial_wall_lamp"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp/industrial_wall_lamp_nor_gl_1k.jpg",
+   "prefix": "industrial_wall_lamp"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp_glass/industrial_wall_lamp_glass_arm_1k.jpg",
+   "prefix": "industrial_wall_lamp_glass"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp_glass/industrial_wall_lamp_glass_diff_1k.jpg",
+   "prefix": "industrial_wall_lamp_glass"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/industrial_wall_lamp_glass/industrial_wall_lamp_glass_nor_gl_1k.jpg",
+   "prefix": "industrial_wall_lamp_glass"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/ladder_sectioned_01/ladder_sectioned_01_arm_1k.jpg",
+   "prefix": "ladder_sectioned_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/ladder_sectioned_01/ladder_sectioned_01_diff_1k.jpg",
+   "prefix": "ladder_sectioned_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/ladder_sectioned_01/ladder_sectioned_01_nor_gl_1k.jpg",
+   "prefix": "ladder_sectioned_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/metal_toolbox/metal_toolbox_arm_1k.jpg",
+   "prefix": "metal_toolbox"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/metal_toolbox/metal_toolbox_diff_1k.jpg",
+   "prefix": "metal_toolbox"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/metal_toolbox/metal_toolbox_nor_gl_1k.jpg",
+   "prefix": "metal_toolbox"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_electric_cables/modular_electric_cables_arm_1k.jpg",
+   "prefix": "modular_electric_cables"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_electric_cables/modular_electric_cables_diff_1k.jpg",
+   "prefix": "modular_electric_cables"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_electric_cables/modular_electric_cables_nor_gl_1k.jpg",
+   "prefix": "modular_electric_cables"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_electric_cables_boxes/modular_electric_cables_boxes_arm_1k.jpg",
+   "prefix": "modular_electric_cables_boxes"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_electric_cables_boxes/modular_electric_cables_boxes_diff_1k.jpg",
+   "prefix": "modular_electric_cables_boxes"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_electric_cables_boxes/modular_electric_cables_boxes_nor_gl_1k.jpg",
+   "prefix": "modular_electric_cables_boxes"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_industrial_pipes_01_group01/modular_industrial_pipes_01_group01_arm_1k.jpg",
+   "prefix": "modular_industrial_pipes_01_group01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_industrial_pipes_01_group01/modular_industrial_pipes_01_group01_diff_1k.jpg",
+   "prefix": "modular_industrial_pipes_01_group01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_industrial_pipes_01_group01/modular_industrial_pipes_01_group01_nor_gl_1k.jpg",
+   "prefix": "modular_industrial_pipes_01_group01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_industrial_pipes_01_group02/modular_industrial_pipes_01_group02_arm_1k.jpg",
+   "prefix": "modular_industrial_pipes_01_group02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_industrial_pipes_01_group02/modular_industrial_pipes_01_group02_diff_1k.jpg",
+   "prefix": "modular_industrial_pipes_01_group02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/modular_industrial_pipes_01_group02/modular_industrial_pipes_01_group02_nor_gl_1k.jpg",
+   "prefix": "modular_industrial_pipes_01_group02"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/mounted_fluorescent_lights/mounted_fluorescent_lights_arm_1k.jpg",
+   "prefix": "mounted_fluorescent_lights"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/mounted_fluorescent_lights/mounted_fluorescent_lights_diff_1k.jpg",
+   "prefix": "mounted_fluorescent_lights"
+  },
+  {
+   "kind": "emissive",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/mounted_fluorescent_lights/mounted_fluorescent_lights_emission_1k.jpg",
+   "prefix": "mounted_fluorescent_lights"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/mounted_fluorescent_lights/mounted_fluorescent_lights_nor_gl_1k.jpg",
+   "prefix": "mounted_fluorescent_lights"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/office_notepads/office_notepads_arm_1k.jpg",
+   "prefix": "office_notepads"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/office_notepads/office_notepads_diff_1k.jpg",
+   "prefix": "office_notepads"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/office_notepads/office_notepads_nor_gl_1k.jpg",
+   "prefix": "office_notepads"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/power_box_01/power_box_01_arm_1k.jpg",
+   "prefix": "power_box_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/power_box_01/power_box_01_diff_1k.jpg",
+   "prefix": "power_box_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/power_box_01/power_box_01_nor_gl_1k.jpg",
+   "prefix": "power_box_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/projector_screen/projector_screen_arm_1k.jpg",
+   "prefix": "projector_screen"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/projector_screen/projector_screen_diff_1k.jpg",
+   "prefix": "projector_screen"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/projector_screen/projector_screen_nor_gl_1k.jpg",
+   "prefix": "projector_screen"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/projector_screen_frame/projector_screen_frame_arm_1k.jpg",
+   "prefix": "projector_screen_frame"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/projector_screen_frame/projector_screen_frame_diff_1k.jpg",
+   "prefix": "projector_screen_frame"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/projector_screen_frame/projector_screen_frame_nor_gl_1k.jpg",
+   "prefix": "projector_screen_frame"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/pull_chain_light_socket/pull_chain_light_socket_arm_1k.jpg",
+   "prefix": "pull_chain_light_socket"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/pull_chain_light_socket/pull_chain_light_socket_diff_1k.jpg",
+   "prefix": "pull_chain_light_socket"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/pull_chain_light_socket/pull_chain_light_socket_nor_gl_1k.jpg",
+   "prefix": "pull_chain_light_socket"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/rock_moss_set_01/rock_moss_set_01_diff_1k.jpg",
+   "prefix": "rock_moss_set_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/rock_moss_set_01/rock_moss_set_01_nor_gl_1k.jpg",
+   "prefix": "rock_moss_set_01"
+  },
+  {
+   "kind": "rough",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/rock_moss_set_01/rock_moss_set_01_rough_1k.jpg",
+   "prefix": "rock_moss_set_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/sand_rocks_small_01/sand_rocks_small_01_arm_1k.jpg",
+   "prefix": "sand_rocks_small_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/sand_rocks_small_01/sand_rocks_small_01_diff_1k.jpg",
+   "prefix": "sand_rocks_small_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/sand_rocks_small_01/sand_rocks_small_01_nor_gl_1k.jpg",
+   "prefix": "sand_rocks_small_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/security_light/security_light_arm_1k.jpg",
+   "prefix": "security_light"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/security_light/security_light_diff_1k.jpg",
+   "prefix": "security_light"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/security_light/security_light_nor_gl_1k.jpg",
+   "prefix": "security_light"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/small_wooden_table_01/small_wooden_table_01_arm_1k.jpg",
+   "prefix": "small_wooden_table_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/small_wooden_table_01/small_wooden_table_01_diff_1k.jpg",
+   "prefix": "small_wooden_table_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/small_wooden_table_01/small_wooden_table_01_nor_gl_1k.jpg",
+   "prefix": "small_wooden_table_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/spray_paint_bottles/spray_paint_bottles_arm_1k.jpg",
+   "prefix": "spray_paint_bottles"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/spray_paint_bottles/spray_paint_bottles_diff_1k.jpg",
+   "prefix": "spray_paint_bottles"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/spray_paint_bottles/spray_paint_bottles_nor_gl_1k.jpg",
+   "prefix": "spray_paint_bottles"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/spray_paint_bottles_dirty/spray_paint_bottles_dirty_arm_1k.jpg",
+   "prefix": "spray_paint_bottles_dirty"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/spray_paint_bottles_dirty/spray_paint_bottles_dirty_diff_1k.jpg",
+   "prefix": "spray_paint_bottles_dirty"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/spray_paint_bottles_dirty/spray_paint_bottles_dirty_nor_gl_1k.jpg",
+   "prefix": "spray_paint_bottles_dirty"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_chalkboard_01_board/standing_chalkboard_01_board_arm_1k.jpg",
+   "prefix": "standing_chalkboard_01_board"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_chalkboard_01_board/standing_chalkboard_01_board_diff_1k.jpg",
+   "prefix": "standing_chalkboard_01_board"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_chalkboard_01_board/standing_chalkboard_01_board_nor_gl_1k.jpg",
+   "prefix": "standing_chalkboard_01_board"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_chalkboard_01_frame/standing_chalkboard_01_frame_arm_1k.jpg",
+   "prefix": "standing_chalkboard_01_frame"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_chalkboard_01_frame/standing_chalkboard_01_frame_diff_1k.jpg",
+   "prefix": "standing_chalkboard_01_frame"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_chalkboard_01_frame/standing_chalkboard_01_frame_nor_gl_1k.jpg",
+   "prefix": "standing_chalkboard_01_frame"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_picture_frame_01/standing_picture_frame_01_arm_1k.jpg",
+   "prefix": "standing_picture_frame_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_picture_frame_01/standing_picture_frame_01_diff_1k.jpg",
+   "prefix": "standing_picture_frame_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_picture_frame_01/standing_picture_frame_01_nor_gl_1k.jpg",
+   "prefix": "standing_picture_frame_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_picture_frame_01_artwork/standing_picture_frame_01_artwork_diff_1k.jpg",
+   "prefix": "standing_picture_frame_01_artwork"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_picture_frame_01_artwork/standing_picture_frame_01_artwork_nor_gl_1k.jpg",
+   "prefix": "standing_picture_frame_01_artwork"
+  },
+  {
+   "kind": "rough",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/standing_picture_frame_01_artwork/standing_picture_frame_01_artwork_rough_1k.jpg",
+   "prefix": "standing_picture_frame_01_artwork"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/stationery_supplies/stationery_supplies_arm_1k.jpg",
+   "prefix": "stationery_supplies"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/stationery_supplies/stationery_supplies_diff_1k.jpg",
+   "prefix": "stationery_supplies"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/stationery_supplies/stationery_supplies_nor_gl_1k.jpg",
+   "prefix": "stationery_supplies"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/steel_frame_shelves_01/steel_frame_shelves_01_arm_1k.jpg",
+   "prefix": "steel_frame_shelves_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/steel_frame_shelves_01/steel_frame_shelves_01_diff_1k.jpg",
+   "prefix": "steel_frame_shelves_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/steel_frame_shelves_01/steel_frame_shelves_01_nor_gl_1k.jpg",
+   "prefix": "steel_frame_shelves_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/stone_01/stone_01_arm_1k.jpg",
+   "prefix": "stone_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/stone_01/stone_01_diff_1k.jpg",
+   "prefix": "stone_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/stone_01/stone_01_nor_gl_1k.jpg",
+   "prefix": "stone_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/street_lamp_01/street_lamp_01_arm_1k.jpg",
+   "prefix": "street_lamp_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/street_lamp_01/street_lamp_01_diff_1k.jpg",
+   "prefix": "street_lamp_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/street_lamp_01/street_lamp_01_nor_gl_1k.jpg",
+   "prefix": "street_lamp_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/tool_cart/tool_cart_arm_1k.jpg",
+   "prefix": "tool_cart"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/tool_cart/tool_cart_diff_1k.jpg",
+   "prefix": "tool_cart"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/tool_cart/tool_cart_nor_gl_1k.jpg",
+   "prefix": "tool_cart"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/trashbag/trashbag_arm_1k.jpg",
+   "prefix": "trashbag"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/trashbag/trashbag_diff_1k.jpg",
+   "prefix": "trashbag"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/trashbag/trashbag_nor_gl_1k.jpg",
+   "prefix": "trashbag"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/utility_box_01/utility_box_01_arm_1k.jpg",
+   "prefix": "utility_box_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/utility_box_01/utility_box_01_diff_1k.jpg",
+   "prefix": "utility_box_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/utility_box_01/utility_box_01_nor_gl_1k.jpg",
+   "prefix": "utility_box_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/utility_box_02/utility_box_02_arm_1k.jpg",
+   "prefix": "utility_box_02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/utility_box_02/utility_box_02_diff_1k.jpg",
+   "prefix": "utility_box_02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/utility_box_02/utility_box_02_nor_gl_1k.jpg",
+   "prefix": "utility_box_02"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_a/vintage_cabinet_01_a_arm_1k.jpg",
+   "prefix": "vintage_cabinet_01_a"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_a/vintage_cabinet_01_a_diff_1k.jpg",
+   "prefix": "vintage_cabinet_01_a"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_a/vintage_cabinet_01_a_nor_gl_1k.jpg",
+   "prefix": "vintage_cabinet_01_a"
+  },
+  {
+   "kind": "rough",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_a/vintage_cabinet_01_a_rough_1k.jpg",
+   "prefix": "vintage_cabinet_01_a"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_b/vintage_cabinet_01_b_diff_1k.jpg",
+   "prefix": "vintage_cabinet_01_b"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_b/vintage_cabinet_01_b_nor_gl_1k.jpg",
+   "prefix": "vintage_cabinet_01_b"
+  },
+  {
+   "kind": "rough",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_cabinet_01_b/vintage_cabinet_01_b_rough_1k.jpg",
+   "prefix": "vintage_cabinet_01_b"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_flashlight/vintage_flashlight_arm_1k.jpg",
+   "prefix": "vintage_flashlight"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_flashlight/vintage_flashlight_diff_1k.jpg",
+   "prefix": "vintage_flashlight"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_flashlight/vintage_flashlight_nor_gl_1k.jpg",
+   "prefix": "vintage_flashlight"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_microscope/vintage_microscope_arm_1k.jpg",
+   "prefix": "vintage_microscope"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_microscope/vintage_microscope_diff_1k.jpg",
+   "prefix": "vintage_microscope"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_microscope/vintage_microscope_nor_gl_1k.jpg",
+   "prefix": "vintage_microscope"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_stapler/vintage_stapler_arm_1k.jpg",
+   "prefix": "vintage_stapler"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_stapler/vintage_stapler_diff_1k.jpg",
+   "prefix": "vintage_stapler"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_stapler/vintage_stapler_nor_gl_1k.jpg",
+   "prefix": "vintage_stapler"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_suitcase_01/vintage_suitcase_01_arm_1k.jpg",
+   "prefix": "vintage_suitcase_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_suitcase_01/vintage_suitcase_01_diff_1k.jpg",
+   "prefix": "vintage_suitcase_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_suitcase_01/vintage_suitcase_01_nor_gl_1k.jpg",
+   "prefix": "vintage_suitcase_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_suitcase_02/vintage_suitcase_02_arm_1k.jpg",
+   "prefix": "vintage_suitcase_02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_suitcase_02/vintage_suitcase_02_diff_1k.jpg",
+   "prefix": "vintage_suitcase_02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_suitcase_02/vintage_suitcase_02_nor_gl_1k.jpg",
+   "prefix": "vintage_suitcase_02"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_telephone_wall_clock/vintage_telephone_wall_clock_arm_1k.jpg",
+   "prefix": "vintage_telephone_wall_clock"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_telephone_wall_clock/vintage_telephone_wall_clock_diff_1k.jpg",
+   "prefix": "vintage_telephone_wall_clock"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_telephone_wall_clock/vintage_telephone_wall_clock_nor_gl_1k.jpg",
+   "prefix": "vintage_telephone_wall_clock"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_wooden_drawer_01/vintage_wooden_drawer_01_arm_1k.jpg",
+   "prefix": "vintage_wooden_drawer_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_wooden_drawer_01/vintage_wooden_drawer_01_diff_1k.jpg",
+   "prefix": "vintage_wooden_drawer_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/vintage_wooden_drawer_01/vintage_wooden_drawer_01_nor_gl_1k.jpg",
+   "prefix": "vintage_wooden_drawer_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wall_clock/wall_clock_arm_1k.jpg",
+   "prefix": "wall_clock"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wall_clock/wall_clock_diff_1k.jpg",
+   "prefix": "wall_clock"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wall_clock/wall_clock_nor_gl_1k.jpg",
+   "prefix": "wall_clock"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wall_clock_glass/wall_clock_glass_arm_1k.jpg",
+   "prefix": "wall_clock_glass"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/water_manhole_cover/water_manhole_cover_arm_1k.jpg",
+   "prefix": "water_manhole_cover"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/water_manhole_cover/water_manhole_cover_diff_1k.jpg",
+   "prefix": "water_manhole_cover"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/water_manhole_cover/water_manhole_cover_nor_gl_1k.jpg",
+   "prefix": "water_manhole_cover"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wheelchair_01/wheelchair_01_arm_1k.jpg",
+   "prefix": "wheelchair_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wheelchair_01/wheelchair_01_diff_1k.jpg",
+   "prefix": "wheelchair_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wheelchair_01/wheelchair_01_nor_gl_1k.jpg",
+   "prefix": "wheelchair_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_bookshelf_worn/wooden_bookshelf_worn_arm_1k.jpg",
+   "prefix": "wooden_bookshelf_worn"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_bookshelf_worn/wooden_bookshelf_worn_diff_1k.jpg",
+   "prefix": "wooden_bookshelf_worn"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_bookshelf_worn/wooden_bookshelf_worn_nor_gl_1k.jpg",
+   "prefix": "wooden_bookshelf_worn"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_display_shelves_01/wooden_display_shelves_01_arm_1k.jpg",
+   "prefix": "wooden_display_shelves_01"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_display_shelves_01/wooden_display_shelves_01_diff_1k.jpg",
+   "prefix": "wooden_display_shelves_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_display_shelves_01/wooden_display_shelves_01_nor_gl_1k.jpg",
+   "prefix": "wooden_display_shelves_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_ladder/wooden_ladder_arm_1k.jpg",
+   "prefix": "wooden_ladder"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_ladder/wooden_ladder_diff_1k.jpg",
+   "prefix": "wooden_ladder"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_ladder/wooden_ladder_nor_gl_1k.jpg",
+   "prefix": "wooden_ladder"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_stool_01/wooden_stool_01_diff_1k.jpg",
+   "prefix": "wooden_stool_01"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_stool_01/wooden_stool_01_nor_gl_1k.jpg",
+   "prefix": "wooden_stool_01"
+  },
+  {
+   "kind": "rough",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_stool_01/wooden_stool_01_rough_1k.jpg",
+   "prefix": "wooden_stool_01"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_stool_02/wooden_stool_02_arm_1k.jpg",
+   "prefix": "wooden_stool_02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_stool_02/wooden_stool_02_diff_1k.jpg",
+   "prefix": "wooden_stool_02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_stool_02/wooden_stool_02_nor_gl_1k.jpg",
+   "prefix": "wooden_stool_02"
+  },
+  {
+   "kind": "arm",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_table_02/wooden_table_02_arm_1k.jpg",
+   "prefix": "wooden_table_02"
+  },
+  {
+   "kind": "diff",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_table_02/wooden_table_02_diff_1k.jpg",
+   "prefix": "wooden_table_02"
+  },
+  {
+   "kind": "nor_gl",
+   "path": "Assets/ThirdParty/PolyhavenProps/Textures/wooden_table_02/wooden_table_02_nor_gl_1k.jpg",
+   "prefix": "wooden_table_02"
+  }
+ ]
+}
