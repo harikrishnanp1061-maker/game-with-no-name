@@ -213,7 +213,7 @@ public static class PbrTextureGenerator
         SaveTexture(normal, $"{TextureDir}/Moss_Normal.png");
     }
 
-    // 3. CRACKED WEATHERED CONCRETE
+    // 3. CAST ARCHITECTURAL & INDUSTRIAL CONCRETE
     private static void GenerateConcreteTextures()
     {
         int size = 512;
@@ -222,9 +222,10 @@ public static class PbrTextureGenerator
         Texture2D mask = new Texture2D(size, size, TextureFormat.RGBA32, false);
         float[,] heightMap = new float[size, size];
 
-        Color concreteBase = new Color(0.46f, 0.45f, 0.42f);
-        Color dirtStain = new Color(0.26f, 0.24f, 0.20f);
-        Color crackColor = new Color(0.10f, 0.09f, 0.08f);
+        Color concreteBase = new Color(0.52f, 0.53f, 0.54f);
+        Color concreteDark = new Color(0.42f, 0.43f, 0.44f);
+        Color concreteLight = new Color(0.62f, 0.63f, 0.64f);
+        Color stainColor = new Color(0.36f, 0.35f, 0.32f);
 
         for (int y = 0; y < size; y++)
         {
@@ -233,34 +234,36 @@ public static class PbrTextureGenerator
                 float u = x / (float)size;
                 float v = y / (float)size;
 
-                float grain = Mathf.PerlinNoise(u * 45f, v * 45f);
-                float stain = Mathf.PerlinNoise(u * 6f, v * 6f);
+                // Multi-octave fine aggregate and porosity
+                float fineGrain = Mathf.PerlinNoise(u * 60f, v * 60f) * 0.5f + Mathf.PerlinNoise(u * 140f + 7f, v * 140f + 7f) * 0.3f;
+                float broadTone = Mathf.PerlinNoise(u * 5f, v * 5f);
+                float stain = Mathf.PerlinNoise(u * 12f + 3f, v * 12f + 3f);
 
-                float warpX = u + Mathf.PerlinNoise(u * 8f, v * 8f) * 0.15f;
-                float warpY = v + Mathf.PerlinNoise(v * 8f, u * 8f) * 0.15f;
-                float crackGrid = Mathf.Abs(Mathf.Sin(warpX * 16f) * Mathf.Cos(warpY * 16f));
-                bool isCrack = crackGrid < 0.075f;
+                // Subtle cast panel seams (formwork joints)
+                float seamX = Mathf.Min(Mathf.Abs(u - 0.5f), Mathf.Min(u, 1f - u));
+                float seamY = Mathf.Min(Mathf.Abs(v - 0.5f), Mathf.Min(v, 1f - v));
+                float seamDist = Mathf.Min(seamX, seamY);
+                float seamIndent = (seamDist < 0.008f) ? Mathf.SmoothStep(0f, 1f, seamDist / 0.008f) : 1f;
 
-                Color c = Color.Lerp(concreteBase, dirtStain, stain * 0.65f);
-                c = c * (0.82f + grain * 0.35f);
-
-                float h = 0.58f + grain * 0.22f;
-                float smoothness = 0.14f;
-
-                if (isCrack)
+                Color c = Color.Lerp(concreteDark, concreteBase, broadTone);
+                c = Color.Lerp(c, concreteLight, fineGrain * 0.45f);
+                if (stain > 0.62f)
                 {
-                    c = Color.Lerp(crackColor, c, crackGrid / 0.075f);
-                    h = (crackGrid / 0.075f) * 0.25f;
-                    smoothness = 0.03f;
+                    c = Color.Lerp(c, stainColor, (stain - 0.62f) * 0.7f);
                 }
+                c *= (0.75f + seamIndent * 0.25f);
+
+                float h = 0.5f + (fineGrain - 0.4f) * 0.12f;
+                h *= (0.6f + seamIndent * 0.4f);
+                float smoothness = Mathf.Lerp(0.28f, 0.42f, fineGrain);
 
                 heightMap[x, y] = h;
                 albedo.SetPixel(x, y, c);
-                mask.SetPixel(x, y, new Color(0.04f, 1f, 0f, smoothness));
+                mask.SetPixel(x, y, new Color(0.02f, 1f, 0f, smoothness));
             }
         }
 
-        ComputeNormalMap(heightMap, normal, size, 6.5f);
+        ComputeNormalMap(heightMap, normal, size, 2.2f);
         SaveTexture(albedo, $"{TextureDir}/Concrete_Albedo.png");
         SaveTexture(normal, $"{TextureDir}/Concrete_Normal.png");
         SaveTexture(mask, $"{TextureDir}/Concrete_Mask.png");
@@ -479,10 +482,10 @@ public static class PbrTextureGenerator
         {
             matConcrete.SetTexture("_BumpMap", concNorm);
             matConcrete.EnableKeyword("_NORMALMAP");
-            matConcrete.SetFloat("_BumpScale", 1.8f);
+            matConcrete.SetFloat("_BumpScale", 0.6f);
         }
         if (concMask != null) matConcrete.SetTexture("_MetallicGlossMap", concMask);
-        matConcrete.SetFloat("_Smoothness", 0.12f);
+        matConcrete.SetFloat("_Smoothness", 0.35f);
         matConcrete.SetFloat("_Metallic", 0.04f);
         AssetDatabase.CreateAsset(matConcrete, $"{MaterialDir}/PBR_CrackedConcrete.mat");
 
@@ -542,6 +545,46 @@ public static class PbrTextureGenerator
         matLight.SetColor("_EmissionColor", new Color(1.0f, 0.65f, 0.2f) * 3.5f);
         matLight.SetFloat("_Smoothness", 0.9f);
         AssetDatabase.CreateAsset(matLight, $"{MaterialDir}/PBR_EmergencyLamp.mat");
+
+        // 8. Fluorescent Tube Light Material (Emissive Cool White)
+        Material matFluor = new Material(urpLit);
+        matFluor.name = "PBR_FluorescentLamp";
+        matFluor.SetColor("_BaseColor", new Color(0.9f, 0.95f, 1.0f));
+        matFluor.EnableKeyword("_EMISSION");
+        matFluor.SetColor("_EmissionColor", new Color(0.9f, 0.95f, 1.0f) * 4.0f);
+        matFluor.SetFloat("_Smoothness", 0.95f);
+        AssetDatabase.CreateAsset(matFluor, $"{MaterialDir}/PBR_FluorescentLamp.mat");
+
+        // 9. Emergency Alarm Beacon Material (Emissive Red/Amber)
+        Material matBeacon = new Material(urpLit);
+        matBeacon.name = "PBR_EmergencyBeacon";
+        matBeacon.SetColor("_BaseColor", new Color(1.0f, 0.25f, 0.1f));
+        matBeacon.EnableKeyword("_EMISSION");
+        matBeacon.SetColor("_EmissionColor", new Color(1.0f, 0.3f, 0.1f) * 4.5f);
+        matBeacon.SetFloat("_Smoothness", 0.95f);
+        AssetDatabase.CreateAsset(matBeacon, $"{MaterialDir}/PBR_EmergencyBeacon.mat");
+
+        // 10. Dark Industrial Painted Metal (Girders, Ducting, Frames)
+        Material matDarkMetal = new Material(urpLit);
+        matDarkMetal.name = "PBR_IndustrialMetal";
+        matDarkMetal.SetColor("_BaseColor", new Color(0.18f, 0.21f, 0.24f));
+        if (concNorm != null)
+        {
+            matDarkMetal.SetTexture("_BumpMap", concNorm);
+            matDarkMetal.EnableKeyword("_NORMALMAP");
+            matDarkMetal.SetFloat("_BumpScale", 0.6f);
+        }
+        matDarkMetal.SetFloat("_Smoothness", 0.45f);
+        matDarkMetal.SetFloat("_Metallic", 0.85f);
+        AssetDatabase.CreateAsset(matDarkMetal, $"{MaterialDir}/PBR_IndustrialMetal.mat");
+
+        // 11. Concrete Wall Material (Tiled high-detail)
+        Material matWall = new Material(matConcrete);
+        matWall.name = "PBR_ConcreteWall";
+        matWall.SetTextureScale("_BaseMap", new Vector2(4f, 2.5f));
+        if (matWall.HasProperty("_BumpMap")) matWall.SetTextureScale("_BumpMap", new Vector2(4f, 2.5f));
+        matWall.SetFloat("_Smoothness", 0.18f);
+        AssetDatabase.CreateAsset(matWall, $"{MaterialDir}/PBR_ConcreteWall.mat");
 
         AssetDatabase.SaveAssets();
     }

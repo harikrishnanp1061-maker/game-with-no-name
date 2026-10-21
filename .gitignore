@@ -1,4 +1,9 @@
-# Unity generated
+# =========================================================================
+# Unity Project .gitignore
+# Designed for clean cloning across Windows, Mac, and Linux
+# =========================================================================
+
+# Unity generated caches and builds
 /[Cc]ollage\ [Gg]ame/[Ll]ibrary/
 /[Cc]ollage\ [Gg]ame/[Tt]emp/
 /[Cc]ollage\ [Gg]ame/[Oo]bj/
@@ -9,19 +14,69 @@
 /[Cc]ollage\ [Gg]ame/[Mm]emory[Cc]aptures/
 /[Cc]ollage\ [Gg]ame/[Rr]ecordings/
 
-# Visual Studio / Rider / IDE cache
+# Generic fallback for Unity folders if repo root shifts
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emory[Cc]aptures/
+[Rr]ecordings/
+
+# Unity crash and diagnostics
+sysinfo.txt
+*.stackdump
+CrashReports/
+
+# Visual Studio / Rider / VS Code cache & solutions
+.vs/
+.idea/
+.vscode/
 /[Cc]ollage\ [Gg]ame/.vs/
 /[Cc]ollage\ [Gg]ame/.idea/
-/[Cc]ollage\ [Gg]ame/*.csproj
-/[Cc]ollage\ [Gg]ame/*.unityproj
-/[Cc]ollage\ [Gg]ame/*.sln
-/[Cc]ollage\ [Gg]ame/*.suo
-/[Cc]ollage\ [Gg]ame/*.user
-/[Cc]ollage\ [Gg]ame/*.userprefs
-/[Cc]ollage\ [Gg]ame/*.pidb
-/[Cc]ollage\ [Gg]ame/*.booproj
+/[Cc]ollage\ [Gg]ame/.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
 
-# OS generated
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
-desktop.ini
+[Dd]esktop.ini
+
+# Python / Tools / Dev Scratch
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+_archive_scripts/
+_staging_fbx/
+.mcp_session*
+.claude/
+
+# Captures / Test renders (avoids repo bloat)
+/[Cc]ollage\ [Gg]ame/[Cc]aptures/
+Captures/
+*.tmp
+*.log
+*.zip
+*.7z

@@ -62,6 +62,16 @@ public static class PropTextureBinder
             maps[it.kind] = it.path;
         }
 
+        // Aliases for FBX models whose material names differ from texture subfolder prefix
+        if (grouped.TryGetValue("Barrel_01_explosive", out var barrelMaps))
+        {
+            grouped["Barrel_01"] = barrelMaps;
+        }
+        if (grouped.TryGetValue("wheelchair_01", out var wheelchairMaps))
+        {
+            grouped["lambert1"] = wheelchairMaps;
+        }
+
         BindMaterials(CollectAssetMaterials(grouped.Keys), grouped, out var aTouched, out var aUpdated);
         BindMaterials(CollectSceneMaterials(grouped.Keys), grouped, out var sTouched, out var sUpdated);
 
@@ -113,7 +123,8 @@ public static class PropTextureBinder
                 {
                     // Identity check de-dupes the many renderers that share a clone.
                     if (m == null || !seen.Add(m)) continue;
-                    if (wanted.Contains(CleanName(m.name)))
+                    string cName = CleanName(m.name);
+                    if (wanted.Contains(cName) || wanted.Contains(CleanName(r.gameObject.name)) || (r.transform.parent != null && wanted.Contains(CleanName(r.transform.parent.name))))
                         list.Add(m);
                 }
             }
@@ -133,13 +144,46 @@ public static class PropTextureBinder
     static int BindMaterials(List<Material> mats,
                             Dictionary<string, Dictionary<string, string>> grouped,
                             out int touched, out int updated)
-        {
-            touched = 0; updated = 0;
+    {
+        touched = 0; updated = 0;
 
         foreach (var mat in mats)
         {
             var prefix = CleanName(mat.name);
-            if (!grouped.TryGetValue(prefix, out var paths)) continue;
+            Dictionary<string, string> paths = null;
+            if (!grouped.TryGetValue(prefix, out paths))
+            {
+                // Fallback prefix substring match
+                foreach (var kvp in grouped)
+                {
+                    if (prefix.IndexOf(kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        kvp.Key.IndexOf(prefix, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        paths = kvp.Value;
+                        break;
+                    }
+                }
+            }
+
+            if (paths == null)
+            {
+                // If it's a glass sub-material without textures, style it nicely as transparent glass
+                if (mat.name.ToLower().Contains("glass"))
+                {
+                    mat.SetFloat("_Surface", 1f); // Transparent
+                    mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    mat.SetInt("_ZWrite", 0);
+                    mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                    mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                    mat.SetColor("_BaseColor", new Color(0.7f, 0.85f, 0.95f, 0.25f));
+                    mat.SetFloat("_Smoothness", 0.95f);
+                    mat.SetFloat("_Metallic", 0.05f);
+                    EditorUtility.SetDirty(mat);
+                    updated++;
+                }
+                continue;
+            }
 
             touched++;
             var maps = LoadMaps(paths, out var hasNormal);
@@ -148,6 +192,7 @@ public static class PropTextureBinder
             if (maps.diff != null && mat.GetTexture("_BaseMap") == null)
             {
                 mat.SetTexture("_BaseMap", maps.diff);
+                mat.SetColor("_BaseColor", Color.white);
                 changed = true;
             }
 
@@ -178,6 +223,19 @@ public static class PropTextureBinder
                 mat.SetTexture("_EmissionMap", maps.emissive);
                 mat.EnableKeyword("_EMISSION");
                 mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+                changed = true;
+            }
+
+            if (mat.name.ToLower().Contains("glass"))
+            {
+                mat.SetFloat("_Surface", 1f); // Transparent
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mat.SetInt("_ZWrite", 0);
+                mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                mat.SetColor("_BaseColor", new Color(0.7f, 0.85f, 0.95f, 0.35f));
+                mat.SetFloat("_Smoothness", 0.95f);
                 changed = true;
             }
 

@@ -1,55 +1,15 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 [InitializeOnLoad]
 public static class AutoSceneRunner
 {
-    private const string LatchKey = "AutoRealisticSceneRun_Latch_v6";
-
     static AutoSceneRunner()
     {
-        EditorApplication.delayCall += OnEditorReady;
     }
 
-    private static void OnEditorReady()
-    {
-        if (SessionState.GetBool(LatchKey, false)) return;
-        SessionState.SetBool(LatchKey, true);
-
-        Debug.Log("[AutoSceneRunner] Executing full procedural PBR realistic pipeline...");
-
-        // 1. Generate PBR Textures & Normal Maps & Materials
-        PbrTextureGenerator.GenerateAll();
-
-        // 2. Build the detailed Crashed Elevator Scene
-        ElevatorSceneBuilder.BuildScene();
-
-        // 3. Setup Player, Directional Sun, Fog, Ambient, and URP Post-Processing
-        SetupPlayerAndLighting.Setup();
-
-        // 4. Ensure MCP Bridge connects
-        try
-        {
-            MCPForUnity.Editor.Services.Transport.Transports.StdioBridgeHost.StartAutoConnect();
-        }
-        catch { }
-
-        // 5. Capture Screenshots from both viewpoints
-        EditorApplication.delayCall += () =>
-        {
-            CaptureRenderScreenshots();
-        };
-    }
-
-    [MenuItem("Tools/Re-Run Realistic Pipeline & Screenshots")]
-    public static void ManualRun()
-    {
-        PbrTextureGenerator.GenerateAll();
-        ElevatorSceneBuilder.BuildScene();
-        SetupPlayerAndLighting.Setup();
-        CaptureRenderScreenshots();
-    }
 
     public static void CaptureRenderScreenshots()
     {
@@ -64,25 +24,35 @@ public static class AutoSceneRunner
             return;
         }
 
-        // 1. Capture Player FPS view
+        // 1. Capture Player FPS view (standing in entrance arch looking at the illuminated crash scene)
         string fpsShotPath = Path.Combine(capturesDir, "realistic_fps_view.png");
         RenderCameraToDisk(cam, fpsShotPath, 1920, 1080);
         Debug.Log($"[AutoSceneRunner] Saved realistic FPS view: {fpsShotPath}");
 
-        // 2. Capture Hero Overview angle
+        // Save original camera transform
         Vector3 origPos = cam.transform.position;
         Quaternion origRot = cam.transform.rotation;
         float origFov = cam.fieldOfView;
         Transform origParent = cam.transform.parent;
 
+        // 2. Capture Hero Overview angle (angled three-quarter view showing elevator, cables, lights, and room)
         cam.transform.parent = null;
-        cam.transform.position = new Vector3(-3.2f, 1.8f, -3.8f);
-        cam.transform.LookAt(new Vector3(0.1f, 0.95f, 0f));
-        cam.fieldOfView = 50f;
+        cam.transform.position = new Vector3(-3.8f, 2.2f, -3.2f);
+        cam.transform.LookAt(new Vector3(0.2f, 1.4f, 1.0f));
+        cam.fieldOfView = 58f;
 
         string heroShotPath = Path.Combine(capturesDir, "realistic_hero_view.png");
         RenderCameraToDisk(cam, heroShotPath, 1920, 1080);
         Debug.Log($"[AutoSceneRunner] Saved realistic Hero view: {heroShotPath}");
+
+        // 3. Capture Room Wide Overhead angle (showing full room architecture, ceiling breach, columns, and lighting)
+        cam.transform.position = new Vector3(5.6f, 4.8f, -5.5f);
+        cam.transform.LookAt(new Vector3(0f, 1.6f, 1.2f));
+        cam.fieldOfView = 65f;
+
+        string roomShotPath = Path.Combine(capturesDir, "realistic_room_wide_view.png");
+        RenderCameraToDisk(cam, roomShotPath, 1920, 1080);
+        Debug.Log($"[AutoSceneRunner] Saved realistic Room Wide view: {roomShotPath}");
 
         // Restore original camera transform
         cam.transform.parent = origParent;
@@ -90,7 +60,7 @@ public static class AutoSceneRunner
         cam.transform.rotation = origRot;
         cam.fieldOfView = origFov;
 
-        Debug.Log("[AutoSceneRunner] Pipeline & Screenshots complete!");
+        Debug.Log("[AutoSceneRunner] Room Pipeline & Screenshots successfully complete!");
     }
 
     private static void RenderCameraToDisk(Camera camera, string filePath, int width, int height)
