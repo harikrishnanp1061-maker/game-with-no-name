@@ -192,7 +192,58 @@ def append_handoff_md(sender, title, message, git_info=None):
         current = HANDOFF_FILE.read_text(encoding="utf-8")
     except Exception:
         current = ""
-    HANDOFF_FILE.write_text(entry + current, encoding="utf-8")
+def get_unity_diagnostics():
+    """Inspects Unity Editor logs, running processes, and package resolution status."""
+    local_app = os.getenv("LOCALAPPDATA", "")
+    log_path = Path(local_app) / "Unity" / "Editor" / "Editor.log"
+
+    recent_errors = []
+    package_events = []
+    last_lines = []
+
+    if log_path.exists():
+        try:
+            with open(log_path, "r", encoding="utf-8", errors="replace") as f:
+                all_lines = f.readlines()
+                last_lines = [l.strip() for l in all_lines[-100:] if l.strip()]
+                for line in all_lines[-400:]:
+                    l_str = line.strip()
+                    l_lower = l_str.lower()
+                    if any(k in l_lower for k in ["error cs", "exception:", "failed to", "could not load", "fatal:", "package manager error"]):
+                        recent_errors.append(l_str)
+                    if any(k in l_lower for k in ["[package manager]", "resolving packages", "downloading", "com.coplaydev", "com.unity."]):
+                        package_events.append(l_str)
+        except Exception as e:
+            recent_errors.append(f"Log read error: {e}")
+
+    # Check if Unity.exe is running
+    unity_running = False
+    try:
+        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq Unity.exe"], capture_output=True, text=True, timeout=5)
+        unity_running = "Unity.exe" in p.stdout
+    except Exception:
+        pass
+
+    # Check if Unity Hub is running
+    hub_running = False
+    try:
+        p = subprocess.run(["tasklist", "/FI", "IMAGENAME eq Unity Hub.exe"], capture_output=True, text=True, timeout=5)
+        hub_running = "Unity Hub.exe" in p.stdout
+    except Exception:
+        pass
+
+    lib_path = REPO_ROOT / "collage game" / "Library"
+
+    return {
+        "unity_running": unity_running,
+        "unity_hub_running": hub_running,
+        "library_folder_rebuilt": lib_path.exists(),
+        "log_file_found": log_path.exists(),
+        "recent_errors": recent_errors[-20:],
+        "package_events": package_events[-20:],
+        "last_lines": last_lines[-25:],
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+    }
 
 
 class BridgeRequestHandler(BaseHTTPRequestHandler):
@@ -262,6 +313,15 @@ class BridgeRequestHandler(BaseHTTPRequestHandler):
             self._send_json({"content": content})
             return
 
+        if path == "/api/unity/diagnostics":
+            self._send_json(get_unity_diagnostics())
+            return
+
+        if path == "/api/unity/log":
+            diag = get_unity_diagnostics()
+            self._send_json({"lines": diag.get("last_lines", [])})
+            return
+
         self._send_json({"error": "Not Found"}, status_code=404)
 
     def do_POST(self):
@@ -273,6 +333,37 @@ class BridgeRequestHandler(BaseHTTPRequestHandler):
             body = json.loads(raw_data)
         except Exception:
             body = {}
+
+        if path == "/api/query":
+            diag = get_unity_diagnostics()
+            git_st = get_git_status()
+            resp = {
+                "status": "success",
+                "machine": os.getenv("COMPUTERNAME", socket.gethostname()),
+                "user": load_config().get("username", os.getenv("USERNAME", "Developer")),
+                "unity": diag,
+                "git": git_st,
+                "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            self._send_json(resp)
+            return
+
+        if path == "/api/stop":
+            self._send_json({"status": "shutting_down", "message": "Bridge listener terminating per instruction"})
+            def _stop():
+                time.sleep(0.5)
+                os._exit(0)
+            threading.Thread(target=_stop, daemon=True).start()
+            return
+
+        if path == "/api/restart":
+            self._send_json({"status": "restarting", "message": "Bridge restarting"})
+            def _restart():
+                time.sleep(0.5)
+                subprocess.Popen([sys.executable, str(Path(__file__).resolve())] + sys.argv[1:])
+                os._exit(0)
+            threading.Thread(target=_restart, daemon=True).start()
+            return
 
         if path == "/api/config":
             cfg = load_config()
@@ -938,6 +1029,18 @@ def main():
     # Git Pull
     pull_parser = subparsers.add_parser("pull", help="Pull latest changes from remote Git")
 
+    # Diagnostics
+    diag_parser = subparsers.add_parser("diag", help="Fetch Unity diagnostics and errors from peer")
+    diag_parser.add_argument("--peer", required=True, help="Peer Wi-Fi IP")
+
+    # Stop peer listener
+    stop_parser = subparsers.add_parser("stop", help="Stop bridge listener on peer")
+    stop_parser.add_argument("--peer", required=True, help="Peer Wi-Fi IP")
+
+    # Restart peer listener
+    restart_parser = subparsers.add_parser("restart", help="Restart bridge listener on peer")
+    restart_parser.add_argument("--peer", required=True, help="Peer Wi-Fi IP")
+
     args = parser.parse_args()
 
     if args.command == "start" or args.command is None:
@@ -963,6 +1066,33 @@ def main():
         print(out_p or err_p)
         if args.peer:
             client_send_notify(args.peer, "Pushed Updates to GitHub", args.msg)
+
+    elif args.command == "diag":
+        url = f"http://{args.peer}:{PORT}/api/unity/diagnostics"
+        try:
+            with urlopen(url, timeout=10) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                print(json.dumps(data, indent=2))
+        except Exception as e:
+            print(f"Error querying {url}: {e}")
+
+    elif args.command == "stop":
+        url = f"http://{args.peer}:{PORT}/api/stop"
+        req = Request(url, data=b"{}", headers={"Content-Type": "application/json"})
+        try:
+            with urlopen(req, timeout=5) as resp:
+                print(resp.read().decode("utf-8"))
+        except Exception as e:
+            print(f"Error sending stop to {url}: {e}")
+
+    elif args.command == "restart":
+        url = f"http://{args.peer}:{PORT}/api/restart"
+        req = Request(url, data=b"{}", headers={"Content-Type": "application/json"})
+        try:
+            with urlopen(req, timeout=5) as resp:
+                print(resp.read().decode("utf-8"))
+        except Exception as e:
+            print(f"Error sending restart to {url}: {e}")
 
 
 if __name__ == "__main__":
