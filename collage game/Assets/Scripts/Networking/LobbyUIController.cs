@@ -38,14 +38,58 @@ namespace FlipFall.Networking
         [SerializeField] private TextMeshProUGUI _startGameButtonText;
         [SerializeField] private Button _leaveLobbyButton;
 
+        [Header("Solo / Dev Mode")]
+        [SerializeField] private Button _playSoloButton;
+
         [Header("Feedback Banner")]
         [SerializeField] private TextMeshProUGUI _statusBannerText;
         [SerializeField] private GameObject _statusBannerRoot;
 
         private float _statusTimer = 0f;
 
+        private void Awake()
+        {
+            // Ensure mouse cursor is free and visible immediately
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // In the Lobby Menu, avatar player controllers must not lock cursor or steal input
+            var fpcs = FindObjectsByType<FirstPersonController>(FindObjectsSortMode.None);
+            foreach (var fpc in fpcs)
+            {
+                fpc.enabled = false;
+            }
+
+            var playerInputs = FindObjectsByType<UnityEngine.InputSystem.PlayerInput>(FindObjectsSortMode.None);
+            foreach (var pi in playerInputs)
+            {
+                pi.enabled = false;
+            }
+        }
+
         private void Start()
         {
+            // Ensure mouse cursor is free and visible
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // Ensure Input System UI Action Map is enabled so clicks register
+            var uiModule = FindFirstObjectByType<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+            if (uiModule != null && uiModule.actionsAsset != null)
+            {
+                uiModule.actionsAsset.Enable();
+            }
+
+            // Ensure background panels do NOT intercept clicks intended for buttons
+            var allImages = GetComponentsInChildren<Image>(true);
+            foreach (var img in allImages)
+            {
+                if (img.gameObject.name.ToLower().Contains("background") || img.gameObject.name == "Canvas")
+                {
+                    img.raycastTarget = false;
+                }
+            }
+
             // Set initial player name
             if (_playerNameInput != null)
             {
@@ -60,6 +104,16 @@ namespace FlipFall.Networking
             if (_toggleReadyButton != null) _toggleReadyButton.onClick.AddListener(OnToggleReadyClicked);
             if (_startGameButton != null) _startGameButton.onClick.AddListener(OnStartGameClicked);
             if (_leaveLobbyButton != null) _leaveLobbyButton.onClick.AddListener(OnLeaveLobbyClicked);
+
+            // Hook up or dynamically create the Solo / Dev Mode button
+            if (_playSoloButton == null && _hostGameButton != null)
+            {
+                CreateSoloPlayButton();
+            }
+            else if (_playSoloButton != null)
+            {
+                _playSoloButton.onClick.AddListener(OnPlaySoloClicked);
+            }
 
             // Hook up networking events
             if (NetworkManagerBootstrap.Instance != null)
@@ -77,6 +131,60 @@ namespace FlipFall.Networking
             }
 
             ShowMainMenu();
+        }
+
+        private void CreateSoloPlayButton()
+        {
+            if (_hostGameButton == null) return;
+            GameObject btnObj = Instantiate(_hostGameButton.gameObject, _hostGameButton.transform.parent);
+            btnObj.name = "PlaySoloButton";
+
+            RectTransform rt = btnObj.GetComponent<RectTransform>();
+            RectTransform hostRt = _hostGameButton.GetComponent<RectTransform>();
+            if (rt != null && hostRt != null)
+            {
+                // Place it right below the Host Game button
+                rt.anchoredPosition = new Vector2(hostRt.anchoredPosition.x, hostRt.anchoredPosition.y - 56f);
+            }
+
+            var txt = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+            if (txt != null)
+            {
+                txt.text = "JOIN ALONE (SOLO DEV MODE)";
+                txt.color = new Color(0.25f, 1f, 0.75f);
+            }
+
+            var img = btnObj.GetComponent<Image>();
+            if (img != null)
+            {
+                img.color = new Color(0.06f, 0.22f, 0.16f, 0.95f);
+            }
+
+            _playSoloButton = btnObj.GetComponent<Button>();
+            _playSoloButton.onClick.RemoveAllListeners();
+            _playSoloButton.onClick.AddListener(OnPlaySoloClicked);
+
+            // Expand parent HostBox so the new solo button fits cleanly
+            RectTransform parentRt = _hostGameButton.transform.parent.GetComponent<RectTransform>();
+            if (parentRt != null)
+            {
+                parentRt.sizeDelta = new Vector2(parentRt.sizeDelta.x, parentRt.sizeDelta.y + 64f);
+            }
+        }
+
+        public void OnPlaySoloClicked()
+        {
+            ShowStatusMessage("Launching Solo / Dev Mode...");
+            // Cleanly shutdown any active Netcode session to enter offline dev mode
+            if (Unity.Netcode.NetworkManager.Singleton != null)
+            {
+                if (Unity.Netcode.NetworkManager.Singleton.IsClient || Unity.Netcode.NetworkManager.Singleton.IsServer)
+                {
+                    Unity.Netcode.NetworkManager.Singleton.Shutdown();
+                }
+            }
+            // Directly load the gameplay scene
+            UnityEngine.SceneManagement.SceneManager.LoadScene(GameLobbyManager.GameplaySceneName);
         }
 
         private void OnDestroy()
@@ -103,6 +211,13 @@ namespace FlipFall.Networking
 
         private void Update()
         {
+            // Maintain visible unlocked mouse cursor throughout lobby UI
+            if (Cursor.lockState != CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+
             if (_statusTimer > 0f)
             {
                 _statusTimer -= Time.deltaTime;
