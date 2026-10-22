@@ -1006,10 +1006,10 @@ public static class FlipFallLevelBuilder
         // HIDDEN DOOR / FALSE WALL (Co-op Perception Secret Passage):
         // ONE-WAY MIRROR: Appears as a seamless solid wall from Area 4 approach side.
         // Transparent from the secret passage looking back!
-        // Hidden from Player 3 (The Scout) who sees through from both sides.
+        // Hidden from Player 1 who sees through from both sides.
         GameObject doorCover = CreateQuad(area.transform, "DoorCover_Area4_HiddenDoor", new Vector3(maxX - 0.001f, 1.8f, 50.0f), new Vector3(0f, 3.6f, 3.2f), Vector3.left, matWall, addCollider: false);
         PerceptionCover doorCoverComp = doorCover.AddComponent<PerceptionCover>();
-        doorCoverComp.Configure(PerceptionCover.PerceptionRule.HiddenFromTarget, PlayerIdentity.Player3, syncColliders: false);
+        doorCoverComp.Configure(PerceptionCover.PerceptionRule.HiddenFromTarget, PlayerIdentity.Player1, syncColliders: false);
         doorCoverComp.ConfigureOneWay(PerceptionCover.OneWayAxis.PositiveX, 100.2f);
 
         // PASSAGE BEHIND HIDDEN DOOR (turns South into Creature Room)
@@ -1104,10 +1104,10 @@ public static class FlipFallLevelBuilder
         // ONE-WAY MIRROR: Visible as solid concrete wall from Creature Room approach side.
         // Transparent from the Connecting Hallway looking back!
         // Hidden from Player 1 who sees the doorway open from both sides.
-        GameObject doorCover = CreateQuad(area.transform, "DoorCover_CreatureRoomExit", new Vector3(minX + 0.001f, height * 0.5f, 11.0f), new Vector3(0f, height, 6.2f), Vector3.right, matWall, addCollider: false);
+        GameObject doorCover = CreateQuad(area.transform, "DoorCover_CreatureRoomExit", new Vector3(minX + 0.001f, 2.4f, 11.0f), new Vector3(0f, 4.8f, 5.50f), Vector3.right, matWall, topUvOffsetU: 4.125f, addCollider: false);
         PerceptionCover doorCoverComp = doorCover.AddComponent<PerceptionCover>();
         doorCoverComp.Configure(PerceptionCover.PerceptionRule.HiddenFromTarget, PlayerIdentity.Player1, syncColliders: false);
-        doorCoverComp.ConfigureOneWay(PerceptionCover.OneWayAxis.NegativeX, 71.2f);
+        doorCoverComp.ConfigureOneWay(PerceptionCover.OneWayAxis.NegativeX, 71.95f);
 
         // 4 Architectural Structural Pillars
         CreateBox(area.transform, "Pillar_NW", new Vector3(79f, height * 0.5f, 17f), new Vector3(1.4f, height, 1.4f), matPillar);
@@ -1356,27 +1356,29 @@ public static class FlipFallLevelBuilder
         CreateBox(area.transform, "Wall_East_North", new Vector3(maxX + 0.25f, height * 0.5f, 18f), new Vector3(0.5f, height, 8.5f), matWall);
         CreateBox(area.transform, "Wall_East_Header", new Vector3(maxX + 0.25f, 4.2f + (height - 4.2f) * 0.5f, 11f), new Vector3(0.5f, height - 4.2f, 6.2f), matWall);
 
-        // West Wall: Framed around the recessed EXIT ELEVATOR opening
-        // Opening between Z: 9.80m and 12.20m (2.40m wide). Doorway header above Y: 2.45m
-        CreateBox(area.transform, "Wall_West_South", new Vector3(minX - 0.25f, height * 0.5f, 4.90f), new Vector3(0.5f, height, 9.80f), matWall);
-        CreateBox(area.transform, "Wall_West_North", new Vector3(minX - 0.25f, height * 0.5f, 17.10f), new Vector3(0.5f, height, 9.80f), matWall);
-        CreateBox(area.transform, "Wall_West_Header", new Vector3(minX - 0.25f, 2.45f + (height - 2.45f) * 0.5f, 11f), new Vector3(0.5f, height - 2.45f, 2.40f), matWall);
+        // West Wall: Framed around the enlarged EXIT ELEVATOR opening (1.35x scale)
+        // Opening between Z: 9.40m and 12.60m (3.20m wide). Doorway header above Y: 3.40m
+        CreateBox(area.transform, "Wall_West_South", new Vector3(minX - 0.25f, height * 0.5f, 4.70f), new Vector3(0.5f, height, 9.40f), matWall);
+        CreateBox(area.transform, "Wall_West_North", new Vector3(minX - 0.25f, height * 0.5f, 17.30f), new Vector3(0.5f, height, 9.40f), matWall);
+        CreateBox(area.transform, "Wall_West_Header", new Vector3(minX - 0.25f, 4.45f, 11f), new Vector3(0.5f, 2.10f, 3.20f), matWall);
 
         // Exterior Elevator Shaft Enclosure behind West wall (sealing the recessed elevator from exterior void)
-        CreateBox(area.transform, "Shaft_Wall_West", new Vector3(-14.5f, height * 0.5f, 11f), new Vector3(0.5f, height, 3.8f), matWall);
-        CreateBox(area.transform, "Shaft_Wall_South", new Vector3(-13.4f, height * 0.5f, 9.15f), new Vector3(2.4f, height, 0.5f), matWall);
-        CreateBox(area.transform, "Shaft_Wall_North", new Vector3(-13.4f, height * 0.5f, 12.85f), new Vector3(2.4f, height, 0.5f), matWall);
-        CreateBox(area.transform, "Shaft_Floor", new Vector3(-13.4f, -0.25f, 11f), new Vector3(2.4f, 0.5f, 3.8f), matRoomFloor);
+        CreateBox(area.transform, "Shaft_Wall_West", new Vector3(-15.80f, height * 0.5f, 11f), new Vector3(0.5f, height, 4.60f), matWall);
+        CreateBox(area.transform, "Shaft_Wall_South", new Vector3(-13.90f, height * 0.5f, 8.70f), new Vector3(3.80f, height, 0.5f), matWall);
+        CreateBox(area.transform, "Shaft_Wall_North", new Vector3(-13.90f, height * 0.5f, 13.30f), new Vector3(3.80f, height, 0.5f), matWall);
+        CreateBox(area.transform, "Shaft_Floor", new Vector3(-13.90f, -0.25f, 11f), new Vector3(3.80f, 0.5f, 4.60f), matRoomFloor);
 
         // STANDING EXIT ELEVATOR (User's Custom 3D Hero Asset)
-        // Positioned at X = -13.0f so the sliding doors sit parallel and flush with the West wall at X = -12.0m!
+        // Scaled to 1.35x for comfortable 4-player team boarding
+        // Positioned at X = -13.43f so the sliding doors sit parallel and flush with the West wall at X = -12.0m!
         GameObject elevPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ReadyMadeAssets/Elevator/Elevator.fbx");
         GameObject fusePrefabForSockets = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ReadyMadeAssets/FuseCell/SM_FuseCell.fbx");
         if (elevPrefab != null)
         {
             GameObject exitElevator = Object.Instantiate(elevPrefab, area.transform);
             exitElevator.name = "Working_Elevator";
-            exitElevator.transform.position = new Vector3(-13.0f, 0f, 11f);
+            exitElevator.transform.localScale = new Vector3(135f, 135f, 135f);
+            exitElevator.transform.position = new Vector3(-13.43f, 0f, 11f);
             exitElevator.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
 
             // Bind authentic PBR materials matching Blender design identically
@@ -1389,7 +1391,7 @@ public static class FlipFallLevelBuilder
             // Door flanking lights (warm-white fluorescent)
             GameObject leftLightGo = new GameObject("Light_Door_Left");
             leftLightGo.transform.SetParent(elevLights.transform, false);
-            leftLightGo.transform.position = new Vector3(-12.15f, 1.4f, 11.7f);
+            leftLightGo.transform.position = new Vector3(-12.15f, 1.70f, 11.95f);
             Light lDoorLeft = leftLightGo.AddComponent<Light>();
             lDoorLeft.type = LightType.Point;
             lDoorLeft.color = new Color(1.0f, 0.95f, 0.85f);
@@ -1398,7 +1400,7 @@ public static class FlipFallLevelBuilder
 
             GameObject rightLightGo = new GameObject("Light_Door_Right");
             rightLightGo.transform.SetParent(elevLights.transform, false);
-            rightLightGo.transform.position = new Vector3(-12.15f, 1.4f, 10.3f);
+            rightLightGo.transform.position = new Vector3(-12.15f, 1.70f, 10.05f);
             Light lDoorRight = rightLightGo.AddComponent<Light>();
             lDoorRight.type = LightType.Point;
             lDoorRight.color = new Color(1.0f, 0.95f, 0.85f);
@@ -1408,7 +1410,7 @@ public static class FlipFallLevelBuilder
             // Amber Marquee Chevrons Light
             GameObject marqueeLightGo = new GameObject("Light_Marquee_Amber");
             marqueeLightGo.transform.SetParent(elevLights.transform, false);
-            marqueeLightGo.transform.position = new Vector3(-12.2f, 2.25f, 11.0f);
+            marqueeLightGo.transform.position = new Vector3(-12.15f, 3.45f, 11.0f);
             Light lMarquee = marqueeLightGo.AddComponent<Light>();
             lMarquee.type = LightType.Point;
             lMarquee.color = new Color(1.0f, 0.75f, 0.20f);

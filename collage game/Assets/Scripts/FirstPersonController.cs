@@ -737,6 +737,12 @@ public class FirstPersonController : MonoBehaviour
         if (characterAnimator == null) return;
         if (isDying) return;
 
+        // In multiplayer, remote teammate animation is driven by NetworkPlayerBridge
+        if (!IsControlled && GetComponent<FlipFall.Networking.NetworkPlayerBridge>() != null)
+        {
+            return;
+        }
+
         Vector3 horizontalVel = controller != null ? new Vector3(controller.velocity.x, 0, controller.velocity.z) : Vector3.zero;
         float speedMagnitude = horizontalVel.magnitude;
 

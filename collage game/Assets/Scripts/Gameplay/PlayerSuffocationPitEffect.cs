@@ -33,12 +33,15 @@ public class PlayerSuffocationPitEffect : MonoBehaviour
     [Header("Audio Settings")]
     [Tooltip("Impact thump when falling into the pit (universfield-game-character-fall-131797)")]
     [SerializeField] private AudioClip _fallImpactClip;
-    [Tooltip("Suffocation struggle audio (voicebosch-pit-suffocation-death-from25s)")]
+    [Tooltip("Suffocation heartbeat & breathing suspense audio (voicebosch-heart-and-breath-suspense-196083)")]
     [SerializeField] private AudioClip _suffocationClip;
-    [Tooltip("Play from 5th second to end of audio per sfx_annotations.json.")]
-    [SerializeField] private float _suffocationAudioStartTime = 5.0f;
+    [Tooltip("Additional layered fast/exhausted human breathing SFX (Player_Breathing_Exhausted / hasin2004-breathing-fast)")]
+    [SerializeField] private AudioClip _breathingPanicClip;
+    [Tooltip("Play from beginning (0s) so heavy breathing and heartbeat kick in immediately upon falling.")]
+    [SerializeField] private float _suffocationAudioStartTime = 0.0f;
 
     private AudioSource _audioSource;
+    private AudioSource _breathingAudioSource;
 
     // State
     private bool _isSuffocating = false;
@@ -76,13 +79,41 @@ public class PlayerSuffocationPitEffect : MonoBehaviour
 
     private void EnsureAudioSource()
     {
-        if (_audioSource == null)
+        // Dedicated child GameObject isolates pit audio sources from AtmosphereAudioManager or other scripts
+        Transform audioHolder = transform.Find("PitSuffocationAudioHolder");
+        if (audioHolder == null)
         {
-            _audioSource = GetComponent<AudioSource>();
-            if (_audioSource == null) _audioSource = gameObject.AddComponent<AudioSource>();
+            GameObject holderGo = new GameObject("PitSuffocationAudioHolder");
+            holderGo.transform.SetParent(transform, false);
+            audioHolder = holderGo.transform;
         }
+
+        AudioSource[] sources = audioHolder.GetComponents<AudioSource>();
+        if (sources.Length > 0)
+        {
+            _audioSource = sources[0];
+        }
+        else
+        {
+            _audioSource = audioHolder.gameObject.AddComponent<AudioSource>();
+        }
+
+        if (sources.Length > 1)
+        {
+            _breathingAudioSource = sources[1];
+        }
+        else
+        {
+            _breathingAudioSource = audioHolder.gameObject.AddComponent<AudioSource>();
+        }
+
         _audioSource.playOnAwake = false;
         _audioSource.spatialBlend = 0.0f; // 2D direct into player ears
+        _audioSource.volume = 1.0f;
+
+        _breathingAudioSource.playOnAwake = false;
+        _breathingAudioSource.spatialBlend = 0.0f; // 2D direct into player ears
+        _breathingAudioSource.volume = 1.0f;
 
 #if UNITY_EDITOR
         if (_fallImpactClip == null)
@@ -95,17 +126,27 @@ public class PlayerSuffocationPitEffect : MonoBehaviour
                     "Assets/Audio/SFX/Player/universfield-game-character-fall-131797.mp3");
             }
         }
-        if (_suffocationClip == null)
+        if (_suffocationClip == null || _suffocationClip.name.Contains("From25s"))
         {
             _suffocationClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(
-                "Assets/Audio/SFX/Player/voicebosch-pit-suffocation-death-from25s.mp3");
+                "Assets/Audio/SFX/Player/voicebosch-heart-and-breath-suspense-196083.mp3");
             if (_suffocationClip == null)
             {
                 _suffocationClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(
-                    "Assets/Audio/SFX/Player/Player_Pit_Suffocation_From25s.mp3");
+                    "Assets/Audio/SFX/Player/Player_Pit_Suffocation_Full.mp3");
             }
-            _suffocationAudioStartTime = 5.0f;
         }
+        if (_breathingPanicClip == null)
+        {
+            _breathingPanicClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(
+                "Assets/Audio/SFX/Player/Player_Breathing_Exhausted.mp3");
+            if (_breathingPanicClip == null)
+            {
+                _breathingPanicClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(
+                    "Assets/Audio/SFX/Player/hasin2004-breathing-fast-247449.mp3");
+            }
+        }
+        _suffocationAudioStartTime = 0.0f;
 #endif
     }
 
@@ -215,11 +256,23 @@ public class PlayerSuffocationPitEffect : MonoBehaviour
         // Play Suffocation Heartbeat & Breathing audio (voicebosch-heart-and-breath-suspense-196083)
         if (_suffocationClip != null && _audioSource != null)
         {
+            _audioSource.Stop();
             _audioSource.clip = _suffocationClip;
             _audioSource.time = _suffocationAudioStartTime;
             _audioSource.volume = 1.0f;
             _audioSource.loop = false;
             _audioSource.Play();
+        }
+
+        // Play fast heavy human panic breathing layer
+        if (_breathingPanicClip != null && _breathingAudioSource != null)
+        {
+            _breathingAudioSource.Stop();
+            _breathingAudioSource.clip = _breathingPanicClip;
+            _breathingAudioSource.time = 0.0f;
+            _breathingAudioSource.volume = 1.0f;
+            _breathingAudioSource.loop = true;
+            _breathingAudioSource.Play();
         }
 
         // Smoothly ramp in the terror screen effect specifically for the fallen player (only if falling into hidden pit)
@@ -347,12 +400,23 @@ public class PlayerSuffocationPitEffect : MonoBehaviour
 
             _overlayAlpha = Mathf.Lerp(1.0f, 0.0f, t);
             _vignetteIntensity = Mathf.Lerp(1.0f, 0.0f, t);
-            if (_audioSource != null) _audioSource.volume = Mathf.Lerp(1.0f, 0.0f, t);
+            float audioVol = Mathf.Lerp(1.0f, 0.0f, t);
+            if (_audioSource != null) _audioSource.volume = audioVol;
+            if (_breathingAudioSource != null) _breathingAudioSource.volume = audioVol;
 
             yield return null;
         }
 
-        if (_audioSource != null) _audioSource.Stop();
+        if (_audioSource != null)
+        {
+            _audioSource.Stop();
+            _audioSource.volume = 1.0f;
+        }
+        if (_breathingAudioSource != null)
+        {
+            _breathingAudioSource.Stop();
+            _breathingAudioSource.volume = 1.0f;
+        }
 
         _overlayAlpha = 0f;
         _vignetteIntensity = 0f;

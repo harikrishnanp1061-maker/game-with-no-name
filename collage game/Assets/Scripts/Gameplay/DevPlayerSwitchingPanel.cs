@@ -102,6 +102,12 @@ public class DevPlayerSwitchingPanel : MonoBehaviour
     // -----------------------------------------------------------------
     private void Update()
     {
+        // In multiplayer sessions, player switching is disabled so each laptop controls only their assigned character
+        if (Unity.Netcode.NetworkManager.Singleton != null && Unity.Netcode.NetworkManager.Singleton.IsListening)
+        {
+            return;
+        }
+
         // Toggle panel display with toggle key or tilde
         HandleToggleShortcut();
 
@@ -184,6 +190,12 @@ public class DevPlayerSwitchingPanel : MonoBehaviour
     private void OnGUI()
     {
         if (!_showPanel) return;
+
+        // In multiplayer sessions, hide dev panel completely
+        if (Unity.Netcode.NetworkManager.Singleton != null && Unity.Netcode.NetworkManager.Singleton.IsListening)
+        {
+            return;
+        }
 
         CreatePixelTexture();
         InitStyles();
