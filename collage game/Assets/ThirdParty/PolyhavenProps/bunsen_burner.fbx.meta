@@ -3,7 +3,12 @@ guid: 81299cf767648074e9cf98b95119597a
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bunsen_burner
+    second: {fileID: 2100000, guid: 0766a9ca96eb20f46a520530c4ed6e4a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

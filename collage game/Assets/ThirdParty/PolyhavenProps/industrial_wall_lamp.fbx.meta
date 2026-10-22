@@ -3,7 +3,17 @@ guid: 8697d389658265b45b2f0d5e72223b7f
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: industrial_wall_lamp
+    second: {fileID: 2100000, guid: 1621d3a28f04e1943953ed7f6c85d77d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: industrial_wall_lamp_glass
+    second: {fileID: 2100000, guid: e6c027ac8969a5c409d99813a8972a42, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

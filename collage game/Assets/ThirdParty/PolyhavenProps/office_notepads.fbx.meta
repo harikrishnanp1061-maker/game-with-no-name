@@ -3,7 +3,12 @@ guid: dc42a579bcff8c84dab5732e21f16dc6
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: office_notepads
+    second: {fileID: 2100000, guid: 34a228448f3e0e141bd161ec2e165dcb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

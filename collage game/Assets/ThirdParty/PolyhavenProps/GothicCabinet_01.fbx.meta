@@ -3,7 +3,12 @@ guid: 6706bf53f624eab45bb1974c279c4f21
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GothicCabinet_01
+    second: {fileID: 2100000, guid: e5d5397c801a3f141a0bee6848cc79b1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

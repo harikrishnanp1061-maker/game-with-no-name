@@ -3,7 +3,12 @@ guid: 817dd0be1d8abe54088a04e8617d40d1
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wooden_display_shelves_01
+    second: {fileID: 2100000, guid: 258ea5a8ad0343b4d968f40de6fad0b2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

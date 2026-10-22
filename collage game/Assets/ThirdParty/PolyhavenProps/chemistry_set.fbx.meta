@@ -3,7 +3,12 @@ guid: 979e24a08bbdd5c49a69207db624ee3e
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chemistry_set
+    second: {fileID: 2100000, guid: b3699fe49cda4e348ad2bea1cb41eb0b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

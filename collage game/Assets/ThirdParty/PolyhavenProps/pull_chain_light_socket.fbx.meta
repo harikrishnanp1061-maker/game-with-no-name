@@ -3,7 +3,12 @@ guid: 7099eaa1b6284d647b09d9d387e0dcf4
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pull_chain_light_socket
+    second: {fileID: 2100000, guid: f03c1d0c5837cbd448243809a1668f73, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

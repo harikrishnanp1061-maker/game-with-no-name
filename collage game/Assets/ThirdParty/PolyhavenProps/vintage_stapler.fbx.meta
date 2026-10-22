@@ -3,7 +3,12 @@ guid: 045af4680bf350542ae58d4b6e8d1761
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_stapler
+    second: {fileID: 2100000, guid: 3f1195c6d47da224ab1be2915002dec8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

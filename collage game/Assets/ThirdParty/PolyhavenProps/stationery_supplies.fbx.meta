@@ -3,7 +3,12 @@ guid: 9842972266efc8b4293898df407a8ba6
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stationery_supplies
+    second: {fileID: 2100000, guid: dcee57344b99e4c44914837d5b0c750d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

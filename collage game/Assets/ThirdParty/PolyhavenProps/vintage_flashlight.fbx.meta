@@ -3,7 +3,12 @@ guid: 7b3a8368994fbc44dbf10b8fdb45e5fd
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_flashlight
+    second: {fileID: 2100000, guid: 0c0790f238282d6478b742b038528c04, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

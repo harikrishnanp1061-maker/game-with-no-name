@@ -3,7 +3,12 @@ guid: 9c3f30b38c953d744adc9a696bb3050f
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: industrial_caged_sconce
+    second: {fileID: 2100000, guid: 708354969f8f421478bed3d0c4c9a440, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

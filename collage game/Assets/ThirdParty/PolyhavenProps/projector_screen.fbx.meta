@@ -3,7 +3,17 @@ guid: e75e7c1b2d2253841b72fdb95eb47f3d
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: projector_screen
+    second: {fileID: 2100000, guid: f048a33b22a82af40863840d3ad77fdc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: projector_screen_frame
+    second: {fileID: 2100000, guid: 9f3ef82b005214e4296a076dd6848368, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,12 @@ guid: 179e9ec922e2fe04f8a4bd6b6af91cf4
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_telephone_wall_clock
+    second: {fileID: 2100000, guid: a7de52f31d641d74baebe0dcabfc8f79, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

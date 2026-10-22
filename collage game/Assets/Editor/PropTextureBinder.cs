@@ -7,31 +7,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Binds the staged BackgroundProps PBR textures onto the materials that Unity's
-/// FBX importer generated for those same models.
+/// Binds the staged BackgroundProps PBR textures onto persistent Materials and assigns
+/// them to FBX model importers and active scene renderers.
 ///
-/// Why this exists: the FBX files shipped without their image files, so the
-/// importer created 2000+ materials that all fell back to flat grey. The
-/// textures live in Assets/ThirdParty/PolyhavenProps/Textures/&lt;prefix&gt;/ and
-/// are described by Assets/Editor/PropTextureManifest.json, which is keyed by
-/// the same sub-asset prefix the importer used for material names
-/// (standing_chalkboard_01_board, vintage_cabinet_01_a, ...).
-///
-/// Map routing:
-///   diff      -> _BaseMap
-///   nor_gl    -> _BumpMap   (authored OpenGL +Y, flipped to DirectX on import)
-///   arm       -> packed AO/Roughness/Metallic, split across
-///                _MetallicGlossMap / _OcclusionMap / roughness
-///   rough     -> roughness channel only
-///   emissive  -> _EmissionMap
-///
-/// Idempotent: re-running only touches materials that are actually missing a map.
+/// Why this exists: Unity's FBX importer generates read-only internal sub-assets that
+/// revert to flat grey upon reload. This binder creates persistent disk Materials in
+/// Assets/ThirdParty/PolyhavenProps/Materials/, maps all PBR textures onto them, and
+/// links them to scene renderers and FBX importers permanently.
 /// </summary>
 public static class PropTextureBinder
 {
     const string ManifestPath = "Assets/Editor/PropTextureManifest.json";
     const string TextureRoot = "Assets/ThirdParty/PolyhavenProps/Textures/";
     const string PropRoot = "Assets/ThirdParty/PolyhavenProps/";
+    const string MatFolder = "Assets/ThirdParty/PolyhavenProps/Materials";
 
     [MenuItem("Tools/Props/Bind PBR Textures")]
     public static void BindAll()
@@ -72,64 +61,222 @@ public static class PropTextureBinder
             grouped["lambert1"] = wheelchairMaps;
         }
 
-        BindMaterials(CollectAssetMaterials(grouped.Keys), grouped, out var aTouched, out var aUpdated);
-        BindMaterials(CollectSceneMaterials(grouped.Keys), grouped, out var sTouched, out var sUpdated);
+        // 1. Ensure persistent .mat assets on disk
+        var persistentMap = EnsurePersistentMaterials(grouped);
+
+        // 2. Remap active scene renderers
+        int sceneUpdated = RemapSceneRenderers(persistentMap);
+
+        // 3. Remap FBX importers so newly spawned props also use persistent materials
+        RemapFbxImporters(persistentMap);
 
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        EditorSceneManager.SaveOpenScenes();
 
         Debug.Log(string.Format(
-            "[PropBinder] manifest prefixes={0}\n"
-            + "  asset materials : touched={1} updated={2}\n"
-            + "  scene materials : touched={3} updated={4}",
-            grouped.Count, aTouched, aUpdated, sTouched, sUpdated));
-    }
-
-    /// <summary>Every Material sub-asset the FBX importer produced.</summary>
-    static List<Material> CollectAssetMaterials(IEnumerable<string> prefixes)
-    {
-        var wanted = new HashSet<string>(prefixes, StringComparer.OrdinalIgnoreCase);
-        var list = new List<Material>();
-        foreach (var guid in AssetDatabase.FindAssets("t:Material", new[] { PropRoot }))
-        {
-            foreach (var o in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GUIDToAssetPath(guid)))
-            {
-                if (o is Material mat && wanted.Contains(CleanName(mat.name)))
-                    list.Add(mat);
-            }
-        }
-        return list;
+            "[PropBinder] Completed: {0} persistent materials created/updated. {1} scene renderers bound.",
+            persistentMap.Count, sceneUpdated));
     }
 
     /// <summary>
-    /// Materials actually referenced by renderers in the open scene.
-    ///
-    /// These are frequently non-persistent clones ("name (Instance)") that were
-    /// baked into the scene, so editing the FBX sub-assets alone leaves the
-    /// level still rendering flat grey. They have to be written and then
-    /// serialized into the scene file.
+    /// Creates or updates persistent .mat files in Assets/ThirdParty/PolyhavenProps/Materials/
     /// </summary>
-    static List<Material> CollectSceneMaterials(IEnumerable<string> prefixes)
+    static Dictionary<string, Material> EnsurePersistentMaterials(Dictionary<string, Dictionary<string, string>> grouped)
     {
-        var wanted = new HashSet<string>(prefixes, StringComparer.OrdinalIgnoreCase);
-        var seen = new HashSet<Material>();
-        var list = new List<Material>();
+        if (!Directory.Exists(MatFolder))
+        {
+            Directory.CreateDirectory(MatFolder);
+            AssetDatabase.Refresh();
+        }
 
+        var shader = Shader.Find("Universal Render Pipeline/Lit");
+        if (shader == null) shader = Shader.Find("Standard");
+
+        var map = new Dictionary<string, Material>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var kvp in grouped)
+        {
+            var prefix = kvp.Key;
+            var paths = kvp.Value;
+            var matPath = $"{MatFolder}/{prefix}.mat";
+
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            bool created = false;
+            if (mat == null)
+            {
+                mat = new Material(shader);
+                mat.name = prefix;
+                AssetDatabase.CreateAsset(mat, matPath);
+                created = true;
+            }
+
+            var maps = LoadMaps(paths);
+            bool dirty = created;
+
+            if (maps.diff != null && mat.GetTexture("_BaseMap") != maps.diff)
+            {
+                mat.SetTexture("_BaseMap", maps.diff);
+                mat.SetColor("_BaseColor", Color.white);
+                dirty = true;
+            }
+
+            if (maps.normal != null && mat.GetTexture("_BumpMap") != maps.normal)
+            {
+                mat.SetTexture("_BumpMap", maps.normal);
+                dirty = true;
+            }
+
+            if (maps.arm != null)
+            {
+                if (mat.GetTexture("_MetallicGlossMap") != maps.arm)
+                {
+                    mat.SetTexture("_MetallicGlossMap", maps.arm);
+                    mat.SetTexture("_OcclusionMap", maps.arm);
+                    dirty = true;
+                }
+            }
+            else if (maps.rough != null)
+            {
+                if (mat.GetTexture("_MetallicGlossMap") != maps.rough)
+                {
+                    mat.SetTexture("_MetallicGlossMap", maps.rough);
+                    dirty = true;
+                }
+            }
+
+            if (maps.emissive != null && mat.GetTexture("_EmissionMap") != maps.emissive)
+            {
+                mat.SetTexture("_EmissionMap", maps.emissive);
+                mat.EnableKeyword("_EMISSION");
+                mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+                dirty = true;
+            }
+
+            if (prefix.ToLower().Contains("glass"))
+            {
+                mat.SetFloat("_Surface", 1f); // Transparent
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mat.SetInt("_ZWrite", 0);
+                mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                mat.SetColor("_BaseColor", new Color(0.7f, 0.85f, 0.95f, 0.25f));
+                mat.SetFloat("_Smoothness", 0.95f);
+                mat.SetFloat("_Metallic", 0.05f);
+                dirty = true;
+            }
+
+            if (dirty)
+            {
+                EditorUtility.SetDirty(mat);
+            }
+
+            map[prefix] = mat;
+        }
+
+        return map;
+    }
+
+    /// <summary>
+    /// Remaps every Renderer in the scene so its materials point to persistent .mat assets.
+    /// </summary>
+    static int RemapSceneRenderers(Dictionary<string, Material> persistentMap)
+    {
+        int updated = 0;
         foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
         {
             foreach (var r in root.GetComponentsInChildren<Renderer>(true))
             {
-                foreach (var m in r.sharedMaterials)
+                var shared = r.sharedMaterials;
+                bool dirty = false;
+
+                for (int i = 0; i < shared.Length; i++)
                 {
-                    // Identity check de-dupes the many renderers that share a clone.
-                    if (m == null || !seen.Add(m)) continue;
-                    string cName = CleanName(m.name);
-                    if (wanted.Contains(cName) || wanted.Contains(CleanName(r.gameObject.name)) || (r.transform.parent != null && wanted.Contains(CleanName(r.transform.parent.name))))
-                        list.Add(m);
+                    var cur = shared[i];
+                    string matName = cur != null ? CleanName(cur.name) : "";
+                    string objName = CleanName(r.gameObject.name);
+                    string parentName = r.transform.parent != null ? CleanName(r.transform.parent.name) : "";
+
+                    Material target = null;
+                    if (!string.IsNullOrEmpty(matName) && persistentMap.TryGetValue(matName, out target))
+                    {
+                        // Direct match
+                    }
+                    else if (persistentMap.TryGetValue(objName, out target))
+                    {
+                        // Object name match
+                    }
+                    else if (!string.IsNullOrEmpty(parentName) && persistentMap.TryGetValue(parentName, out target))
+                    {
+                        // Parent name match
+                    }
+                    else
+                    {
+                        // Substring prefix match
+                        foreach (var kvp in persistentMap)
+                        {
+                            if ((!string.IsNullOrEmpty(matName) && matName.IndexOf(kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                objName.IndexOf(kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                target = kvp.Value;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (target != null && shared[i] != target)
+                    {
+                        shared[i] = target;
+                        dirty = true;
+                    }
+                }
+
+                if (dirty)
+                {
+                    r.sharedMaterials = shared;
+                    EditorUtility.SetDirty(r);
+                    updated++;
                 }
             }
         }
-        return list;
+        return updated;
+    }
+
+    /// <summary>
+    /// Remaps sub-assets in FBX files to persistent materials.
+    /// </summary>
+    static void RemapFbxImporters(Dictionary<string, Material> persistentMap)
+    {
+        var fbxGuids = AssetDatabase.FindAssets("t:Model", new[] { PropRoot });
+        foreach (var guid in fbxGuids)
+        {
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            if (!path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase)) continue;
+
+            var importer = AssetImporter.GetAtPath(path) as ModelImporter;
+            if (importer == null) continue;
+
+            bool changed = false;
+            var subAssets = AssetDatabase.LoadAllAssetsAtPath(path);
+            foreach (var sub in subAssets)
+            {
+                if (sub is Material subMat)
+                {
+                    string clean = CleanName(subMat.name);
+                    if (persistentMap.TryGetValue(clean, out var target))
+                    {
+                        importer.AddRemap(new AssetImporter.SourceAssetIdentifier(subMat), target);
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                importer.SaveAndReimport();
+            }
+        }
     }
 
     /// <summary>Strips the " (Instance)" suffix Unity appends to clones.</summary>
@@ -140,123 +287,12 @@ public static class PropTextureBinder
         return p > 0 ? n.Substring(0, p) : n;
     }
 
-    /// <summary>Applies the maps to each material. Returns touched, updated.</summary>
-    static int BindMaterials(List<Material> mats,
-                            Dictionary<string, Dictionary<string, string>> grouped,
-                            out int touched, out int updated)
-    {
-        touched = 0; updated = 0;
-
-        foreach (var mat in mats)
-        {
-            var prefix = CleanName(mat.name);
-            Dictionary<string, string> paths = null;
-            if (!grouped.TryGetValue(prefix, out paths))
-            {
-                // Fallback prefix substring match
-                foreach (var kvp in grouped)
-                {
-                    if (prefix.IndexOf(kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        kvp.Key.IndexOf(prefix, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        paths = kvp.Value;
-                        break;
-                    }
-                }
-            }
-
-            if (paths == null)
-            {
-                // If it's a glass sub-material without textures, style it nicely as transparent glass
-                if (mat.name.ToLower().Contains("glass"))
-                {
-                    mat.SetFloat("_Surface", 1f); // Transparent
-                    mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    mat.SetInt("_ZWrite", 0);
-                    mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-                    mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-                    mat.SetColor("_BaseColor", new Color(0.7f, 0.85f, 0.95f, 0.25f));
-                    mat.SetFloat("_Smoothness", 0.95f);
-                    mat.SetFloat("_Metallic", 0.05f);
-                    EditorUtility.SetDirty(mat);
-                    updated++;
-                }
-                continue;
-            }
-
-            touched++;
-            var maps = LoadMaps(paths, out var hasNormal);
-            bool changed = false;
-
-            if (maps.diff != null && mat.GetTexture("_BaseMap") == null)
-            {
-                mat.SetTexture("_BaseMap", maps.diff);
-                mat.SetColor("_BaseColor", Color.white);
-                changed = true;
-            }
-
-            if (maps.normal != null && mat.GetTexture("_BumpMap") == null)
-            {
-                mat.SetTexture("_BumpMap", maps.normal);
-                changed = true;
-            }
-
-            // ARM packs AO (R) / Roughness (G) / Metallic (B). URP Lit expects a
-            // single metallicGlossMap with R=metallic, A=smoothness, so the ARM
-            // image feeds the standard slot directly and occlusion uses the same
-            // texture's red channel.
-            if (maps.arm != null && mat.GetTexture("_MetallicGlossMap") == null)
-            {
-                mat.SetTexture("_MetallicGlossMap", maps.arm);
-                mat.SetTexture("_OcclusionMap", maps.arm);
-                changed = true;
-            }
-            else if (maps.rough != null && mat.GetTexture("_MetallicGlossMap") == null)
-            {
-                mat.SetTexture("_MetallicGlossMap", maps.rough);
-                changed = true;
-            }
-
-            if (maps.emissive != null && mat.GetTexture("_EmissionMap") == null)
-            {
-                mat.SetTexture("_EmissionMap", maps.emissive);
-                mat.EnableKeyword("_EMISSION");
-                mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-                changed = true;
-            }
-
-            if (mat.name.ToLower().Contains("glass"))
-            {
-                mat.SetFloat("_Surface", 1f); // Transparent
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                mat.SetInt("_ZWrite", 0);
-                mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-                mat.SetColor("_BaseColor", new Color(0.7f, 0.85f, 0.95f, 0.35f));
-                mat.SetFloat("_Smoothness", 0.95f);
-                changed = true;
-            }
-
-            if (changed)
-            {
-                EditorUtility.SetDirty(mat);
-                // A non-persistent clone only survives if the scene records it.
-                if (!EditorUtility.IsPersistent(mat))
-                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-                updated++;
-            }
-        }
-        return updated;
-    }
-
     struct Maps
     {
         public Texture2D diff, normal, arm, rough, emissive;
     }
 
-    static Maps LoadMaps(Dictionary<string, string> entry, out bool hasNormal)
+    static Maps LoadMaps(Dictionary<string, string> entry)
     {
         var m = new Maps();
         m.diff = Load(entry, "diff");
@@ -264,7 +300,6 @@ public static class PropTextureBinder
         m.arm = Load(entry, "arm");
         m.rough = Load(entry, "rough");
         m.emissive = Load(entry, "emissive");
-        hasNormal = m.normal != null;
         return m;
     }
 
@@ -278,44 +313,17 @@ public static class PropTextureBinder
         return tex;
     }
 
-    /// <summary>The manifest is written by stage_prop_textures.py as a flat list of
-    /// {prefix, kind, path} records, which JsonUtility deserialises directly -
-    /// no nested-dictionary or hand-rolled JSON parsing required.</summary>
-    [Serializable] class ManifestItem
+    [Serializable]
+    class ManifestItem
     {
         public string prefix;
         public string kind;
         public string path;
     }
 
-    [Serializable] class Manifest
+    [Serializable]
+    class Manifest
     {
         public ManifestItem[] items;
-    }
-
-    [MenuItem("Tools/Props/Report Untextured Materials")]
-    public static void ReportUntextured()
-    {
-        var names = new SortedSet<string>(StringComparer.OrdinalIgnoreCase);
-        int total = 0, untextured = 0;
-
-        foreach (var guid in AssetDatabase.FindAssets("t:Material", new[] { PropRoot }))
-        {
-            foreach (var o in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GUIDToAssetPath(guid)))
-            {
-                if (!(o is Material mat)) continue;
-                total++;
-                if (mat.GetTexture("_BaseMap") == null)
-                {
-                    untextured++;
-                    names.Add(CleanName(mat.name));
-                }
-            }
-        }
-
-        Debug.Log(string.Format(
-            "[PropBinder] {0}/{1} prop materials have no albedo.\nMost are glass/bulb sub-parts "
-            + "that ship no texture; any others are real gaps:\n{2}",
-            untextured, total, string.Join(", ", names)));
     }
 }

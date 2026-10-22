@@ -3,7 +3,12 @@ guid: fc8c1078c21d7db4e9740f3df73feed8
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: water_manhole_cover
+    second: {fileID: 2100000, guid: 07979ecadef26444abbab0940239ed66, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

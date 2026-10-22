@@ -3,7 +3,12 @@ guid: 3520ddd6ba7cca949b851e2e72b9a5cb
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_microscope
+    second: {fileID: 2100000, guid: 5abd12f1c44ab9b468bd3b67420e77b4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

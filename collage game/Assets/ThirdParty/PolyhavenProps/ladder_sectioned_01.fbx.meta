@@ -3,7 +3,12 @@ guid: 30ee5dd0231a4b64ea86b924b8df2fda
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ladder_sectioned_01
+    second: {fileID: 2100000, guid: 22141907f7936fb44af45844fe69a500, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

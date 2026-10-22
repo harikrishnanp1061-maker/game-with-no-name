@@ -3,7 +3,17 @@ guid: 83a6ea48832041e498f0dfaf92772abb
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: modular_electric_cables
+    second: {fileID: 2100000, guid: fa5c20058df65954ba96973a49a1bd5f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: modular_electric_cables_boxes
+    second: {fileID: 2100000, guid: 4d201b5771ada024d9b7d8e57ec55cc3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

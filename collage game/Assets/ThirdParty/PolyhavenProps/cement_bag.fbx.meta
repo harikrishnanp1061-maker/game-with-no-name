@@ -3,7 +3,12 @@ guid: bdee11472d526c84dac2377e03674422
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cement_bag
+    second: {fileID: 2100000, guid: d8bd67a6ff1830742b16814668d2a867, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

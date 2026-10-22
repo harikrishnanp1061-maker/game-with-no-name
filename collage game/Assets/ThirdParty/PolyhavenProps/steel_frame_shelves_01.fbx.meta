@@ -3,7 +3,12 @@ guid: 36b0ec8805c26f74a8d820979cb0b3bb
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: steel_frame_shelves_01
+    second: {fileID: 2100000, guid: 20e7a61e2eb856a489a85d02e6cf453a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

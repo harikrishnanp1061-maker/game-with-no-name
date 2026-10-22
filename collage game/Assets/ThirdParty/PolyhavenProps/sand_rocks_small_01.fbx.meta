@@ -3,7 +3,12 @@ guid: 6a071e4ae5edbde42a89cf1656b5795e
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sand_rocks_small_01
+    second: {fileID: 2100000, guid: 9d5e8b1bf0f556d44a3b0962027e93c1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

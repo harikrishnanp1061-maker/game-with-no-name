@@ -3,7 +3,17 @@ guid: 6674a43e8337f9d47a2ee4df7b575ee6
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: spray_paint_bottles
+    second: {fileID: 2100000, guid: 307b57236e9126d469c80ac8730776e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: spray_paint_bottles_dirty
+    second: {fileID: 2100000, guid: bb3d1e61d76f30744b5dae73606e961f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

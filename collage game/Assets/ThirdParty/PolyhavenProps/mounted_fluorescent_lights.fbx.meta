@@ -3,7 +3,12 @@ guid: d30b74d3b4dc79247881687ee57d2780
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mounted_fluorescent_lights
+    second: {fileID: 2100000, guid: e0d2ddfa40143e74295674446b05731c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

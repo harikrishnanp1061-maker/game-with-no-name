@@ -3,7 +3,17 @@ guid: 4bc4c205dce9a60478df18b0f8710a26
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_clock
+    second: {fileID: 2100000, guid: e5cfad0a1bb2d704c80cefaa1d80e1aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall_clock_glass
+    second: {fileID: 2100000, guid: d4a4b53d0e5fb344687fdbbcf5ccd6b6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,17 @@ guid: 3b01bb63e47ab9e46a94c8f08064db18
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standing_chalkboard_01_board
+    second: {fileID: 2100000, guid: c3a8203a8f186e848ab85590fe4f0198, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standing_chalkboard_01_frame
+    second: {fileID: 2100000, guid: 648a65b22e617884f9236d5d60c1f6fb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,12 @@ guid: 6c97a0e5edb5c864580a19d61f0ec5b4
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wooden_stool_01
+    second: {fileID: 2100000, guid: a69e99e93cf0b8b429bfa59b4885b817, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

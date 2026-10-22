@@ -3,7 +3,17 @@ guid: e06b4eceaf3b50d4d91eb129b76bc200
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hanging_industrial_lamp
+    second: {fileID: 2100000, guid: 7df00c92a27fc244c94756cee76ad6ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hanging_industrial_lamp_glass
+    second: {fileID: 2100000, guid: bdde58a3a6be1894487fedf282757c3b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,17 @@ guid: bedcbe900c7556748a5e3978b58fd886
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: modular_industrial_pipes_01_group01
+    second: {fileID: 2100000, guid: 1beb7c3133296f04096367122d5b75d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: modular_industrial_pipes_01_group02
+    second: {fileID: 2100000, guid: 22558fecf6c30634eb3b0badf11ed837, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,17 @@ guid: c7af03c8b6b21254c893750ccc34677c
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standing_picture_frame_01
+    second: {fileID: 2100000, guid: 6df803c1acd84fc41ad6baf8bcaa28d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standing_picture_frame_01_artwork
+    second: {fileID: 2100000, guid: 66c96122acefcd24e984f96b07a194f0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

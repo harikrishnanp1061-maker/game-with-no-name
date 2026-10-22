@@ -3,7 +3,12 @@ guid: a93a2940417b5844fa55f9b06e2c2de5
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: classic_laptop
+    second: {fileID: 2100000, guid: fb72ddd58d330b143848b4ed4815f3ee, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

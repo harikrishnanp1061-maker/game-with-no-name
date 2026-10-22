@@ -3,7 +3,17 @@ guid: 00336729daede1a4f9fa66b1f9cd4f4f
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hanging_picture_frame_01
+    second: {fileID: 2100000, guid: 0137386e50d6f124f851b67217037321, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hanging_picture_frame_01_artwork
+    second: {fileID: 2100000, guid: 8d32d20311328c345a3dee3ece2a8ab4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

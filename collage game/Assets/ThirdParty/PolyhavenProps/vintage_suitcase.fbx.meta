@@ -3,7 +3,17 @@ guid: b574582dfe14c8746818039e78b1634d
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_suitcase_01
+    second: {fileID: 2100000, guid: 82017d5a52aa59c41b06c080d0e7f34a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_suitcase_02
+    second: {fileID: 2100000, guid: cca0c8ebe4356764cb8c3007926f6841, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

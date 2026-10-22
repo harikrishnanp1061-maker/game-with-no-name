@@ -3,7 +3,17 @@ guid: c6162705ca73eae4f91d0c3bbaa968b0
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_cabinet_01_a
+    second: {fileID: 2100000, guid: b84cb0c1218c78448831e12bab66830e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vintage_cabinet_01_b
+    second: {fileID: 2100000, guid: f2bfa2486c30fc54a856b9e6a1210c12, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
