@@ -80,3 +80,10 @@ Captures/
 *.log
 *.zip
 *.7z
+
+# Antigravity LAN Bridge local files
+_sync/bridge_config.json
+_sync/incoming.patch
+_sync/sync_history.json
+*inspect_output.txt*
+

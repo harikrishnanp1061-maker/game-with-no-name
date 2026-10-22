@@ -100,3 +100,31 @@ When setting up this project in Unity:
 If running an automated AI agent with socket execution:
 - The project includes `unity_direct.py` in `_archive_scripts/` (or can connect via TCP port `6401`/`6402`) using an 8-byte big-endian length prefix framing Roslyn C# code execution commands.
 - See [PROJECT_LOGS.md](file:///c:/Users/Harikrishnan/Documents/trash%20programs/collage%20game/PROJECT_LOGS.md) for full historical context on every bug fix and architectural decision made in this codebase.
+
+---
+
+## 6. Multi-Laptop AI Collaboration (Antigravity LAN Bridge)
+
+To coordinate between two developers running Antigravity on the same local Wi-Fi:
+
+1. **Start the LAN Bridge Daemon:**
+   ```bash
+   python antigravity_bridge.py start
+   ```
+   - Automatically detects local IP (e.g., `http://192.168.1.4:8765`).
+   - Serves an interactive dashboard at `http://localhost:8765`.
+
+2. **Send Handoff & Push Updates to Peer:**
+   ```bash
+   python antigravity_bridge.py push --peer <FRIEND_IP> --msg "Fixed monster prefab and elevator"
+   ```
+   - Commits all changes, pushes to GitHub `origin/main`, and sends an instant audio/visual notification to the peer laptop.
+
+3. **Check Received Handoffs:**
+   - Any agent can inspect `_sync/INCOMING_HANDOFF.md` to see what the other developer's agent built, which files changed, and what tasks need testing.
+
+4. **Pulling Updates:**
+   ```bash
+   python antigravity_bridge.py pull
+   ```
+
