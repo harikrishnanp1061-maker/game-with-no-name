@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9179595265314471872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5995167397470330387}
+  - component: {fileID: 3155343146920590937}
+  - component: {fileID: 1420100026118224208}
+  m_Layer: 0
+  m_Name: vintage_crutches_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5995167397470330387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179595265314471872}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6776517141897823313}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3155343146920590937
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179595265314471872}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.39943436, y: 1.614934, z: 0.21663854}
+  m_Center: {x: 0, y: 0.807467, z: 0}
+--- !u!114 &1420100026118224208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179595265314471872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 0
+  size: {x: 0.39943436, y: 1.614934, z: 0.21663854}
+  center: {x: 0, y: 0.807467, z: 0}
+--- !u!1001 &1707524854725233685
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5995167397470330387}
+    m_Modifications:
+    - target: {fileID: -6249316439987367401, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6146058441023336702, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.062486425
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.011488795
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.05274746
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771091787928289351, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+      propertyPath: m_Name
+      value: vintage_crutches_01_1k
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+--- !u!4 &6776517141897823313 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3910990755373119420, guid: 3f5b27974c1327643b6f666088a6a494, type: 3}
+  m_PrefabInstance: {fileID: 1707524854725233685}
+  m_PrefabAsset: {fileID: 0}

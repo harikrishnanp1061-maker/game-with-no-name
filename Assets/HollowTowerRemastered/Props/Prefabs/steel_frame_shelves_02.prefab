@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1684084575304204640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8693436969701987616}
+  - component: {fileID: 6299105674777166704}
+  - component: {fileID: 6997683942706311598}
+  m_Layer: 0
+  m_Name: steel_frame_shelves_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8693436969701987616
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684084575304204640}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2841340050372644451}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6299105674777166704
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684084575304204640}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5933027, y: 2.1416113, z: 0.5023781}
+  m_Center: {x: 0, y: 1.0708057, z: 0}
+--- !u!114 &6997683942706311598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684084575304204640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 0
+  size: {x: 0.5933027, y: 2.1416113, z: 0.5023781}
+  center: {x: 0, y: 1.0708057, z: 0}
+--- !u!1001 &1526900091863103977
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8693436969701987616}
+    m_Modifications:
+    - target: {fileID: -7192362939705380017, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_Name
+      value: steel_frame_shelves_02_1k
+      objectReference: {fileID: 0}
+    - target: {fileID: -567356434480228882, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00000017881393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0010684729
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+--- !u!4 &2841340050372644451 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3629571669167683466, guid: 0194f0a8f9e5fdb428ce809d1c7a58c7, type: 3}
+  m_PrefabInstance: {fileID: 1526900091863103977}
+  m_PrefabAsset: {fileID: 0}

@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7827154576959264454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5806963425640723390}
+  - component: {fileID: 5314298191092593}
+  m_Layer: 0
+  m_Name: fire_alarm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5806963425640723390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827154576959264454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4751894923755363010}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5314298191092593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7827154576959264454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 1
+  size: {x: 0.09944875, y: 0.14364254, z: 0.026374716}
+  center: {x: 0, y: 0, z: 0.013187358}
+--- !u!1001 &597643808943739526
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5806963425640723390}
+    m_Modifications:
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.000000007450581
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0056024343
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0003585564
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331035165543167872, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331035165543167872, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6319055132572370237, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6319055132572370237, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771091787928289351, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+      propertyPath: m_Name
+      value: fire_alarm
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+--- !u!4 &4751894923755363010 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3910990755373119420, guid: 1b58844caf3a8f7409ccb19721e1a592, type: 3}
+  m_PrefabInstance: {fileID: 597643808943739526}
+  m_PrefabAsset: {fileID: 0}

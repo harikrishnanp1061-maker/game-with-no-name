@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8267206491442385720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1170577138458323539}
+  - component: {fileID: 3654076089977373802}
+  - component: {fileID: 1787772285810557652}
+  m_Layer: 0
+  m_Name: desk_lamp_arm_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1170577138458323539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267206491442385720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8844710205264882370}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3654076089977373802
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267206491442385720}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.20172933, y: 0.89261067, z: 0.6138726}
+  m_Center: {x: 0, y: 0.44630533, z: 0}
+--- !u!114 &1787772285810557652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267206491442385720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 0
+  size: {x: 0.20172933, y: 0.89261067, z: 0.6138726}
+  center: {x: 0, y: 0.44630533, z: 0}
+--- !u!1001 &6111155423250761636
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1170577138458323539}
+    m_Modifications:
+    - target: {fileID: -8898360267987442673, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.017608508
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.08799377
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.010298789
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091485004506188150, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+      propertyPath: m_Name
+      value: desk_lamp_arm_01_1k
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+--- !u!4 &8844710205264882370 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3346621374419807590, guid: 59de1023233f98f4a836f2c25ca43ac1, type: 3}
+  m_PrefabInstance: {fileID: 6111155423250761636}
+  m_PrefabAsset: {fileID: 0}

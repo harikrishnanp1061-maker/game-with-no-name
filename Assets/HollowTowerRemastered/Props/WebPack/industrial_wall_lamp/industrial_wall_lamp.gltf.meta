@@ -1,0 +1,56 @@
+fileFormatVersion: 2
+guid: 78c176d5fe4daeb4eb1f19a5c411b485
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 715df9372183c47e389bb6e19fbc3b52, type: 3}
+  editorImportSettings:
+    generateSecondaryUVSet: 0
+  importSettings:
+    nodeNameMethod: 1
+    animationMethod: 2
+    generateMipMaps: 1
+    texturesReadable: 0
+    defaultMinFilterMode: 9729
+    defaultMagFilterMode: 9729
+    anisotropicFilterLevel: 1
+  instantiationSettings:
+    mask: -1
+    layer: 0
+    skinUpdateWhenOffscreen: 1
+    lightIntensityFactor: 1
+    sceneObjectCreation: 2
+  assetDependencies:
+  - type: 0
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\industrial_wall_lamp.bin
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\industrial_wall_lamp.bin
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_emissive_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_emissive_1k.jpg
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_nor_gl_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_nor_gl_1k.jpg
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_diff_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_diff_1k.jpg
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_arm_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_arm_1k.jpg
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_glass_nor_gl_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_glass_nor_gl_1k.jpg
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_glass_diff_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_glass_diff_1k.jpg
+  - type: 1
+    originalUri: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_glass_arm_1k.jpg
+    assetPath: Assets\HollowTowerRemastered\Props\WebPack\industrial_wall_lamp\textures\industrial_wall_lamp_glass_arm_1k.jpg
+  reportItems:
+  - type: 2
+    code: 20
+    messages:
+    - KHR_materials_emissive_strength

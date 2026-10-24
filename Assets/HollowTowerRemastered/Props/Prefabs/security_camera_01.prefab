@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7757954190572294442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5535910981698465597}
+  - component: {fileID: 3571292511315056964}
+  m_Layer: 0
+  m_Name: security_camera_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5535910981698465597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757954190572294442}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6971627662447906785}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3571292511315056964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757954190572294442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 1
+  size: {x: 0.16955179, y: 0.28604645, z: 0.55367184}
+  center: {x: 0, y: 0, z: 0.27683592}
+--- !u!1001 &6587758500284590504
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5535910981698465597}
+    m_Modifications:
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0000423491
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.11819213
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.30347693
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2418013291206029303, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_Name
+      value: security_camera_01_1k
+      objectReference: {fileID: 0}
+    - target: {fileID: 6258245251074220051, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6258245251074220051, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+--- !u!4 &6971627662447906785 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4923462332237257143, guid: cc777f22b8a5ee34a96ffe2214efa0b7, type: 3}
+  m_PrefabInstance: {fileID: 6587758500284590504}
+  m_PrefabAsset: {fileID: 0}

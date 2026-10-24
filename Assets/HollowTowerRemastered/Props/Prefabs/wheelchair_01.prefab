@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5978052379481464413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2519446190523001628}
+  - component: {fileID: 5815512745696341882}
+  - component: {fileID: 6190717607721108535}
+  m_Layer: 0
+  m_Name: wheelchair_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2519446190523001628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5978052379481464413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6109527837748740530}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5815512745696341882
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5978052379481464413}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.82409096, y: 1.1035016, z: 1.0908669}
+  m_Center: {x: 0, y: 0.5517508, z: 0}
+--- !u!114 &6190717607721108535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5978052379481464413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 0
+  size: {x: 0.82409096, y: 1.1035016, z: 1.0908669}
+  center: {x: 0, y: 0.5517508, z: 0}
+--- !u!1001 &46945855115639839
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2519446190523001628}
+    m_Modifications:
+    - target: {fileID: -5960795903009819505, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.001645863
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0057786703
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0597637
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673442473979083444, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+      propertyPath: m_Name
+      value: wheelchair_01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+--- !u!4 &6109527837748740530 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3139098879920177747, guid: 8302e34d146a55247977fea9b23977c5, type: 3}
+  m_PrefabInstance: {fileID: 46945855115639839}
+  m_PrefabAsset: {fileID: 0}

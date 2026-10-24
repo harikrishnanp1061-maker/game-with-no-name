@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8987894159387078414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1662941943481290248}
+  - component: {fileID: 2882513102665654068}
+  m_Layer: 0
+  m_Name: sand_rocks_small_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1662941943481290248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987894159387078414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1280404044568316200}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2882513102665654068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987894159387078414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 0
+  size: {x: 1.3879778, y: 0.16046709, z: 1.1649315}
+  center: {x: 0, y: 0.080233544, z: 0}
+--- !u!1001 &734528303371200590
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1662941943481290248}
+    m_Modifications:
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.048507
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.031316746
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0075297477
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2576179401928649947, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_Name
+      value: sand_rocks_small_01
+      objectReference: {fileID: 0}
+    - target: {fileID: -546044732477310516, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+--- !u!4 &1280404044568316200 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7208722413907943066, guid: 69b9f13fa1e372940a9fe342c9c745c5, type: 3}
+  m_PrefabInstance: {fileID: 734528303371200590}
+  m_PrefabAsset: {fileID: 0}

@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9039413803533768590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8884441866769862780}
+  - component: {fileID: 3919886795738387936}
+  m_Layer: 0
+  m_Name: modular_industrial_pipes_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8884441866769862780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039413803533768590}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 463678335426371440}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3919886795738387936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039413803533768590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbaa438e4709274995fa3a9d32948ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HollowTower.PropInfo
+  mount: 1
+  size: {x: 1.4028018, y: 1.9546397, z: 0.3075956}
+  center: {x: 0.00000011920929, y: 0, z: 0.1537978}
+--- !u!1001 &5752801363704944436
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8884441866769862780}
+    m_Modifications:
+    - target: {fileID: -9031987296567950580, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6022953760655760292, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4064070899907879466, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0021511912
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.024999738
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.12816428
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3115803555423058635, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3598972521859030249, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5404215506904494723, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932666197723300125, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771091787928289351, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_Name
+      value: modular_industrial_pipes_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 9146012813942503317, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+--- !u!4 &463678335426371440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3910990755373119420, guid: 2b2b78d3a06230e448cc88d253d3b403, type: 3}
+  m_PrefabInstance: {fileID: 5752801363704944436}
+  m_PrefabAsset: {fileID: 0}
