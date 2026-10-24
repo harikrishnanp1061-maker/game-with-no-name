@@ -111,8 +111,10 @@ namespace HollowTower
             flashlight = Gfx.SpotLight(camGo.transform, new Vector3(0.18f, -0.12f, 0.1f), Quaternion.identity, new Color(1f, 0.94f, 0.84f),
                 1100f, 34f, 64f, 0.42f, LightShadows.Soft);
             flashlight.name = "Flashlight";
+#if HOLLOWTOWER_HDRP
             var flHD = flashlight.GetComponent<UnityEngine.Rendering.HighDefinition.HDAdditionalLightData>();
             if (flHD != null) flHD.useRayTracedShadows = HDRPLook.RayTracing && HDRPLook.RayTracedFlashlightShadows;
+#endif
             var fl = flashlight.gameObject;
             flashBase = flashlight.intensity;
 
@@ -195,8 +197,10 @@ namespace HollowTower
             {
                 // Ray-traced torch shadows look softer and more exact, but cost ~5 ms on a laptop GPU.
                 HDRPLook.RayTracedFlashlightShadows = !HDRPLook.RayTracedFlashlightShadows;
+#if HOLLOWTOWER_HDRP
                 var hd = flashlight.GetComponent<UnityEngine.Rendering.HighDefinition.HDAdditionalLightData>();
                 if (hd != null) hd.useRayTracedShadows = HDRPLook.RayTracedFlashlightShadows;
+#endif
                 GameManager.Instance.Toast(HDRPLook.RayTracedFlashlightShadows ? "Ray-traced flashlight shadows ON (F9)" : "Ray-traced flashlight shadows OFF (F9)");
             }
             Gun.Tick();

@@ -98,7 +98,7 @@ namespace HollowTower.EditorTools
             var mi = (ModelImporter)AssetImporter.GetAtPath(Folder + "Boss2/Boss2.fbx");
             if (mi != null && mi.animationType != ModelImporterAnimationType.Legacy)
                 AssetDatabase.ImportAsset(Folder + "Boss2/Boss2.fbx", ImportAssetOptions.ForceUpdate);
-            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/HollowTower/Scenes/HollowTower.unity");
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity");
             SessionState.SetBool(ShotsKey, true);
             EditorApplication.update += WatchShots;
             EditorApplication.isPlaying = true;

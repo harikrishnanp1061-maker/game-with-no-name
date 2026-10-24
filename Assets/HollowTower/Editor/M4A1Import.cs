@@ -82,7 +82,7 @@ namespace HollowTower.EditorTools
         /// <summary>Batch entry point (pass -gunshots too): plays the game, saves Shots/gun_*.png, then quits.</summary>
         public static void GunShots()
         {
-            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/HollowTower/Scenes/HollowTower.unity");
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity");
             SessionState.SetBool(ShotsKey, true);
             EditorApplication.update += WatchShots;
             EditorApplication.isPlaying = true;

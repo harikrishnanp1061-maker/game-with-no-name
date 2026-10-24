@@ -395,9 +395,13 @@ namespace HollowTower
             {
                 var tl = shadowCandidates[i].Value;
                 tl.light.shadows = LightShadows.Soft;
+#if HOLLOWTOWER_HDRP
                 if (tl.hd != null && !shadowedLastTime.Contains(tl)) tl.hd.RequestShadowMapRendering();
+#endif
                 shadowedNow.Add(tl);
+#if HOLLOWTOWER_HDRP
                 if (tl.hd != null) tl.hd.useRayTracedShadows = HDRPLook.RayTracing && i < MaxRayTracedLamps;
+#endif
             }
         }
 

@@ -18,12 +18,15 @@ namespace HollowTower
         {
             get { return new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")); }
         }
+        static Vector2 PMousePos { get { return Input.mousePosition; } }
+        static float PScroll { get { return Input.mouseScrollDelta.y; } }
 #else
         static bool Raw(KeyCode k)
         {
             var mouse = Mouse.current;
             if (k == KeyCode.Mouse0) return mouse != null && mouse.leftButton.isPressed;
             if (k == KeyCode.Mouse1) return mouse != null && mouse.rightButton.isPressed;
+            if (k == KeyCode.Mouse2) return mouse != null && mouse.middleButton.isPressed;
             var kb = Keyboard.current;
             if (kb == null) return false;
             Key key = Map(k);
@@ -36,6 +39,7 @@ namespace HollowTower
             var mouse = Mouse.current;
             if (k == KeyCode.Mouse0) return mouse != null && mouse.leftButton.wasPressedThisFrame;
             if (k == KeyCode.Mouse1) return mouse != null && mouse.rightButton.wasPressedThisFrame;
+            if (k == KeyCode.Mouse2) return mouse != null && mouse.middleButton.wasPressedThisFrame;
             var kb = Keyboard.current;
             if (kb == null) return false;
             Key key = Map(k);
@@ -45,27 +49,26 @@ namespace HollowTower
 
         static Key Map(KeyCode k)
         {
+            // Letters, digits and F-keys are laid out contiguously in both enums.
+            if (k >= KeyCode.A && k <= KeyCode.Z) return Key.A + (k - KeyCode.A);
+            if (k >= KeyCode.Alpha1 && k <= KeyCode.Alpha9) return Key.Digit1 + (k - KeyCode.Alpha1);
+            if (k >= KeyCode.F1 && k <= KeyCode.F12) return Key.F1 + (k - KeyCode.F1);
             switch (k)
             {
-                case KeyCode.W: return Key.W;
-                case KeyCode.A: return Key.A;
-                case KeyCode.S: return Key.S;
-                case KeyCode.D: return Key.D;
-                case KeyCode.E: return Key.E;
-                case KeyCode.Q: return Key.Q;
-                case KeyCode.R: return Key.R;
-                case KeyCode.F: return Key.F;
-                case KeyCode.H: return Key.H;
-                case KeyCode.M: return Key.M;
-                case KeyCode.N: return Key.N;
-                case KeyCode.C: return Key.C;
+                case KeyCode.Alpha0: return Key.Digit0;
                 case KeyCode.Space: return Key.Space;
                 case KeyCode.LeftShift: return Key.LeftShift;
+                case KeyCode.RightShift: return Key.RightShift;
                 case KeyCode.LeftControl: return Key.LeftCtrl;
+                case KeyCode.RightControl: return Key.RightCtrl;
+                case KeyCode.LeftAlt: return Key.LeftAlt;
                 case KeyCode.Escape: return Key.Escape;
                 case KeyCode.Return: return Key.Enter;
                 case KeyCode.Tab: return Key.Tab;
-                case KeyCode.X: return Key.X;
+                case KeyCode.UpArrow: return Key.UpArrow;
+                case KeyCode.DownArrow: return Key.DownArrow;
+                case KeyCode.LeftArrow: return Key.LeftArrow;
+                case KeyCode.RightArrow: return Key.RightArrow;
                 default: return Key.None;
             }
         }
@@ -81,11 +84,30 @@ namespace HollowTower
                 return mouse.delta.ReadValue() * 0.1f;
             }
         }
+        static Vector2 PMousePos
+        {
+            get
+            {
+                var mouse = Mouse.current;
+                return mouse != null ? mouse.position.ReadValue() : Vector2.zero;
+            }
+        }
+        static float PScroll
+        {
+            get
+            {
+                var mouse = Mouse.current;
+                return mouse != null ? Mathf.Sign(mouse.scroll.ReadValue().y) * (mouse.scroll.ReadValue().y != 0f ? 1f : 0f) : 0f;
+            }
+        }
 #endif
 
         public static bool Held(KeyCode k) { return Bot.Active ? Bot.held.Contains(k) : PHeld(k); }
         public static bool Down(KeyCode k) { return Bot.Active ? Bot.down.Contains(k) : PDown(k); }
         public static Vector2 MouseDelta { get { return Bot.Active ? Bot.mouse : PMouse; } }
+        public static Vector2 MousePosition { get { return PMousePos; } }
+        /// <summary>Mouse wheel this frame: positive up, negative down.</summary>
+        public static float Scroll { get { return Bot.Active ? 0f : PScroll; } }
 
         /// <summary>True when the game owns the mouse (or the -playtest bot is driving), so clicks may fire the gun.</summary>
         public static bool GameHasMouse { get { return Bot.Active || (Application.isFocused && Cursor.lockState == CursorLockMode.Locked); } }
@@ -103,8 +125,8 @@ namespace HollowTower
         {
             get
             {
-                float x = (Held(KeyCode.D) ? 1f : 0f) - (Held(KeyCode.A) ? 1f : 0f);
-                float y = (Held(KeyCode.W) ? 1f : 0f) - (Held(KeyCode.S) ? 1f : 0f);
+                float x = (Held(KeyCode.D) || Held(KeyCode.RightArrow) ? 1f : 0f) - (Held(KeyCode.A) || Held(KeyCode.LeftArrow) ? 1f : 0f);
+                float y = (Held(KeyCode.W) || Held(KeyCode.UpArrow) ? 1f : 0f) - (Held(KeyCode.S) || Held(KeyCode.DownArrow) ? 1f : 0f);
                 var v = new Vector2(x, y);
                 return v.sqrMagnitude > 1f ? v.normalized : v;
             }

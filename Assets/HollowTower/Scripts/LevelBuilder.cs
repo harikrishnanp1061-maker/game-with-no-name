@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
+#if HOLLOWTOWER_HDRP
 using UnityEngine.Rendering.HighDefinition;
+#endif
 
 namespace HollowTower
 {
@@ -18,7 +20,11 @@ namespace HollowTower
     public class TowerLight
     {
         public Light light;
+#if HOLLOWTOWER_HDRP
         public HDAdditionalLightData hd;
+#else
+        public Component hd;   // HDRP light data; always null under URP
+#endif
         public int floor;
         public bool castsShadows;
         /// <summary>On the floor's mains (dies in a power cut). Emergency lamps run on batteries, torches on fire.</summary>
@@ -510,8 +516,9 @@ namespace HollowTower
                 default: col = new Color(0.86f, 0.93f, 1f); inten = 3.0f; range = 10f; break;
             }
             // Ceiling fixtures throw light downward: a wide spot needs one shadow view instead of a point light's six.
-            var l = Gfx.SpotLight(holder, new Vector3(0f, -0.2f - Mathf.Max(0f, drop - 0.45f), 0f), Quaternion.Euler(90f, 0f, 0f), col, inten * Gfx.Lumens, range + 2f,
+            var l = Gfx.SpotLight(holder, new Vector3(0f, -0.2f - Mathf.Max(0f, drop - 0.45f), 0f), Quaternion.Euler(90f, 0f, 0f), col, inten * Gfx.SpotLumens, range + 2f,
                 style == LampStyle.Warm ? 160f : 150f, 0.45f, LightShadows.Soft);
+#if HOLLOWTOWER_HDRP
             var lhd = l.GetComponent<HDAdditionalLightData>();
             if (lhd != null)
             {
@@ -521,13 +528,14 @@ namespace HollowTower
                 lhd.shadowUpdateMode = ShadowUpdateMode.OnEnable;
                 lhd.alwaysDrawDynamicShadows = true;
             }
+#endif
             if (style == LampStyle.Emergency) l.gameObject.AddComponent<FlickerLight>().SetupPulse();
             else if (flicker)
             {
                 l.gameObject.AddComponent<FlickerLight>().Setup(fixtureR, false);
                 PowerGrid.RegisterFlickerFixture(fixtureR, floor);
             }
-            Info.lights.Add(new TowerLight { light = l, hd = l.GetComponent<HDAdditionalLightData>(), floor = floor, castsShadows = true, electric = style != LampStyle.Emergency });
+            Info.lights.Add(new TowerLight { light = l, hd = Gfx.LightData(l), floor = floor, castsShadows = true, electric = style != LampStyle.Emergency });
         }
 
         static void BuildCorridorDressing(int f, Transform floorRoot)
@@ -622,7 +630,7 @@ namespace HollowTower
                 Gfx.Box("PassageWall", pass, new Vector3(wallX + passage * 0.5f, y + 1.6f, z + s * 1.3f), new Vector3(passage + 0.4f, 3.4f, 0.3f), M.stone);
             var torch = Gfx.PointLight(pass, new Vector3(wallX + passage * 0.5f, y + 2.6f, z), new Color(1f, 0.6f, 0.3f), 1.6f, 8f, LightShadows.Soft);
             torch.gameObject.AddComponent<FlickerLight>().SetupFire(null);
-            Info.lights.Add(new TowerLight { light = torch, hd = torch.GetComponent<HDAdditionalLightData>(), floor = 1, castsShadows = true, electric = false });
+            Info.lights.Add(new TowerLight { light = torch, hd = Gfx.LightData(torch), floor = 1, castsShadows = true, electric = false });
 
             var bounds = new Bounds(new Vector3(wallX + passage * 0.5f + 0.3f, y + 1.6f, z), new Vector3(passage, 3.2f, 2.6f));
             Vector3 entrance = new Vector3(wallX + passage, y, z);
@@ -673,7 +681,7 @@ namespace HollowTower
                 {
                     var l = Gfx.PointLight(AnnexRoot, ls, new Color(1f, 0.62f, 0.32f), 2.6f, 12f, LightShadows.Soft);
                     l.gameObject.AddComponent<FlickerLight>().SetupFire(null);
-                    Info.lights.Add(new TowerLight { light = l, hd = l.GetComponent<HDAdditionalLightData>(), floor = 1, castsShadows = true, electric = false });
+                    Info.lights.Add(new TowerLight { light = l, hd = Gfx.LightData(l), floor = 1, castsShadows = true, electric = false });
                 }
             }
             else Debug.LogWarning("Hollow Tower: Egypt chamber model missing - the vault is just the passage.");
@@ -750,7 +758,7 @@ namespace HollowTower
             {
                 var l = Gfx.PointLight(parent, new Vector3(east - 1.5f + s.x, y, cz + s.y), new Color(1f, 0.8f, 0.58f), 1.6f, 7f, LightShadows.Soft);
                 if (Rng.NextDouble() < 0.4) l.gameObject.AddComponent<FlickerLight>().Setup(null, false);
-                Info.lights.Add(new TowerLight { light = l, hd = l.GetComponent<HDAdditionalLightData>(), floor = wing.floor, castsShadows = true });
+                Info.lights.Add(new TowerLight { light = l, hd = Gfx.LightData(l), floor = wing.floor, castsShadows = true });
             }
         }
 

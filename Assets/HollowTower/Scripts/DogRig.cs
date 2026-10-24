@@ -146,7 +146,7 @@ namespace HollowTower
                 var n = Resources.Load<Texture2D>(Path + "_Normal");
                 if (n != null) { hqMat.SetTexture("_NormalMap", n); hqMat.SetFloat("_NormalScale", 1.2f); }
                 hqMat.SetFloat("_DoubleSidedEnable", 1f); // the PS1 body is open box pieces, drawn from both sides
-                UnityEngine.Rendering.HighDefinition.HDMaterial.ValidateMaterial(hqMat);
+                Gfx.Validate(hqMat);
                 return hqMat;
             }
         }

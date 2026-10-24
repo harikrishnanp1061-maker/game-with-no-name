@@ -139,7 +139,7 @@ namespace HollowTower
             var tex = Resources.Load<Texture2D>("Textures/Wing/wing_" + id + "c");
             var m = Gfx.LitWorld(tint, smooth, 0f, tex, metres);
             var n = Resources.Load<Texture2D>("Textures/Wing/wing_" + id + "_Normal");
-            if (n != null) { m.SetTexture("_NormalMap", n); m.SetFloat("_NormalScale", 1f); UnityEngine.Rendering.HighDefinition.HDMaterial.ValidateMaterial(m); }
+            if (n != null) { m.SetTexture("_NormalMap", n); m.SetFloat("_NormalScale", 1f); Gfx.Validate(m); }
             return m;
         }
 

@@ -23,6 +23,9 @@ namespace HollowTower
     {
         public int id;
         public string name;
+        public string label;   // what the college calls it (see CollegeRoles); falls back to name
+        public string role;    // what it is furnished as (see CollegeRoles)
+        public string Label { get { return string.IsNullOrEmpty(label) ? name : label; } }
         public RoomType type;
         public int floor;
         public RectInt rect;
@@ -201,6 +204,7 @@ namespace HollowTower
                 }
                 CommonCorridors();
                 Validate(P);
+                CollegeRoles.Apply(P);
             }
             P = null;
         }
@@ -214,7 +218,12 @@ namespace HollowTower
             var sup = Add("Supply room", RoomType.Storage, 0, 0, 6, 2); Door(sup, 'E', 1);
             var jan = Add("Janitor's closet", RoomType.Janitor, 5, 2, 1, 2); Door(jan, 'E', 0);
 
-            var open = Add("Open-plan office", RoomType.OpenOffice, 7, 0, 14, 6); Door(open, 'S', 3); Door(open, 'S', 10); Door(open, 'W', 2);
+            // Subdivided North Offices (intimate small rooms)
+            var o401 = Add("Office 401", RoomType.Office, 7, 0, 4, 6); Door(o401, 'S', 2); Door(o401, 'W', 2);
+            var o402 = Add("Office 402", RoomType.Office, 11, 0, 3, 6); Door(o402, 'S', 1);
+            var o403 = Add("Office 403", RoomType.Office, 14, 0, 3, 6); Door(o403, 'S', 1);
+            var sec = Add("Security Control", RoomType.Security, 17, 0, 4, 6); Door(sec, 'S', 2);
+
             var ma = Add("Meeting room A", RoomType.Meeting, 21, 0, 4, 6); Door(ma, 'S', 1);
             var mb = Add("Meeting room B", RoomType.Meeting, 25, 0, 4, 6); Door(mb, 'S', 2); Door(mb, 'E', 2);
             var ex = Add("Executive office", RoomType.Office, 30, 0, 6, 3); Door(ex, 'W', 1);
@@ -224,11 +233,15 @@ namespace HollowTower
             var ww = Add("Women's washroom", RoomType.Washroom, 0, 11, 6, 4); Door(ww, 'E', 1);
             var cp = Add("Copy room", RoomType.Copy, 0, 15, 6, 2); Door(cp, 'E', 0);
 
-            var cub = Add("Cubicle farm", RoomType.OpenOffice, 7, 7, 10, 6); Door(cub, 'N', 2); Door(cub, 'E', 2);
+            // Subdivided Center-West Offices
+            var cub = Add("Cubicle farm", RoomType.OpenOffice, 7, 7, 5, 6); Door(cub, 'N', 2); Door(cub, 'E', 2);
+            var fin = Add("Finance Office", RoomType.Office, 12, 7, 5, 6); Door(fin, 'N', 2); Door(fin, 'E', 2);
             var br = Add("Break room", RoomType.BreakRoom, 7, 13, 5, 4); Door(br, 'S', 2);
             var ar = Add("Archive", RoomType.Records, 12, 13, 5, 4); Door(ar, 'E', 1);
 
-            var conf = Add("Conference hall", RoomType.Meeting, 18, 7, 11, 5); Door(conf, 'W', 2); Door(conf, 'N', 5);
+            // Subdivided Center-East Conference & Offices
+            var conf = Add("Conference hall", RoomType.Meeting, 18, 7, 6, 5); Door(conf, 'W', 2); Door(conf, 'N', 3);
+            var brief = Add("Briefing Room B", RoomType.Meeting, 24, 7, 5, 5); Door(brief, 'E', 2); Door(brief, 'N', 2);
             var o1 = Add("Office 4A", RoomType.Office, 18, 12, 4, 5); Door(o1, 'S', 1);
             var o2 = Add("Office 4B", RoomType.Office, 22, 12, 4, 5); Door(o2, 'S', 1);
             var o3 = Add("Office 4C", RoomType.Office, 26, 12, 3, 5); Door(o3, 'E', 2);
@@ -237,14 +250,16 @@ namespace HollowTower
             var it = Add("IT office", RoomType.Office, 30, 12, 6, 5); Door(it, 'W', 2);
 
             var sto = Add("Storage", RoomType.Storage, 0, 18, 6, 6); Door(sto, 'E', 1);
-            var op2 = Add("Open-plan office 2", RoomType.OpenOffice, 7, 18, 10, 6); Door(op2, 'N', 2); Door(op2, 'N', 7);
+            // Subdivided South Offices
+            var op2 = Add("Open-plan office 2", RoomType.OpenOffice, 7, 18, 5, 6); Door(op2, 'N', 2);
+            var leg = Add("Legal Records", RoomType.Records, 12, 18, 5, 6); Door(leg, 'N', 2);
             var kit = Add("Kitchenette", RoomType.BreakRoom, 17, 18, 4, 6); Door(kit, 'N', 1);
             var mgr = Add("Manager's office", RoomType.Office, 21, 18, 4, 6); Door(mgr, 'N', 1);
             var dir = Add("Director's office", RoomType.Office, 25, 18, 4, 6); Door(dir, 'N', 2); Door(dir, 'E', 2);
             var wc = Add("Washroom", RoomType.Washroom, 30, 18, 6, 3); Door(wc, 'W', 1);
             var s2 = Add("Storage 2", RoomType.Storage, 30, 21, 6, 3); Door(s2, 'W', 1);
 
-            P.playerStart = new Vector2Int(9, 2);   // in the open-plan office
+            P.playerStart = new Vector2Int(9, 2);   // in Office 401
             P.playerYaw = 90f;
         }
 
@@ -256,7 +271,6 @@ namespace HollowTower
             var lin = Add("Linen room", RoomType.Linen, 0, 0, 6, 2); Door(lin, 'E', 1);
             var r301 = Add("Room 301", RoomType.HotelRoom, 0, 4, 6, 2); Door(r301, 'E', 0);
 
-            // The hotel hallway model is a T: its open ends face west (row 2) and south (column 12).
             var wing = Add("Hotel wing", RoomType.HotelWing, 7, 0, 6, 6); Door(wing, 'W', 2); Door(wing, 'S', 5);
             Corr(13, 2, 16, 1);  // guest corridor through the north block
             string[] north = { "Room 302", "Room 303", "Room 304", "Room 305", "Room 306" };
@@ -269,8 +283,15 @@ namespace HollowTower
             var r311 = Add("Room 311", RoomType.HotelRoom, 30, 4, 6, 2); Door(r311, 'W', 0);
 
             var wc = Add("Washrooms", RoomType.Washroom, 0, 7, 6, 4); Door(wc, 'E', 1);
-            var lau = Add("Laundry", RoomType.Laundry, 0, 11, 6, 6); Door(lau, 'E', 2);
-            var lng = Add("Hotel lounge", RoomType.Lounge, 7, 7, 10, 10); Door(lng, 'N', 4); Door(lng, 'E', 5); Door(lng, 'S', 4);
+            // Subdivided West Utility
+            var lau = Add("Laundry", RoomType.Laundry, 0, 11, 6, 3); Door(lau, 'E', 1);
+            var dry = Add("Linen Storage", RoomType.Storage, 0, 14, 6, 3); Door(dry, 'E', 1);
+
+            // Subdivided Center Lounge into Intimate Hotel Rooms and Lounge
+            var r325 = Add("Room 325", RoomType.HotelRoom, 7, 7, 5, 5); Door(r325, 'N', 2);
+            var r326 = Add("Room 326", RoomType.HotelRoom, 12, 7, 5, 5); Door(r326, 'N', 2); Door(r326, 'E', 2);
+            var lng = Add("Hotel lounge", RoomType.Lounge, 7, 12, 5, 5); Door(lng, 'S', 2); Door(lng, 'E', 2);
+            var cigar = Add("Cigar Room", RoomType.Lounge, 12, 12, 5, 5); Door(cigar, 'S', 2); Door(cigar, 'E', 2);
 
             var a = Add("Room 312", RoomType.HotelRoom, 18, 7, 4, 5); Door(a, 'N', 1);
             var b = Add("Room 313", RoomType.HotelRoom, 22, 7, 4, 5); Door(b, 'N', 1);
@@ -306,22 +327,27 @@ namespace HollowTower
             int[] cx = { 7, 12, 17, 23 }, cw = { 5, 5, 6, 6 };
             for (int i = 0; i < 4; i++) { var r = Add(cn[i], RoomType.Classroom, cx[i], 0, cw[i], 6); Door(r, 'S', 2); if (i == 3) Door(r, 'E', 2); }
             var staff = Add("Staff room", RoomType.StaffRoom, 30, 0, 6, 6); Door(staff, 'W', 2); Door(staff, 'S', 2);
-            // Doorways in the north outer wall into the new north wing (built by LevelBuilder.BuildNorthWing).
-            Door(P.Find("Classroom 2B"), 'N', 0);   // x 37.5 (clear of the blackboard)
-            Door(P.Find("Classroom 2D"), 'N', 5);   // x 85.5
+            Door(P.Find("Classroom 2B"), 'N', 0);
+            Door(P.Find("Classroom 2D"), 'N', 5);
 
             var bw = Add("Boys' washroom", RoomType.Washroom, 0, 7, 6, 4); Door(bw, 'E', 1);
             var gw = Add("Girls' washroom", RoomType.Washroom, 0, 11, 6, 4); Door(gw, 'E', 1);
             var nur = Add("Nurse's office", RoomType.Nurse, 0, 15, 6, 2); Door(nur, 'E', 0);
 
-            var lab = Add("Science lab", RoomType.Lab, 7, 7, 10, 5); Door(lab, 'N', 3); Door(lab, 'E', 2);
-            var art = Add("Art room", RoomType.ArtRoom, 7, 12, 10, 5); Door(art, 'S', 3); Door(art, 'E', 2);
+            // Subdivided Science & Art Labs
+            var lab = Add("Science lab", RoomType.Lab, 7, 7, 5, 5); Door(lab, 'N', 2); Door(lab, 'E', 2);
+            var bio = Add("Biology Lab", RoomType.Lab, 12, 7, 5, 5); Door(bio, 'N', 2); Door(bio, 'E', 2);
+            var art = Add("Art room", RoomType.ArtRoom, 7, 12, 5, 5); Door(art, 'S', 2); Door(art, 'E', 2);
+            var dark = Add("Photo Darkroom", RoomType.Storage, 12, 12, 5, 5); Door(dark, 'S', 2); Door(dark, 'E', 2);
+
             var e1 = Add("Classroom 2E", RoomType.Classroom, 18, 7, 6, 5); Door(e1, 'N', 2);
             var e2 = Add("Classroom 2F", RoomType.Classroom, 24, 7, 5, 5); Door(e2, 'N', 2);
             var e3 = Add("Classroom 2G", RoomType.Classroom, 18, 12, 6, 5); Door(e3, 'S', 2);
             var e4 = Add("Classroom 2H", RoomType.Classroom, 24, 12, 5, 5); Door(e4, 'S', 2);
 
-            var lib = Add("Library", RoomType.Library, 30, 7, 6, 10); Door(lib, 'W', 2); Door(lib, 'W', 7);
+            // Subdivided Library
+            var lib = Add("Library", RoomType.Library, 30, 7, 6, 5); Door(lib, 'W', 2);
+            var arch = Add("Archives Room", RoomType.Storage, 30, 12, 6, 5); Door(arch, 'W', 2);
             P.bookcaseRow = 11;
 
             var mus = Add("Music room", RoomType.Music, 0, 18, 6, 6); Door(mus, 'E', 2);
@@ -330,11 +356,10 @@ namespace HollowTower
             var prin = Add("Principal's office", RoomType.Principal, 19, 18, 4, 6); Door(prin, 'N', 1);
             var ck = Add("Classroom 2K", RoomType.Classroom, 23, 18, 6, 6); Door(ck, 'N', 2);
 
-            var dn = StairZone(Stairs[1]); Door(dn, 'W', 0);        // ramp up to floor 3, landing col 30
+            var dn = StairZone(Stairs[1]); Door(dn, 'W', 0);
             var sr = Add("Store room", RoomType.Storage, 30, 18, 6, 2); Door(sr, 'N', 2);
             var lr = Add("Locker room", RoomType.LockerRoom, 30, 22, 6, 2); Door(lr, 'W', 0);
 
-            // Rotten floorboards in the corridors: the floor gives way onto the ground floor below.
             Pit(12, 6); Pit(23, 17); Pit(29, 12); Pit(17, 11);
         }
 
@@ -348,35 +373,49 @@ namespace HollowTower
         static void Ground()
         {
             P.theme = "Ground";
-            var st = StairZone(Stairs[0]); Door(st, 'E', 0);       // ramp up to floor 2, landing col 5
+            var st = StairZone(Stairs[0]); Door(st, 'E', 0);
             var mail = Add("Mail room", RoomType.Mail, 0, 0, 6, 2); Door(mail, 'E', 1);
             var sec = Add("Security office", RoomType.Security, 0, 4, 6, 2); Door(sec, 'E', 0);
 
-            var lobby = Add("Main lobby", RoomType.Lobby, 7, 0, 16, 6); Door(lobby, 'S', 3); Door(lobby, 'S', 12); Door(lobby, 'W', 2);
+            // Subdivided Lobby
+            var lobby = Add("Main lobby", RoomType.Lobby, 7, 0, 8, 6); Door(lobby, 'S', 3); Door(lobby, 'W', 2);
+            var info = Add("Information Desk", RoomType.Waiting, 15, 0, 4, 6); Door(info, 'S', 2);
+            var hold = Add("Holding Cell", RoomType.Security, 19, 0, 4, 6); Door(hold, 'S', 2);
             var rcp = Add("Reception office", RoomType.Office, 23, 0, 6, 6); Door(rcp, 'S', 2); Door(rcp, 'E', 2);
 
-            // The escape lift is no longer in the tower: it's in the security hall of the south annex (see LevelBuilder.Annex).
             var hall = Add("Service hallway", RoomType.ServiceHall, 30, 0, 6, 2); Door(hall, 'W', 1);
             var mnt = Add("Maintenance room", RoomType.Maintenance, 30, 2, 6, 4); Door(mnt, 'W', 1);
 
             var wc = Add("Washrooms", RoomType.Washroom, 0, 7, 6, 4); Door(wc, 'E', 1);
             var slr = Add("Staff locker room", RoomType.LockerRoom, 0, 11, 6, 6); Door(slr, 'E', 2);
-            var caf = Add("Cafeteria", RoomType.Cafeteria, 7, 7, 10, 10); Door(caf, 'N', 3); Door(caf, 'E', 5); Door(caf, 'S', 3);
-            var kit = Add("Kitchen", RoomType.Kitchen, 18, 7, 6, 10); Door(kit, 'W', 2); Door(kit, 'N', 2);
-            var boil = Add("Boiler room", RoomType.Boiler, 24, 7, 5, 10); Door(boil, 'E', 5); Door(boil, 'N', 2);
+
+            // Subdivided Cafeteria & Kitchen
+            var caf = Add("Cafeteria", RoomType.Cafeteria, 7, 7, 10, 5); Door(caf, 'N', 3); Door(caf, 'E', 2);
+            var prep = Add("Food Prep", RoomType.Kitchen, 7, 12, 5, 5); Door(prep, 'S', 2);
+            var cooler = Add("Cold Storage", RoomType.Storage, 12, 12, 5, 5); Door(cooler, 'S', 2); Door(cooler, 'E', 2);
+
+            var kit = Add("Kitchen", RoomType.Kitchen, 18, 7, 6, 5); Door(kit, 'W', 2); Door(kit, 'N', 2);
+            var dish = Add("Dishwashing", RoomType.Maintenance, 18, 12, 6, 5); Door(dish, 'W', 2); Door(dish, 'S', 2);
+
+            var boil = Add("Boiler room", RoomType.Boiler, 24, 7, 5, 5); Door(boil, 'E', 2); Door(boil, 'N', 2);
+            var pump = Add("Water Pump Station", RoomType.Maintenance, 24, 12, 5, 5); Door(pump, 'E', 2); Door(pump, 'S', 2);
+
             var load = Add("Loading dock", RoomType.Loading, 30, 7, 6, 10); Door(load, 'W', 2); Door(load, 'W', 7);
 
             var gen = Add("Generator room", RoomType.Generator, 0, 18, 6, 6); Door(gen, 'E', 2);
-            var atr = Add("Atrium", RoomType.Atrium, 7, 18, 10, 6); Door(atr, 'N', 3); Door(atr, 'N', 7);
+            // Subdivided Atrium & Waiting
+            var atr = Add("Atrium", RoomType.Atrium, 7, 18, 5, 6); Door(atr, 'N', 2);
+            var gal = Add("Sculpture Gallery", RoomType.Lounge, 12, 18, 5, 6); Door(gal, 'N', 2);
             var shop = Add("Gift shop", RoomType.Shop, 17, 18, 4, 6); Door(shop, 'N', 1);
-            var wait = Add("Waiting room", RoomType.Waiting, 21, 18, 8, 6); Door(wait, 'N', 2); Door(wait, 'N', 6);
+            var wait = Add("Waiting room", RoomType.Waiting, 21, 18, 4, 6); Door(wait, 'N', 2);
+            var con = Add("Consultation Room", RoomType.Waiting, 25, 18, 4, 6); Door(con, 'N', 2);
             var park = Add("Parking access", RoomType.Parking, 30, 18, 6, 6); Door(park, 'W', 2); Door(park, 'N', 2);
 
-            // Doorways in the south outer wall into the annex (built by LevelBuilder.Annex):
-            Door(gen, 'S', 2);    // x 7.5   -> shrine passage
-            Door(atr, 'S', 5);    // x 37.5  -> the mansion's front door
-            Door(wait, 'S', 6);   // x 82.5  -> the chapel
-            Door(park, 'S', 4);   // x 103.5 -> the hospital corridor and the security hall (escape lift)
+            // Doorways in the south outer wall into the annex:
+            Door(gen, 'S', 2);
+            Door(atr, 'S', 2);
+            Door(wait, 'S', 2);
+            Door(park, 'S', 4);
 
             // Spike pits dug through the floor of the corridors.
             Pit(21, 6); Pit(13, 17); Pit(6, 15); Pit(17, 14);

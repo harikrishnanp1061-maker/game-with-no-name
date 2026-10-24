@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/HollowTower/Scenes/HollowTower.unity
-    guid: d8c5c0ca7692b244cb31da95b2862d68
+    path: Assets/HollowTower/Scenes/Lobby.unity
+    guid: a3d265e59673d0d45b1ae03cbfa10de6
+  - enabled: 1
+    path: Assets/Tutorial/Scenes/Tutorial.unity
+    guid: d0bda70a8132e7d4a95d2fe2b3468bac
+  - enabled: 1
+    path: Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity
+    guid: fde365e24fcbfee4f952465bf72cb53a
   m_configObjects: {}

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+#if HOLLOWTOWER_HDRP
 using UnityEngine.Rendering.HighDefinition;
+#endif
 
 namespace HollowTower
 {
@@ -216,7 +218,7 @@ namespace HollowTower
                         m.SetFloat("_Smoothness", Mathf.Min(m.GetFloat("_Smoothness"), 0.3f));
                         // Decimated scans have the odd flipped triangle: draw both sides so they don't show as holes.
                         m.SetFloat("_DoubleSidedEnable", 1f);
-                        UnityEngine.Rendering.HighDefinition.HDMaterial.ValidateMaterial(m);
+                        Gfx.Validate(m);
                     }
                     annexMats[s] = m;
                 }
@@ -521,9 +523,11 @@ namespace HollowTower
         static void FillLight(Transform parent, int floor, Vector3 pos, float range, float intensity)
         {
             var l = Gfx.PointLight(parent, pos, new Color(1f, 0.86f, 0.7f), intensity, range, LightShadows.None);
+#if HOLLOWTOWER_HDRP
             var hd = l.GetComponent<HDAdditionalLightData>();
             if (hd != null) hd.volumetricDimmer = 0f;
-            Info.lights.Add(new TowerLight { light = l, hd = hd, floor = floor, castsShadows = false, electric = true });
+#endif
+            Info.lights.Add(new TowerLight { light = l, hd = Gfx.LightData(l), floor = floor, castsShadows = false, electric = true });
         }
 
         static bool AddSpot(Transform dress, List<Vector3> spots, Vector3 f, float headroom, LampStyle style, int seed, ref int lamps)
@@ -628,7 +632,7 @@ namespace HollowTower
             }
             // A red glow from inside so the hole stands out in the dark.
             var glow = Gfx.PointLight(root, c + Vector3.down * Mathf.Min(1.2f, depth * 0.5f), new Color(1f, 0.12f, 0.05f), 0.5f, 4.5f, LightShadows.None);
-            Info.lights.Add(new TowerLight { light = glow, hd = glow.GetComponent<HDAdditionalLightData>(), floor = f, castsShadows = false, electric = false });
+            Info.lights.Add(new TowerLight { light = glow, hd = Gfx.LightData(glow), floor = f, castsShadows = false, electric = false });
             var pit = root.gameObject.AddComponent<TrapPit>();
             pit.Setup(c, hole, f, depth);
             StaticMerge.Merge(root, "Pit");

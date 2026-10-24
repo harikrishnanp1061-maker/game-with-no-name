@@ -16,7 +16,7 @@ namespace HollowTower.EditorTools
     [InitializeOnLoad]
     public static class HollowTowerSetup
     {
-        const string ScenePath = "Assets/HollowTower/Scenes/HollowTower.unity";
+        const string ScenePath = "Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity";
         const string DoneKey = "HollowTower.SetupDone";
 
         static HollowTowerSetup()
@@ -27,14 +27,8 @@ namespace HollowTower.EditorTools
         static void AutoSetup()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode) return;
-            if (!File.Exists(ScenePath))
-            {
-                CreateScene();
-                return;
-            }
-            // Play always starts the game, whatever scene happens to be open in the editor.
-            var sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(ScenePath);
-            if (sceneAsset != null) EditorSceneManager.playModeStartScene = sceneAsset;
+            // Allow playing whichever scene is currently open in the editor
+            EditorSceneManager.playModeStartScene = null;
 
             // The HDRP Wizard only needs running once; stop it popping up over the game on every launch.
             var hdUser = System.AppDomain.CurrentDomain.GetAssemblies()
@@ -47,30 +41,14 @@ namespace HollowTower.EditorTools
             {
                 SessionState.SetBool(DoneKey, true);
                 var active = SceneManager.GetActiveScene();
-                if (string.IsNullOrEmpty(active.path) && active.rootCount <= 4)
+                if ((string.IsNullOrEmpty(active.path) && active.rootCount <= 4) && File.Exists(ScenePath))
                     EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             }
         }
 
-        [MenuItem("Hollow Tower/Create or Reset Game Scene", priority = 1)]
-        public static void CreateScene()
-        {
-            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
-            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            var go = new GameObject("Hollow Tower (press Play)");
-            go.AddComponent<GameBootstrap>();
-            EditorSceneManager.SaveScene(scene, ScenePath);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
-            AssetDatabase.Refresh();
-            SessionState.SetBool(DoneKey, true);
-            Debug.Log("Hollow Tower: scene created at " + ScenePath + ". Press Play to start.");
-        }
-
-        [MenuItem("Hollow Tower/Play", priority = 2)]
+        [MenuItem("Hollow Tower/Play Game", priority = 2)]
         public static void Play()
         {
-            if (!File.Exists(ScenePath)) CreateScene();
             if (SceneManager.GetActiveScene().path != ScenePath)
             {
                 if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -79,17 +57,27 @@ namespace HollowTower.EditorTools
             EditorApplication.isPlaying = true;
         }
 
-        [MenuItem("Hollow Tower/Graphics/Install HDRP (step 1 of the ray tracing upgrade)", priority = 20)]
-        public static void InstallHdrp()
+        [MenuItem("Hollow Tower/Graphics/Set Graphics API to DirectX 11", priority = 20)]
+        public static void SetDirectX11()
         {
-            if (!EditorUtility.DisplayDialog("Install HDRP?",
-                "This adds Unity's High Definition Render Pipeline package, which is needed for ray tracing.\n\n" +
-                "Afterwards open Window > Rendering > HDRP Wizard and press 'Fix All', then on the 'HDRP + DXR' tab press 'Fix All' again " +
-                "to turn on ray tracing (needs a DirectX 12 GPU with ray tracing: NVIDIA RTX / AMD RX 6000 or newer).\n\n" +
-                "The game's custom post effects switch off under HDRP; add a Volume for HDRP effects instead. See README.md.",
-                "Install", "Cancel")) return;
-            Client.Add("com.unity.render-pipelines.high-definition");
-            Debug.Log("Hollow Tower: installing HDRP... watch the Package Manager progress bar.");
+            PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D11 });
+            PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows, false);
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows, new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D11 });
+            AssetDatabase.SaveAssets();
+            Debug.Log("<color=green>[Graphics]</color> PlayerSettings Graphics API configured for DirectX 11.");
+        }
+
+        [MenuItem("Hollow Tower/Graphics/Restart Editor in DirectX 11", priority = 21)]
+        public static void RestartInDx11()
+        {
+            SetDirectX11();
+            if (EditorUtility.DisplayDialog("Restart in DirectX 11?",
+                "Unity will now save open scenes and restart with '-force-d3d11' to initialize the Direct3D 11 backend.", "Restart", "Cancel"))
+            {
+                EditorSceneManager.SaveOpenScenes();
+                EditorApplication.OpenProject(Directory.GetCurrentDirectory(), "-force-d3d11");
+            }
         }
 
         [MenuItem("Hollow Tower/Open README", priority = 40)]

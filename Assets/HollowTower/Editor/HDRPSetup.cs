@@ -1,3 +1,6 @@
+#if HOLLOWTOWER_HDRP
+// Retired with the move to URP: this configured the HDRP asset, ray tracing and DLSS.
+// It only compiles with the HDRP package installed and HOLLOWTOWER_HDRP defined.
 using System;
 using System.Linq;
 using System.Reflection;
@@ -106,10 +109,10 @@ namespace HollowTower.EditorTools
                 .FirstOrDefault(t => t != null);
             if (volumeUtils != null) CallInternal(volumeUtils, "EnsureDefaultVolumeProfile", null);
 
-            // --- DirectX 12 for DXR ---
+            // --- DirectX 11 for broad compatibility and maximum framerate ---
             PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
             PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64,
-                new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D12, UnityEngine.Rendering.GraphicsDeviceType.Direct3D11 });
+                new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D11 });
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.StandaloneWindows64)
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
 
@@ -122,7 +125,7 @@ namespace HollowTower.EditorTools
                 if (p.EndsWith(".glb") || p.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase))
                     AssetDatabase.ImportAsset(p, ImportAssetOptions.ForceUpdate);
             }
-            Debug.Log("Hollow Tower: HDRP configured (ray tracing + DLSS). Restart the editor so it runs on DirectX 12.");
+            Debug.Log("Hollow Tower: HDRP configured. Restart the editor so it runs on DirectX 11.");
         }
 
         static void CallInternal(Type t, string method, object[] args)
@@ -190,3 +193,4 @@ namespace HollowTower.EditorTools
         }
     }
 }
+#endif

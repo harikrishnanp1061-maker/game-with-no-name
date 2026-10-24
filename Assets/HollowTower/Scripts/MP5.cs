@@ -146,7 +146,7 @@ namespace HollowTower
                 mat.SetFloat("_SmoothnessRemapMax", 0.7f);
             }
             else { mat.SetFloat("_Metallic", 0.6f); mat.SetFloat("_Smoothness", 0.4f); }
-            UnityEngine.Rendering.HighDefinition.HDMaterial.ValidateMaterial(mat);
+            Gfx.Validate(mat);
             foreach (var r in mesh.GetComponentsInChildren<Renderer>(true)) r.sharedMaterial = mat;
 
             mag = new GameObject("Mag").transform;

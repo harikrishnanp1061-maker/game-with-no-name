@@ -1,9 +1,14 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+#if HOLLOWTOWER_HDRP
 using UnityEngine.Rendering.HighDefinition;
+#else
+using UnityEngine.Rendering.Universal;
+#endif
 
 namespace HollowTower
 {
+#if HOLLOWTOWER_HDRP
     /// <summary>
     /// The game's HDRP look, built in code: physically based exposure, ACES, volumetric fog with
     /// light shafts, and - when the GPU supports DXR - ray-traced GI, reflections, AO and shadows
@@ -192,6 +197,83 @@ namespace HollowTower
             hd.renderingPathCustomFrameSettings = fs;
         }
     }
+#else
+    /// <summary>
+    /// URP stand-in for the HDRP look above (kept behind HOLLOWTOWER_HDRP). Same API, so the game code
+    /// is unchanged: ACES, grading, vignette, grain and bloom in a code-built Volume, a dim gradient
+    /// ambient in place of HDRP's night sky, and no ray tracing or DLSS.
+    /// </summary>
+    public static class HDRPLook
+    {
+        public static bool RayTracing { get { return false; } }
+        public static bool DLSS { get { return false; } }
+        /// <summary>Internal render resolution in percent (always native under URP).</summary>
+        public static float RenderScale = 100f;
+        public static bool RayTracedFlashlightShadows = false;
+        public static bool RayTracedEffects { get { return false; } }
+
+        public static void SetRayTracedEffects(bool on) { }
+
+        public static Volume Create()
+        {
+            var go = new GameObject("URP Look (global volume)");
+            var vol = go.AddComponent<Volume>();
+            vol.isGlobal = true;
+            vol.priority = 10f;
+            var p = ScriptableObject.CreateInstance<VolumeProfile>();
+            vol.sharedProfile = p;
+
+            var tone = p.Add<Tonemapping>(true);
+            tone.mode.Override(TonemappingMode.ACES);
+
+            var grade = p.Add<ColorAdjustments>(true);
+            grade.postExposure.Override(1f);   // no auto exposure in URP; same compensation as the remastered map
+            grade.saturation.Override(-18f);
+            grade.contrast.Override(12f);
+            grade.colorFilter.Override(new Color(0.94f, 0.97f, 1.0f));
+
+            var wb = p.Add<WhiteBalance>(true);
+            wb.temperature.Override(-6f);
+
+            var vig = p.Add<Vignette>(true);
+            vig.intensity.Override(0.32f);
+            vig.smoothness.Override(0.45f);
+
+            var grain = p.Add<FilmGrain>(true);
+            grain.type.Override(FilmGrainLookup.Medium2);
+            grain.intensity.Override(0.22f);
+            grain.response.Override(0.75f);
+
+            var bloom = p.Add<Bloom>(true);
+            bloom.intensity.Override(0.4f);
+            bloom.scatter.Override(0.7f);
+            bloom.threshold.Override(1.3f);
+
+            p.Add<ChromaticAberration>(true).intensity.Override(0.06f);
+            // No camera motion blur: it smears the view when you turn quickly.
+            p.Add<MotionBlur>(true).intensity.Override(0f);
+
+            // HDRP's dim gradient night sky only fed the ambient (there are no windows).
+            RenderSettings.ambientMode = AmbientMode.Trilight;
+            RenderSettings.ambientSkyColor = new Color(0.05f, 0.06f, 0.09f).gamma;
+            RenderSettings.ambientEquatorColor = new Color(0.035f, 0.04f, 0.05f).gamma;
+            RenderSettings.ambientGroundColor = new Color(0.02f, 0.02f, 0.02f).gamma;
+            return vol;
+        }
+
+        /// <summary>URP camera setup: post-processing on, SMAA (URP has no DLSS).</summary>
+        public static void SetupCamera(Camera cam)
+        {
+            cam.nearClipPlane = 0.03f;
+            cam.farClipPlane = 160f;
+            cam.allowHDR = true;
+            var data = cam.GetUniversalAdditionalCameraData();
+            data.renderPostProcessing = true;
+            data.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+            data.antialiasingQuality = AntialiasingQuality.High;
+        }
+    }
+#endif
 
     /// <summary>
     /// Pain and hiding feedback as a high-priority local Volume: red vignette + chromatic split

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 
 namespace HollowTower
 {
@@ -98,7 +97,7 @@ namespace HollowTower
                 m.SetFloat("_AlphaCutoffEnable", 1f);
                 m.SetFloat("_AlphaCutoff", 0.35f);
             }
-            HDMaterial.ValidateMaterial(m);
+            Gfx.Validate(m);
             return m;
         }
 

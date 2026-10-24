@@ -1,13 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+#if HOLLOWTOWER_HDRP
 using UnityEngine.Rendering.HighDefinition;
+#else
+using UnityEngine.Rendering.Universal;
+#endif
 
 namespace HollowTower
 {
     /// <summary>
-    /// Builds HDRP materials, procedural textures, primitive shapes and physically based lights at
-    /// runtime, so the game's geometry can be generated from code.
+    /// Builds materials, procedural textures, primitive shapes and lights at runtime, so the game's
+    /// geometry can be generated from code. The project now runs on URP; the original HDRP code paths
+    /// are kept behind the HOLLOWTOWER_HDRP define (only valid with the HDRP package installed).
     /// </summary>
     public static class Gfx
     {
@@ -16,21 +21,41 @@ namespace HollowTower
         public const int WorldMask = 1 << 0;    // walls, floors, props
         public const int ShootMask = (1 << 0) | (1 << EnemyLayer);
 
+#if HOLLOWTOWER_HDRP
         /// <summary>The old "intensity 1" point light expressed in lumens.</summary>
         public const float Lumens = 520f;
         /// <summary>The old "emission 1" expressed in nits.</summary>
         public const float Nits = 140f;
+#else
+        /// <summary>The old "intensity 1" point light as a URP intensity (520 lm at the remastered map's 0.045 per candela).</summary>
+        public const float Lumens = 1.86f;
+        /// <summary>URP emission uses the old "1 = bright" scale directly.</summary>
+        public const float Nits = 1f;
+#endif
+        /// <summary>Physical lumens of the old "intensity 1" light: SpotLight takes lumens in either pipeline.</summary>
+        public const float SpotLumens = 520f;
 
         public static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+#if HOLLOWTOWER_HDRP
         public static readonly int EmissiveId = Shader.PropertyToID("_EmissiveColor");
+        const string BaseMapProp = "_BaseColorMap", NormalMapProp = "_NormalMap", NormalScaleProp = "_NormalScale";
+#else
+        public static readonly int EmissiveId = Shader.PropertyToID("_EmissionColor");
+        const string BaseMapProp = "_BaseMap", NormalMapProp = "_BumpMap", NormalScaleProp = "_BumpScale";
+#endif
 
         static Shader lit, unlit;
+#if HOLLOWTOWER_HDRP
         static Shader LitShader { get { if (lit == null) lit = Shader.Find("HDRP/Lit"); return lit; } }
         static Shader UnlitShader { get { if (unlit == null) unlit = Shader.Find("HDRP/Unlit"); return unlit; } }
+#else
+        static Shader LitShader { get { if (lit == null) lit = Shader.Find("Universal Render Pipeline/Lit"); return lit; } }
+        static Shader UnlitShader { get { if (unlit == null) unlit = Shader.Find("Universal Render Pipeline/Unlit"); return unlit; } }
+#endif
 
         // ---------- Materials ----------
 
-        /// <summary>Standard HDRP/Lit material. A texture made by GrimeTexture brings its normal map along.</summary>
+        /// <summary>Standard Lit material. A texture made by GrimeTexture brings its normal map along.</summary>
         public static Material Lit(Color color, float smoothness = 0.15f, float metallic = 0f, Texture2D tex = null)
         {
             var m = new Material(LitShader);
@@ -39,30 +64,49 @@ namespace HollowTower
             m.SetFloat("_Metallic", metallic);
             if (tex != null)
             {
-                m.SetTexture("_BaseColorMap", tex);
+                m.SetTexture(BaseMapProp, tex);
                 Texture2D bump;
                 if (NormalMaps.TryGetValue(tex, out bump))
                 {
-                    m.SetTexture("_NormalMap", bump);
-                    m.SetFloat("_NormalScale", 1f);
+                    m.SetTexture(NormalMapProp, bump);
+                    m.SetFloat(NormalScaleProp, 1f);
                 }
             }
-            HDMaterial.ValidateMaterial(m);
+            Validate(m);
             return m;
         }
 
         /// <summary>
         /// Lit material whose texture is projected in world space (triplanar), so walls, floors and
-        /// furniture of any size tile at a constant real-world scale.
+        /// furniture of any size tile at a constant real-world scale. URP/Lit has no triplanar mode,
+        /// so under URP the texture follows the mesh UVs.
         /// </summary>
         public static Material LitWorld(Color color, float smoothness, float metallic, Texture2D tex, float metres)
         {
             var m = Lit(color, smoothness, metallic, tex);
+#if HOLLOWTOWER_HDRP
             m.SetFloat("_UVBase", 5f);                       // triplanar
             m.SetFloat("_TexWorldScale", 1f / Mathf.Max(0.05f, metres));
             m.SetVector("_UVMappingMask", new Vector4(1f, 0f, 0f, 0f));
             HDMaterial.ValidateMaterial(m);
+#endif
             return m;
+        }
+
+        /// <summary>Re-validates a material after its properties change (HDRP passes/keywords, or URP keywords).</summary>
+        public static void Validate(Material m)
+        {
+#if HOLLOWTOWER_HDRP
+            HDMaterial.ValidateMaterial(m);
+#else
+            if (m.HasProperty("_BumpMap")) SetKeyword(m, "_NORMALMAP", m.GetTexture("_BumpMap") != null);
+            if (m.HasProperty("_EmissionColor")) SetKeyword(m, "_EMISSION", m.GetColor("_EmissionColor").maxColorComponent > 0f);
+#endif
+        }
+
+        static void SetKeyword(Material m, string keyword, bool on)
+        {
+            if (on) m.EnableKeyword(keyword); else m.DisableKeyword(keyword);
         }
 
         public static Material Emissive(Color baseColor, Color emission)
@@ -73,18 +117,22 @@ namespace HollowTower
             return m;
         }
 
-        /// <summary>Sets emission on an HDRP material; colours are in the old "1 = bright" scale.</summary>
+        /// <summary>Sets emission on a material; colours are in the old "1 = bright" scale.</summary>
         public static void SetEmission(Material m, Color legacy)
         {
-            HDMaterial.SetUseEmissiveIntensity(m, false);
-            HDMaterial.SetEmissiveColor(m, ToNits(legacy));
+            SetEmissionNits(m, ToNits(legacy));
         }
 
         /// <summary>Sets emission already expressed in nits (e.g. read back from a material).</summary>
         public static void SetEmissionNits(Material m, Color nits)
         {
+#if HOLLOWTOWER_HDRP
             HDMaterial.SetUseEmissiveIntensity(m, false);
             HDMaterial.SetEmissiveColor(m, nits);
+#else
+            m.SetColor(EmissiveId, nits);
+            SetKeyword(m, "_EMISSION", nits.maxColorComponent > 0f);
+#endif
         }
 
         public static Color ToNits(Color legacy) { return new Color(legacy.r * Nits, legacy.g * Nits, legacy.b * Nits, 1f); }
@@ -93,12 +141,16 @@ namespace HollowTower
         public static Material Transparent(Color color, Color emission)
         {
             var m = Lit(color, 0.6f);
+#if HOLLOWTOWER_HDRP
             m.SetFloat("_SurfaceType", 1f);
             m.SetFloat("_BlendMode", 0f);                    // alpha
             m.SetFloat("_EnableBlendModePreserveSpecularLighting", 0f);
             m.SetFloat("_TransparentDepthPrepassEnable", 0f);
             m.SetFloat("_ZWrite", 0f);
             HDMaterial.SetSurfaceType(m, true);
+#else
+            MakeTransparent(m, false);
+#endif
             SetEmission(m, emission);
             return m;
         }
@@ -107,6 +159,7 @@ namespace HollowTower
         public static Material UnlitGlow(Texture tex, Color legacyEmission, bool additive)
         {
             var m = new Material(UnlitShader);
+#if HOLLOWTOWER_HDRP
             m.SetColor("_UnlitColor", new Color(0f, 0f, 0f, 1f));
             if (tex != null) m.SetTexture("_UnlitColorMap", tex);
             m.SetFloat("_SurfaceType", 1f);
@@ -118,10 +171,39 @@ namespace HollowTower
             HDMaterial.SetUseEmissiveIntensity(m, false);
             HDMaterial.SetEmissiveColor(m, ToNits(legacyEmission));
             HDMaterial.ValidateMaterial(m);
+#else
+            // URP/Unlit has no emission: the glow colour is the base colour. _BaseColor isn't an HDR property, so it
+            // is stored gamma-encoded and Unity's linear conversion hands the shader the intended HDR value.
+            if (tex != null) m.SetTexture("_BaseMap", tex);
+            m.SetColor(BaseColorId, ToNits(legacyEmission).gamma);
+            MakeTransparent(m, additive);
+            m.SetFloat("_Cull", 0f);
+#endif
             return m;
         }
 
+#if !HOLLOWTOWER_HDRP
+        /// <summary>URP Lit/Unlit transparent surface, set up the way URP's material inspector does it.</summary>
+        static void MakeTransparent(Material m, bool additive)
+        {
+            var src = additive ? UnityEngine.Rendering.BlendMode.One : UnityEngine.Rendering.BlendMode.SrcAlpha;
+            var dst = additive ? UnityEngine.Rendering.BlendMode.One : UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha;
+            m.SetFloat("_Surface", 1f);
+            m.SetFloat("_Blend", additive ? 2f : 0f);
+            m.SetFloat("_SrcBlend", (float)src);
+            m.SetFloat("_DstBlend", (float)dst);
+            m.SetFloat("_SrcBlendAlpha", (float)UnityEngine.Rendering.BlendMode.One);
+            m.SetFloat("_DstBlendAlpha", (float)dst);
+            m.SetFloat("_ZWrite", 0f);
+            m.SetOverrideTag("RenderType", "Transparent");
+            m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            m.renderQueue = (int)RenderQueue.Transparent;
+        }
+#endif
+
+#if HOLLOWTOWER_HDRP
         static readonly Dictionary<Material, Material> gltfConverted = new Dictionary<Material, Material>();
+#endif
 
         /// <summary>
         /// glTFast's shader graph can't build a ray-tracing pass on this HDRP version, so imported glTF
@@ -136,6 +218,9 @@ namespace HollowTower
 
         public static Material FromGltf(Material s)
         {
+#if !HOLLOWTOWER_HDRP
+            return s;   // glTFast's shader graphs render under URP as imported
+#else
             if (s == null || s.shader.name.StartsWith("HDRP/")) return s;
             Material m;
             if (gltfConverted.TryGetValue(s, out m)) return m;
@@ -170,6 +255,7 @@ namespace HollowTower
             if (blend) HDMaterial.SetSurfaceType(m, true);
             gltfConverted[s] = m;
             return m;
+#endif
         }
 
         /// <summary>Kept for API compatibility; world-projected materials don't need per-object tiling.</summary>
@@ -318,8 +404,9 @@ namespace HollowTower
             return Prim(PrimitiveType.Cube, name, parent, localPos, scale, mat, keepCollider);
         }
 
-        // ---------- Lights (physical units) ----------
+        // ---------- Lights (physical units under HDRP) ----------
 
+#if HOLLOWTOWER_HDRP
         static HDAdditionalLightData AddHD(GameObject g)
         {
             var hd = g.GetComponent<HDAdditionalLightData>();
@@ -327,7 +414,14 @@ namespace HollowTower
             return hd;
         }
 
-        /// <summary>Point light. <paramref name="intensity"/> uses the old scale (1 ~ a dim bulb) and is converted to lumens.</summary>
+        /// <summary>HDRP's per-light data (cached shadows, ray tracing).</summary>
+        public static HDAdditionalLightData LightData(Light l) { return l != null ? l.GetComponent<HDAdditionalLightData>() : null; }
+#else
+        /// <summary>HDRP's per-light data; there is none under URP.</summary>
+        public static Component LightData(Light l) { return null; }
+#endif
+
+        /// <summary>Point light. <paramref name="intensity"/> uses the old scale (1 ~ a dim bulb) and is converted with <see cref="Lumens"/>.</summary>
         public static Light PointLight(Transform parent, Vector3 localPos, Color color, float intensity, float range,
                                        LightShadows shadows)
         {
@@ -336,21 +430,23 @@ namespace HollowTower
             g.transform.localPosition = localPos;
             var l = g.AddComponent<Light>();
             l.type = LightType.Point;
-            var hd = AddHD(g);
-            l.lightUnit = LightUnit.Lumen;
             l.color = color;
             l.intensity = intensity * Lumens;
             l.range = range;
             l.shadows = shadows;
             l.shadowStrength = 0.85f;
+#if HOLLOWTOWER_HDRP
+            var hd = AddHD(g);
+            l.lightUnit = LightUnit.Lumen;
             l.shapeRadius = 0.05f;
             hd.SetShadowResolutionLevel(0);
             hd.affectsVolumetric = true;
             hd.volumetricDimmer = 0.6f;
+#endif
             return l;
         }
 
-        /// <summary>Spot light in lumens with a reflector (flashlight, ceiling cans).</summary>
+        /// <summary>Spot light given in lumens (flashlight, ceiling cans); a reflector under HDRP.</summary>
         public static Light SpotLight(Transform parent, Vector3 localPos, Quaternion localRot, Color color, float lumens,
                                       float range, float angle, float innerPercent, LightShadows shadows)
         {
@@ -360,21 +456,25 @@ namespace HollowTower
             g.transform.localRotation = localRot;
             var l = g.AddComponent<Light>();
             l.type = LightType.Spot;
-            var hd = AddHD(g);
-            l.lightUnit = LightUnit.Lumen;
-            l.enableSpotReflector = true;
             l.color = color;
-            l.intensity = lumens;
             l.range = range;
             l.spotAngle = angle;
             l.innerSpotAngle = angle * innerPercent;
             l.shadows = shadows;
+#if HOLLOWTOWER_HDRP
+            var hd = AddHD(g);
+            l.lightUnit = LightUnit.Lumen;
+            l.enableSpotReflector = true;
+            l.intensity = lumens;
             l.shapeRadius = 0.03f;
             hd.affectsVolumetric = true;
+#else
+            l.intensity = lumens / SpotLumens * Lumens;
+#endif
             return l;
         }
 
-        // ---------- HDRP decals ----------
+        // ---------- Decals (URP decals only draw if the renderer has a Decal feature) ----------
 
         public enum DecalKind { Blood, Grime, Water }
         static Material[] bloodDecals, grimeDecals, waterDecals;
@@ -411,6 +511,18 @@ namespace HollowTower
             for (int i = 0; i < 2; i++) waterDecals[i] = DecalMat(SplatTexture(300 + i, false), new Color(0.22f, 0.2f, 0.15f, 0.6f), 0.6f);
         }
 
+#if !HOLLOWTOWER_HDRP
+        static Material DecalMat(Texture2D tex, Color col, float smooth)
+        {
+            // URP's default decal shader graph: albedo + alpha from the splat texture (no tint or smoothness inputs).
+            var shader = Shader.Find("Shader Graphs/Decal");
+            if (shader == null) return null;
+            var m = new Material(shader);
+            m.SetTexture("Base_Map", tex);
+            m.enableInstancing = true;
+            return m;
+        }
+#else
         static Material DecalMat(Texture2D tex, Color col, float smooth)
         {
             var m = new Material(Shader.Find("HDRP/Decal"));
@@ -427,6 +539,7 @@ namespace HollowTower
             HDMaterial.ValidateMaterial(m);
             return m;
         }
+#endif
 
         /// <summary>Irregular blob with an alpha falloff: splatters (with droplets) or soft stains.</summary>
         static Texture2D SplatTexture(int seed, bool splatter)

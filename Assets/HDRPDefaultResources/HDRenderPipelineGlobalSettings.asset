@@ -196,30 +196,9 @@ MonoBehaviour:
       - rid: 5836159674177814563
       - rid: 5836159674177814564
       - rid: 5836159674177814565
+      - rid: 7205410270350934084
     m_RuntimeSettings:
-      m_List:
-      - rid: 5836159674177814532
-      - rid: 5836159674177814533
-      - rid: 5836159674177814536
-      - rid: 5836159674177814539
-      - rid: 5836159674177814540
-      - rid: 5836159674177814541
-      - rid: 5836159674177814542
-      - rid: 5836159674177814543
-      - rid: 5836159674177814544
-      - rid: 5836159674177814545
-      - rid: 5836159674177814549
-      - rid: 5836159674177814550
-      - rid: 5836159674177814552
-      - rid: 5836159674177814553
-      - rid: 5836159674177814554
-      - rid: 5836159674177814556
-      - rid: 5836159674177814557
-      - rid: 5836159674177814559
-      - rid: 5836159674177814560
-      - rid: 5836159674177814561
-      - rid: 5836159674177814564
-      - rid: 5836159674177814565
+      m_List: []
   renderingLayerNames:
   - Default
   lightLayerName0: 
@@ -915,3 +894,9 @@ MonoBehaviour:
         m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
         m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
         m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
+    - rid: 7205410270350934084
+      type: {class: MipGenRenderPipelineRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_ColorPyramidPS: {fileID: 4800000, guid: 63b92baba208e314c8fdebe52ca0cc34, type: 3}
+        m_ColorPyramidCS: {fileID: 7200000, guid: 28969cfddd9ef3f4e94b971690146a4f, type: 3}
+        m_DepthPyramidCS: {fileID: 7200000, guid: 90a204702cd44e54cac7ed4fc6e5d86b, type: 3}

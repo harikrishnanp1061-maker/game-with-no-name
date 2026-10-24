@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 
 namespace HollowTower
 {
@@ -315,7 +314,7 @@ namespace HollowTower
                 m.SetTexture("_EmissiveColorMap", e);
                 Gfx.SetEmission(m, emission);
             }
-            HDMaterial.ValidateMaterial(m);
+            Gfx.Validate(m);
             texMats[prefix] = m;
             return m;
         }

@@ -37,7 +37,7 @@ namespace HollowTower.EditorTools
 
         static void StartRecording(bool quit)
         {
-            EditorSceneManager.OpenScene("Assets/HollowTower/Scenes/HollowTower.unity");
+            EditorSceneManager.OpenScene("Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity");
             Call("ClearCurrentShaderVariantCollection");
             SessionState.SetBool(RecordKey, true);
             SessionState.SetBool(QuitKey, quit);
@@ -115,7 +115,7 @@ namespace HollowTower.EditorTools
             if (!File.Exists(VariantsPath)) Debug.LogWarning("Hollow Tower: record shader variants first (Hollow Tower > Build > 1), or materials may render pink in the build.");
             var options = new BuildPlayerOptions
             {
-                scenes = new[] { "Assets/HollowTower/Scenes/HollowTower.unity" },
+                scenes = new[] { "Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity" },
                 locationPathName = BuildPath,
                 target = BuildTarget.StandaloneWindows64,
                 options = BuildOptions.None,
