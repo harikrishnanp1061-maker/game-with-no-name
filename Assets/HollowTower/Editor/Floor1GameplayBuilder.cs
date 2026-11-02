@@ -372,12 +372,32 @@ namespace HollowTower.EditorTools
         }
 
         // ------------------------------------------------------------------ false walls (P1)
+        static float secretBaseY;
+
+        /// <summary>A P1 false wall on any floor (floor 2 uses it): the same construction as floor 1's, on the 4 m wall
+        /// module centred at wallCentre (x, z) of that floor.</summary>
+        public static bool SecretWallOnFloor(int floor, Transform parent, string name, Vector3 wallCentre, bool alongX)
+        {
+            var keepRoot = floorRoot;
+            floorRoot = CollegeDresser.FloorRoot(floor);
+            if (floorRoot == null) { floorRoot = keepRoot; return false; }
+            var wall = FindWall(wallCentre, alongX);
+            if (wall == null) { Debug.LogWarning("[FalseWall] no wall module at " + wallCentre + " on floor " + (floor + 1)); floorRoot = keepRoot; return false; }
+            wallMat = wall.GetComponent<Renderer>().sharedMaterial;
+            steel = Load("Assets/HollowTowerRemastered/Materials/Doors/Mat_Door_FrameDarkSteel.mat") ?? Mat("Mat_Girder", new Color(0.2f, 0.21f, 0.22f), 0.8f, 0.35f);
+            secretBaseY = floor * LevelBuilder.Story;
+            bool ok = BuildSecretWall(parent, new Floor1Design.SecretWall { name = name, wallCentre = wallCentre, alongX = alongX });
+            secretBaseY = 0f;
+            floorRoot = keepRoot;
+            return ok;
+        }
+
         static bool BuildSecretWall(Transform root, Floor1Design.SecretWall sw)
         {
             var wall = FindWall(sw.wallCentre, sw.alongX);
             if (wall == null) { Debug.LogWarning("[Floor1] no wall at " + sw.wallCentre); return false; }
             var baseboard = FindWall(sw.wallCentre, sw.alongX, "Baseboard_");
-            Vector3 c = new Vector3(sw.wallCentre.x, 0f, sw.wallCentre.z);
+            Vector3 c = new Vector3(sw.wallCentre.x, secretBaseY, sw.wallCentre.z);
             Vector3 along = sw.alongX ? Vector3.right : Vector3.forward;   // direction the wall runs
             Vector3 across = sw.alongX ? Vector3.forward : Vector3.right;  // through the wall
             const float W = 4f, T = 0.25f, open = 1.8f, openH = 2.6f;

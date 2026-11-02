@@ -329,7 +329,7 @@ namespace HollowTower
             }
             if (IsPaused) return;
             // Clicking back into the game view re-captures the mouse.
-            if (Cursor.lockState != CursorLockMode.Locked && InputWrap.Down(KeyCode.Mouse0)) SetCursor(true);
+            if (Cursor.lockState != CursorLockMode.Locked && InputWrap.Down(KeyCode.Mouse0) && !Puzzles.PuzzlePanel.IsOpen) SetCursor(true);
 
             PowerGrid.Tick();
             if (Time.time >= nextLightCull) { nextLightCull = Time.time + 0.3f; CullLights(); }
@@ -586,6 +586,7 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             BuildStyles();
             float s = Screen.height / 1080f;
             big.fontSize = Mathf.RoundToInt(64 * s);

@@ -23,9 +23,11 @@ namespace HollowTower
         void LateUpdate()
         {
             if (viewModel) PlaceInView();
+            if (needle == null) return;
+            // the tower's floors have a FloorObjective each; the campus has its own objective chain
             var obj = FloorObjective.Current;
-            if (needle == null || obj == null) return;
-            var t = obj.CompassTarget;
+            var campus = Campus.CampusObjective.Instance;
+            Vector3? t = obj != null ? obj.CompassTarget : campus != null ? campus.CompassTarget : null;
             if (!t.HasValue) return;
 
             Vector3 up = transform.up;

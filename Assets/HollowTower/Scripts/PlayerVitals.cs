@@ -4,7 +4,7 @@ namespace HollowTower
 {
     /// <summary>
     /// One player's stamina and sanity (VitalsDirector puts one on each body).
-    /// Stamina: sprinting burns it (about six seconds flat out); it comes back while walking, faster standing still. Run
+    /// Stamina: sprinting burns it (about eleven seconds flat out); it comes back while walking, faster standing still. Run
     /// it dry and they are winded: no sprinting until it is back past 45%, and loud panting that monsters can hear.
     /// Sanity: drains in the floor 2 chaos, with a hunting monster close, in the dark, and in one blow when a teammate
     /// dies nearby. It creeps back on its own only while things are calm and lit, and only to 60%: items do the rest.
@@ -53,13 +53,13 @@ namespace HollowTower
 
             // ---------------- stamina
             bool sprinting = body.isControlled && !body.IsFrozen && body.IsSprinting;
-            if (sprinting && Time.time > freeSprintUntil) { Stamina -= 16f * dt; sinceSprint = 0f; }
+            if (sprinting && Time.time > freeSprintUntil) { Stamina -= 9f * dt; sinceSprint = 0f; }
             else
             {
                 sinceSprint += dt;
                 var cc = GetComponent<CharacterController>();
                 bool still = cc == null || !cc.enabled || new Vector2(cc.velocity.x, cc.velocity.z).sqrMagnitude < 0.2f;
-                if (sinceSprint > 0.8f) Stamina += (Winded ? 8f : still ? 18f : 11f) * dt;   // winded: a good few seconds of walking before they can run
+                if (sinceSprint > 0.8f) Stamina += (Winded ? 10f : still ? 22f : 14f) * dt;   // winded: a good few seconds of walking before they can run
             }
             Stamina = Mathf.Clamp(Stamina, 0f, MaxStamina);
             if (!Winded && Stamina <= 0f) Winded = true;
@@ -74,9 +74,19 @@ namespace HollowTower
             SanityTick(dt);
         }
 
+        AudioSource heart, choke;
         void Pant(float wantPant, float dt)
         {
-            if (pant.clip == null && SfxBank.Instance != null) pant.clip = SfxBank.Instance.breathing;
+            if (pant.clip == null) pant.clip = UserSfx.Get("breathing_fast") ?? (SfxBank.Instance != null ? SfxBank.Instance.breathing : null);
+            // worn out: the heart pounding under the breath
+            if (heart == null)
+            {
+                heart = gameObject.AddComponent<AudioSource>(); heart.loop = true; heart.playOnAwake = false; heart.clip = UserSfx.Get("heart_breath");
+                heart.rolloffMode = AudioRolloffMode.Linear; heart.maxDistance = 12f;
+            }
+            heart.spatialBlend = PlayerParty.Instance != null && PlayerParty.Instance.Current == body ? 0f : 1f;
+            heart.volume = Mathf.MoveTowards(heart.volume, wantPant > 0.6f ? 0.6f : 0f, dt * 0.5f);
+            if (heart.clip != null) { if (heart.volume > 0.02f && !heart.isPlaying) heart.Play(); else if (heart.volume <= 0.02f && heart.isPlaying) heart.Stop(); }
             pant.volume = Mathf.MoveTowards(pant.volume, wantPant * 0.85f, dt * 0.8f);
             pant.spatialBlend = PlayerParty.Instance != null && PlayerParty.Instance.Current == body ? 0f : 1f;
             if (pant.clip != null)
@@ -98,10 +108,24 @@ namespace HollowTower
             float near = NearestHunter();
             if (near < 10f) drain += Mathf.Lerp(3f, 0.8f, near / 10f);
             if (dark) drain += 0.45f;
-            if (drain > 0f) Sanity -= drain * dt;
-            else if (Sanity < 60f) Sanity += 0.35f * dt;   // calm, lit, nothing near: they steady themselves, a little
+            // the place wears on you all the time: only a tonic (or sweets) wins it back
+            drain += 0.05f;
+            Sanity -= drain * dt;
             Sanity = Mathf.Clamp(Sanity, 0f, MaxSanity);
-            if (Sanity <= 0f) StartCoroutine(Breakdown());
+            // a monster on you and your mind going: the choking starts so that it ends as the last of it does
+            var clip = UserSfx.Get("suffocation");
+            if (clip != null && near < 10f && drain > 0.5f && Sanity / drain <= clip.length && (choke == null || !choke.isPlaying))
+            {
+                if (choke == null) { choke = gameObject.AddComponent<AudioSource>(); choke.playOnAwake = false; choke.spatialBlend = 0f; }
+                choke.clip = clip; choke.time = Mathf.Clamp(clip.length - Sanity / drain, 0f, clip.length - 0.1f); choke.volume = 0.9f; choke.Play();
+            }
+            else if (choke != null && choke.isPlaying && near >= 12f) choke.Stop();
+            if (Sanity <= 0f)
+            {
+                // with something right on them, losing their mind is the end; alone, they break down and come back
+                if (near < 8f && PlayerParty.Instance != null) PlayerParty.Instance.KillPlayer(body, "lost their mind as it closed in");
+                else StartCoroutine(Breakdown());
+            }
         }
 
         // a teammate dying where they could see it
@@ -133,6 +157,12 @@ namespace HollowTower
             float best = 99f;
             foreach (var m in PartyMonster.All)
                 if (m != null && m.Hunting) best = Mathf.Min(best, Vector3.Distance(m.transform.position, transform.position));
+            foreach (var m in Campus.NailedMonster.All)
+                if (m != null && (m.Current == Campus.NailedMonster.State.Chase || m.Current == Campus.NailedMonster.State.Alert || m.Current == Campus.NailedMonster.State.Attack))
+                    best = Mathf.Min(best, Vector3.Distance(m.transform.position, transform.position));
+            var g = Campus.CampusGiant.Instance;
+            if (g != null && (g.Current == Campus.CampusGiant.Mode.Chase || g.Current == Campus.CampusGiant.Mode.Strike || g.Current == Campus.CampusGiant.Mode.Roar))
+                best = Mathf.Min(best, Vector3.Distance(g.transform.position, transform.position) * 0.25f);   // it is huge: it fills your eyes from far off
             foreach (var m in NeedleMonster.All)
                 if (m != null && (m.Current == NeedleMonster.State.Chase || m.Current == NeedleMonster.State.Alert || m.Current == NeedleMonster.State.Attack))
                     best = Mathf.Min(best, Vector3.Distance(m.transform.position, transform.position));

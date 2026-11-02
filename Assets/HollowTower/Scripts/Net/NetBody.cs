@@ -1,4 +1,4 @@
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -15,15 +15,21 @@ namespace HollowTower.Net
     {
         readonly NetworkVariable<bool> torch = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         readonly NetworkVariable<bool> winded = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        readonly NetworkVariable<bool> crouched = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        readonly NetworkVariable<bool> grounded = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         readonly NetworkVariable<bool> dead = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         readonly NetworkVariable<FixedString128Bytes> deathHow = new NetworkVariable<FixedString128Bytes>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         RemasteredPlayerController body;
-        Vector3 lastPos;
+        Vector3 lastPos, vel;
         float speed;
+        CharacterAnimDriver driver;
 
         /// <summary>Out of breath (set by the owner's PlayerVitals; heard as panting on the other machines).</summary>
         public bool Winded { get { return winded.Value; } set { if (IsSpawned && IsOwner && winded.Value != value) winded.Value = value; } }
+
+        /// <summary>Standing on something, as its owner last reported (for someone else's body).</summary>
+        public bool Grounded { get { return grounded.Value; } }
 
         public int Index { get { var p = PlayerParty.Instance; return p != null ? System.Array.IndexOf(p.players, body) : -1; } }
 
@@ -35,7 +41,11 @@ namespace HollowTower.Net
             return nb == null || !nb.IsSpawned || nb.IsOwner;
         }
 
-        void Awake() { body = GetComponent<RemasteredPlayerController>(); }
+        void Awake()
+        {
+            body = GetComponent<RemasteredPlayerController>();
+            if (body.animator != null) driver = body.animator.GetComponent<CharacterAnimDriver>();
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -73,13 +83,17 @@ namespace HollowTower.Net
             if (IsOwner)
             {
                 if (torch.Value != body.flashlightEnabled) torch.Value = body.flashlightEnabled;
+                if (crouched.Value != body.IsCrouching) crouched.Value = body.IsCrouching;
+                if (grounded.Value != body.IsGrounded) grounded.Value = body.IsGrounded;
                 return;
             }
             // someone else's body: walk it at the speed it is moving, torch as they have it
             Vector3 d = transform.position - lastPos; lastPos = transform.position;
-            float v = new Vector2(d.x, d.z).magnitude / Mathf.Max(Time.deltaTime, 0.001f);
-            speed = Mathf.Lerp(speed, v, Time.deltaTime * 10f);
-            if (body.animator != null && !body.IsDead) body.animator.SetFloat("Speed", speed < 0.15f ? 0f : speed);
+            Vector3 v3 = d / Mathf.Max(Time.deltaTime, 0.001f); v3.y = 0f;
+            vel = Vector3.Lerp(vel, v3, 1f - Mathf.Exp(-10f * Time.deltaTime));   // network ticks arrive unevenly
+            speed = vel.magnitude;
+            if (driver != null) driver.Drive(vel, grounded.Value, crouched.Value, body.hasTorch && torch.Value, body.IsDead);
+            else if (body.animator != null && !body.IsDead) body.animator.SetFloat("Speed", speed < 0.15f ? 0f : speed);
             body.flashlightEnabled = torch.Value;
             if (body.flashlightLight != null && !body.IsDead) body.flashlightLight.enabled = torch.Value && body.hasTorch;
         }
@@ -103,6 +117,34 @@ namespace HollowTower.Net
             deathHow.Value = new FixedString128Bytes(how);
             if (!body.IsDead) { body.Die(); var party = PlayerParty.Instance; if (party != null) party.OnPlayerDied(body, how); }
             dead.Value = true;
+        }
+
+        // ---------------------------------------------------------------- revive (dev)
+        /// <summary>In a session: asks the host to bring b back at a spot, and every machine then revives it there. False
+        /// when not in a session (the caller revives locally).</summary>
+        public static bool RequestRevive(RemasteredPlayerController b, Vector3 at, Quaternion rot)
+        {
+            if (!Net.Active || b == null) return false;
+            var nb = b.GetComponent<NetBody>();
+            if (nb == null || !nb.IsSpawned) return false;
+            nb.ReviveRequestRpc(at, rot);
+            return true;
+        }
+
+        [Rpc(SendTo.Server, RequireOwnership = false)]
+        void ReviveRequestRpc(Vector3 at, Quaternion rot)
+        {
+            if (!dead.Value && !body.IsDead) return;
+            dead.Value = false;
+            deathHow.Value = default;
+            RevivedRpc(at, rot);
+        }
+
+        [Rpc(SendTo.Everyone)]
+        void RevivedRpc(Vector3 at, Quaternion rot)
+        {
+            var party = PlayerParty.Instance;
+            if (party != null) party.ReviveAt(Index, at, rot);
         }
 
         void OnDead(bool was, bool now)

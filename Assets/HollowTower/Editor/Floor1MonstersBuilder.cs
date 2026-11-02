@@ -219,6 +219,7 @@ namespace HollowTower.EditorTools
             bank.monsterAttack = A("Monster/Monster_Attack_GhostBreath.mp3");
             bank.heartbeat = A("Player/voicebosch-heart-and-breath-suspense-196083.mp3");
             bank.monsterSteps = new[] { A("Generated/Monster_Needle_Step_01.wav"), A("Generated/Monster_Needle_Step_02.wav"), A("Generated/Monster_Needle_Step_03.wav") };
+            SfxRepair.Assign(bank);   // the audited replacements for the silent / duplicated clips above
             EditorUtility.SetDirty(bank);
             foreach (var p in party.players)
                 if (p != null && p.GetComponent<PlayerSfx>() == null) p.gameObject.AddComponent<PlayerSfx>();

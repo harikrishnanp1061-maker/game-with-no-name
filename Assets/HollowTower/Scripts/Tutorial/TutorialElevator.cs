@@ -5,7 +5,7 @@ namespace HollowTower
     /// <summary>
     /// The tutorial's way out: the working elevator is dead until the fuse cell from the dark room goes into its power
     /// module (E at the panel). Then anyone standing in the cab presses E and the doors close on everyone: the whole
-    /// party goes down to the tower, waking up in floor 1's spawn elevator.
+    /// party goes up to the tower, waking up in floor 1's spawn elevator.
     /// </summary>
     public class TutorialElevator : MonoBehaviour, IPartyInteractable, Net.INetAction
     {
@@ -13,12 +13,30 @@ namespace HollowTower
         public Collider cab;              // the trigger box inside the elevator
         public Light glow;                // lights up once powered
         public GameObject installedCell;  // shown in the empty socket once the cell is in
+        public Transform leftDoor, rightDoor;   // the cab's sliding doors (found under the cab if left empty)
         public bool Powered { get; private set; }
         bool leaving;
         float leaveAt;
+        float doorsOpen;   // 0 shut, 1 open: they slide open once the cell is in and shut again on the way down
+        // the collage game's ElevatorPowerSocket door positions (local)
+        const float LeftClosedX = 0.00335f, LeftOpenX = 0.00915f, RightClosedX = -0.00335f, RightOpenX = -0.00915f, DoorY = -0.0098f, DoorZ = 0.0105f, SlideTime = 1.4f;
         GUIStyle style;
 
-        void Start() { if (installedCell != null) installedCell.SetActive(false); if (glow != null) glow.color = new Color(1f, 0.15f, 0.1f); }
+        void Start()
+        {
+            if (installedCell != null) installedCell.SetActive(false);
+            if (glow != null) glow.color = new Color(1f, 0.15f, 0.1f);
+            if (cab != null && leftDoor == null) leftDoor = cab.transform.Find("Exterior_Front_Assembly/LeftSlidingDoor");
+            if (cab != null && rightDoor == null) rightDoor = cab.transform.Find("Exterior_Front_Assembly/RightSlidingDoor");
+            SetDoors(0f);
+        }
+
+        void SetDoors(float open)
+        {
+            float k = open * open * (3f - 2f * open);
+            if (leftDoor != null) leftDoor.localPosition = new Vector3(Mathf.Lerp(LeftClosedX, LeftOpenX, k), DoorY, DoorZ);
+            if (rightDoor != null) rightDoor.localPosition = new Vector3(Mathf.Lerp(RightClosedX, RightOpenX, k), DoorY, DoorZ);
+        }
 
         public string Prompt(int player, RemasteredPlayerController body)
         {
@@ -48,7 +66,7 @@ namespace HollowTower
                 if (installedCell != null) installedCell.SetActive(true);
                 if (glow != null) glow.color = new Color(0.3f, 1f, 0.45f);
                 if (SfxBank.Instance != null) SfxBank.At(SfxBank.Instance.socketPower, transform.position, 1f, 1f, 25f);
-                party.Flash("The elevator hums to life - everyone in, [E] to go down", 4f);
+                party.Flash("The elevator hums to life and its doors open - everyone in, [E] to go up", 4f);
                 return true;
             }
             if (action == 2)
@@ -57,7 +75,7 @@ namespace HollowTower
                 leaving = true;
                 leaveAt = Time.time + 2.5f;
                 if (SfxBank.Instance != null) SfxBank.At(SfxBank.Instance.doorClose, transform.position, 1f, 0.8f, 20f);
-                if (party != null) party.Flash("Going down...", 3f);
+                if (party != null) party.Flash("Going up...", 3f);
                 return true;
             }
             return false;
@@ -66,6 +84,8 @@ namespace HollowTower
         void Update()
         {
             var party = PlayerParty.Instance;
+            float want = Powered && !leaving ? 1f : 0f;
+            if (doorsOpen != want) { doorsOpen = Mathf.MoveTowards(doorsOpen, want, Time.deltaTime / SlideTime); SetDoors(doorsOpen); }
             if (leaving)
             {
                 if (party != null) party.SetFade(Mathf.Clamp01(1f - (leaveAt - Time.time) / 2.5f));
@@ -78,11 +98,12 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             var party = PlayerParty.Instance;
             if (!Powered || leaving || party == null || party.Current == null || cab == null) return;
             if (!cab.bounds.Contains(party.Current.transform.position + Vector3.up)) return;
             if (style == null) style = new GUIStyle(GUI.skin.box) { fontSize = 18, fontStyle = FontStyle.Bold };
-            GUI.Box(new Rect((Screen.width - 420f) * 0.5f, Screen.height * 0.72f, 420f, 48f), "[ E ] GO DOWN TO THE TOWER", style);
+            GUI.Box(new Rect((Screen.width - 420f) * 0.5f, Screen.height * 0.72f, 420f, 48f), "[ E ] GO UP TO THE TOWER", style);
         }
     }
 }

@@ -6,7 +6,8 @@ namespace HollowTower
     /// <summary>
     /// The exit elevator, in floor 2's locker room (floors 3 and 4 were cut). It has no power until the fuse cells go in:
     /// floor 1's cell (it pops back out of the stairwell lock) and the two hidden on floor 2. Whoever is inside presses E
-    /// to put in what they carry; with all three in, E closes the doors and the party escapes.
+    /// to put in what they carry; with all three in, E closes the doors and the party escapes - once the override
+    /// keypad's code is in, when it has one (Puzzles.PuzzleLock, added at load).
     /// </summary>
     public class TowerExitElevator : MonoBehaviour, Net.INetAction
     {
@@ -92,12 +93,22 @@ namespace HollowTower
                 isPlayerInside = triggerCollider.bounds.Contains(playerTransform.position + Vector3.up * 0.5f);
             }
 
-            if (isPlayerInside && !hasEscaped && !isClosing)
+            if (isPlayerInside && !hasEscaped && !isClosing && !Puzzles.PuzzlePanel.IsOpen)
             {
                 if (InputWrap.Down(KeyCode.E))
                 {
                     var party = PlayerParty.Instance;
-                    if (CellsIn >= cellsNeeded) Net.NetWorld.Act(this, 2);
+                    var keypad = GetComponent<Puzzles.PuzzleLock>();
+                    var piano = Puzzles.PianoPuzzle.Instance;
+                    if (CellsIn >= cellsNeeded && piano != null && !piano.Solved)
+                    {
+                        if (party != null) party.Flash("The override is locked - it is wired into the party's sound system. Play the music box's tune on the floor piano (music room, south-west)", 5f);
+                    }
+                    else if (CellsIn >= cellsNeeded)
+                    {
+                        if (keypad == null || keypad.TryOpen(party != null ? party.CurrentIndex : 0, () => Net.NetWorld.Act(this, 2)))
+                            Net.NetWorld.Act(this, 2);
+                    }
                     else if (party != null && party.Current != null)
                     {
                         var inv = party.Current.GetComponent<PlayerInventory>();
@@ -198,14 +209,30 @@ namespace HollowTower
             PlayDescentHum();
             yield return new WaitForSeconds(0.6f);
 
+            // the ride down: fade out, and the doors open again on the administration building (the final level)
+            if (Application.CanStreamedLevelBeLoaded(Net.NetLobby.CampusLevel))
+            {
+                var party = PlayerParty.Instance;
+                for (float f = 0f; f < 2.2f; f += Time.deltaTime)
+                {
+                    if (party != null) party.SetFade(f / 2.2f);
+                    yield return null;
+                }
+                if (party != null) party.SetFade(1f);
+                yield return new WaitForSeconds(0.8f);
+                if (!Net.Net.Active || Net.Net.IsAuthority) Net.NetLobby.LoadLevel(Net.NetLobby.CampusLevel);
+                yield break;   // a client waits in the dark for the host's scene change
+            }
+
             hasEscaped = true;
             escapeStartTime = Time.time;
         }
 
         void OnGUI()
         {
+            UiStyle.Use();
             // Interaction prompt when inside elevator
-            if (isPlayerInside && !isClosing && !hasEscaped)
+            if (isPlayerInside && !isClosing && !hasEscaped && !Puzzles.PuzzlePanel.IsOpen)
             {
                 var promptStyle = new GUIStyle(GUI.skin.box);
                 promptStyle.fontSize = 18;
@@ -219,7 +246,11 @@ namespace HollowTower
                 float by = Screen.height * 0.72f;
 
                 GUI.backgroundColor = new Color(0.08f, 0.12f, 0.18f, 0.95f);
-                string label = CellsIn >= cellsNeeded ? "[ E ] CLOSE THE DOORS AND ESCAPE"
+                var keypad = GetComponent<Puzzles.PuzzleLock>();
+                var pianoLock = Puzzles.PianoPuzzle.Instance;
+                string label = CellsIn >= cellsNeeded && pianoLock != null && !pianoLock.Solved ? "OVERRIDE LOCKED - PLAY THE TUNE ON THE MUSIC ROOM'S FLOOR PIANO"
+                             : CellsIn >= cellsNeeded && keypad != null && !keypad.Solved ? keypad.Status("[ E ] ENTER THE OVERRIDE CODE AND ESCAPE").ToUpper()
+                             : CellsIn >= cellsNeeded ? "[ E ] CLOSE THE DOORS AND ESCAPE"
                              : "[ E ] INSERT FUSE CELLS   (" + CellsIn + " / " + cellsNeeded + " powered)";
                 GUI.Box(new Rect(bx, by, bw, bh), label, promptStyle);
             }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace HollowTower
@@ -117,6 +117,7 @@ namespace HollowTower
             drone.clip = PartyMusic.Drone; drone.loop = true; drone.spatialBlend = 0f; drone.volume = 0f;
             gameObject.AddComponent<ChaosFx>();
             gameObject.AddComponent<HardLanding>();   // the floor's broken boards drop you to floor 1
+            gameObject.AddComponent<PitWardens>();    // and once you are up here, floor 1's monsters wait under them
             BeginExplore(Net.Net.IsAuthority ? Random.Range(exploreTime.x, exploreTime.y) : 9999f);   // a client waits for the host's timing
         }
 

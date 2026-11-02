@@ -57,6 +57,7 @@ public class PlayerWakeUpSequence : MonoBehaviour
 
     void OnGUI()
     {
+            HollowTower.UiStyle.Use();
         if (finished || t < 0f) return;
         if (white == null) { white = new Texture2D(1, 1); white.SetPixel(0, 0, Color.white); white.Apply(); }
         float k = Mathf.Clamp01((t - _initialBlackDelay) / Mathf.Max(0.1f, _wakeUpDuration));

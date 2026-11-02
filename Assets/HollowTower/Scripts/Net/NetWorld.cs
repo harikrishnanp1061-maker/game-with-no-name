@@ -28,6 +28,8 @@ namespace HollowTower.Net
     public class NetWorld : NetworkBehaviour
     {
         static NetWorld instance;
+        /// <summary>Changes made now reach every machine (offline, or the session's NetWorld is spawned).</summary>
+        public static bool Ready { get { return !Net.Active || (instance != null && instance.IsSpawned); } }
         static readonly Dictionary<uint, INetAction> byKey = new Dictionary<uint, INetAction>();
 
         void Awake() { instance = this; }
@@ -93,7 +95,7 @@ namespace HollowTower.Net
             instance.NoiseRpc(pos, radius);
         }
 
-        static void Hear(Vector3 pos, float radius) { NeedleMonster.Hear(pos, radius); PartyMonster.HeardAt(pos, radius); }
+        static void Hear(Vector3 pos, float radius) { NeedleMonster.Hear(pos, radius); PartyMonster.HeardAt(pos, radius); Campus.NailedMonster.HearAt(pos, radius); }
 
         [Rpc(SendTo.Server)]
         void AskRpc(uint key, int action, int a, int b, Vector3 v)

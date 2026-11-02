@@ -38,6 +38,9 @@ namespace HollowTower
         public float sightRange = 16f;
         public float senseRadius = 45f;
         public float attackRange = 1.05f;
+        [Tooltip("How close a guest has to be, and how wide it looks (degrees), to catch someone climbing into a hiding spot.")]
+        public float witnessRange = 6f;
+        public float witnessAngle = 110f;
 
         [Header("Parts (set by the builder)")]
         public Animator animator;
@@ -69,7 +72,8 @@ namespace HollowTower
         float moveSpeed;
         int puppetAnim;
         Vector3 lurePos;
-        float lureUntil;
+        float lureUntil, summonUntil;
+        RemasteredPlayerController summoned;
         static RemasteredPlayerController swarmTarget;
         static float swarmPick;
 
@@ -109,6 +113,8 @@ namespace HollowTower
             lastPos = transform.position;
             if (animator != null) model = animator.transform;
             agent.enabled = false;   // standing still at its spot; the agent only drives it while it moves
+            // every third guest is one P3 has to spot: unseen by the others until it is close
+            if (All.IndexOf(this) % 3 == 1 && GetComponent<FarInvisible>() == null) gameObject.AddComponent<FarInvisible>().hideBeyond = 9f;
             Play("Idle");
             if (animator != null) animator.Update(Random.value * 2f);   // not all in step
         }
@@ -121,7 +127,7 @@ namespace HollowTower
             lastPos = transform.position;
             if (net != null && net.Puppet) { Puppet(); return; }
             var floor = PartyFloor.Instance;
-            bool chaos = floor != null && floor.Current == PartyFloor.Phase.Chaos;
+            bool chaos = floor != null && floor.Current == PartyFloor.Phase.Chaos || Time.time < summonUntil;   // or a puzzle box's alarm
             stateTime += Time.deltaTime;
 
             switch (state)
@@ -277,7 +283,7 @@ namespace HollowTower
             }
             if (CanSee(target)) { knownPos = target.transform.position; knownVel = target.GetComponent<CharacterController>() != null ? target.GetComponent<CharacterController>().velocity : Vector3.zero; }
 
-            if (Time.time > nextRepath)
+            if (Time.time > nextRepath && !agent.pathPending)   // a long path takes frames to plan: don't keep restarting it
             {
                 nextRepath = Time.time + 0.25f;
                 Vector3 dest = knownPos;
@@ -306,8 +312,17 @@ namespace HollowTower
         // who it knows about: everyone out in the open on this floor, within its sense radius (hidden players don't count)
         void Sense()
         {
+            if (DevTools.MonstersPassive) { target = null; return; }
             var party = PlayerParty.Instance;
             if (party == null) return;
+            if (Time.time < summonUntil && summoned != null && !summoned.IsDead && PartyHideSpot.HiddenIn(summoned) == null)
+            {
+                target = summoned;   // the alarm said who: it knows where they are, however far they run
+                knownPos = summoned.transform.position;
+                var scc = summoned.GetComponent<CharacterController>();
+                knownVel = scc != null ? scc.velocity : Vector3.zero;
+                return;
+            }
             if (role == Role.Swarm)
             {
                 if (swarmTarget == null || swarmTarget.IsDead || PartyHideSpot.HiddenIn(swarmTarget) != null || Time.time > swarmPick)
@@ -338,7 +353,7 @@ namespace HollowTower
             float bestD = senseRadius;
             foreach (var p in party.players)
             {
-                if (p == null || p.IsDead || PartyHideSpot.HiddenIn(p) != null) continue;
+                if (p == null || p.IsDead || PlayerParty.SitsOut(System.Array.IndexOf(party.players, p)) || PartyHideSpot.HiddenIn(p) != null) continue;
                 if (Mathf.Abs(p.transform.position.y - transform.position.y) > 2.5f) continue;   // on another floor
                 float d = Vector3.Distance(from, p.transform.position);
                 if (d < bestD) { bestD = d; best = p; }
@@ -391,16 +406,50 @@ namespace HollowTower
             }
         }
 
+        /// <summary>A puzzle box's alarm: the nearest few guests on body's floor leave their games and hunt them (even
+        /// with the music playing) for the next few seconds. Hiding still works. Returns how many came.</summary>
+        public static int Summon(RemasteredPlayerController body, float seconds, int count = 2)
+        {
+            if (!Net.Net.IsAuthority || body == null || body.IsDead) return 0;
+            var near = new List<PartyMonster>();
+            foreach (var m in All)
+                if (m != null && m.agent != null && Mathf.Abs(m.transform.position.y - body.transform.position.y) < 2.5f) near.Add(m);
+            near.Sort((x, y) => Vector3.Distance(x.transform.position, body.transform.position).CompareTo(Vector3.Distance(y.transform.position, body.transform.position)));
+            int n = 0;
+            for (int i = 0; i < near.Count && n < count; i++, n++)
+            {
+                var m = near[i];
+                m.summonUntil = Time.time + seconds;
+                m.target = m.summoned = body;
+                m.knownPos = body.transform.position;
+                m.nextSense = 0f;
+                if (!m.Hunting) m.Enter(State.Hunt);
+            }
+            return n;
+        }
+
+        /// <summary>Someone climbed into a hiding spot. Only a guest that is facing them, close by and with a clear view
+        /// counts as having seen it (one with its back turned, or round a corner, didn't); that one giggles, so the
+        /// player knows to get out and run before it comes to drag them out.</summary>
         void OnSomeoneHid(PartyHideSpot spot, RemasteredPlayerController body)
         {
+            if (!Net.Net.IsAuthority) return;   // the guests think on the host
             if (!Hunting && state != State.Still) return;
-            if (Vector3.Distance(transform.position, body.transform.position) > 10f) return;
+            Vector3 eye = transform.position + Vector3.up * height * 0.85f;
+            Vector3 to = body.transform.position + Vector3.up * 1.2f - eye;
+            if (to.magnitude > witnessRange) return;
+            to.y = 0f;
+            if (Vector3.Angle(transform.forward, to) > witnessAngle * 0.5f) return;
             if (!CanSee(body, true)) return;
             witnessed = spot;
+            Laugh(1.3f);
+            var party = PlayerParty.Instance;
+            if (party != null && party.Current == body) party.Flash("A guest saw you hide - get out and run!", 3f);
         }
 
         bool CanSee(RemasteredPlayerController p, bool anyDirection = false)
         {
+            if (DevTools.MonstersPassive) return false;
             Vector3 eye = transform.position + Vector3.up * height * 0.85f;
             Vector3 chest = p.transform.position + Vector3.up * 1.2f;
             float d = Vector3.Distance(eye, chest);
@@ -558,7 +607,76 @@ namespace HollowTower
                 balloonString.rotation = Quaternion.FromToRotation(Vector3.up, top - bottom);
                 balloonString.localScale = new Vector3(balloonString.localScale.x, Vector3.Distance(top, bottom), balloonString.localScale.z);
             }
+            UpdateEyes();
         }
+
+        // ------------------------------------------------------------------ eyes
+        // Roused (the music has died, or a puzzle alarm called it): a faint red ember wakes in each black eye and dies
+        // away again when it walks home. Driven by the state, which a client's puppet gets from the host, so everyone
+        // sees the same eyes.
+        static readonly Vector3[] EyeSpots = { new Vector3(-0.215f, 0.29f, 0.236f), new Vector3(-0.215f, 0.29f, -0.236f) };   // head space, a few cm in front of each eyeball (closer and the curved eye hides the glow)
+        static readonly Color EyeRed = new Color(1f, 0.07f, 0.04f);
+        const float EyeGlow = 3.2f, EyeSize = 0.12f;
+        static Texture2D eyeTex;
+        Transform[] eyes;
+        Material eyeMat;
+        float eyeLit = -1f;
+
+        void BuildEyes()
+        {
+            if (eyeTex == null)
+            {
+                const int N = 64;
+                eyeTex = new Texture2D(N, N, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, name = "PartyEyeGlow" };
+                for (int y = 0; y < N; y++)
+                    for (int x = 0; x < N; x++)
+                    {
+                        float r = new Vector2(x - N * 0.5f + 0.5f, y - N * 0.5f + 0.5f).magnitude / (N * 0.5f);
+                        float a = Mathf.Clamp01(Mathf.Exp(-r * r * 7f) - 0.02f);   // a hot centre fading into a soft halo
+                        eyeTex.SetPixel(x, y, new Color(a, a, a, a));
+                    }
+                eyeTex.Apply();
+            }
+            eyeMat = Gfx.UnlitGlow(eyeTex, Color.black, true);
+            eyes = new Transform[EyeSpots.Length];
+            for (int i = 0; i < eyes.Length; i++)
+            {
+                var q = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                q.name = "EyeGlow";
+                Destroy(q.GetComponent<Collider>());
+                q.transform.SetParent(head, false);
+                q.transform.localPosition = EyeSpots[i];
+                q.transform.localScale = Vector3.one * (EyeSize / Mathf.Max(0.01f, head.lossyScale.x));
+                var r = q.GetComponent<Renderer>();
+                r.sharedMaterial = eyeMat;
+                r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                r.receiveShadows = false;
+                q.SetActive(false);
+                eyes[i] = q.transform;
+            }
+        }
+
+        void UpdateEyes()
+        {
+            if (head == null) return;
+            if (eyes == null) BuildEyes();
+            bool roused = state == State.Still || state == State.Hunt || state == State.Attack || state == State.Feed;
+            float was = eyeLit;
+            eyeLit = Mathf.MoveTowards(Mathf.Max(eyeLit, 0f), roused ? 1f : 0f, Time.deltaTime * (roused ? 1.6f : 0.7f));
+            bool on = eyeLit > 0.001f;
+            var cam = Camera.main;
+            for (int i = 0; i < eyes.Length; i++)
+            {
+                if (eyes[i].gameObject.activeSelf != on) eyes[i].gameObject.SetActive(on);
+                // face the viewer; the head itself hides the glow from behind
+                if (on && cam != null) eyes[i].rotation = Quaternion.LookRotation(eyes[i].position - cam.transform.position, head.up);
+            }
+            if (!on && was <= 0.001f) return;
+            float k = Mathf.SmoothStep(0f, 1f, eyeLit) * (0.88f + 0.12f * Mathf.Sin((Time.time + phase) * 7.3f));   // a slow, uneasy flicker
+            eyeMat.SetColor(Gfx.BaseColorId, Gfx.ToNits(EyeRed * (EyeGlow * k)).gamma);
+        }
+
+        void OnDestroy() { if (eyeMat != null) Destroy(eyeMat); }
 
         static void Rot(Transform bone, Vector3 axis, float deg)
         {

@@ -6,7 +6,8 @@ namespace HollowTower
     /// The stairwell lock's power socket. The stair door stays locked ("no power") until a player carrying the fuse
     /// cell puts it in; then the status lamp turns green and the door unlocks and swings open. The lock only checks the
     /// cell: once the door is open it pops back out into the player's inventory, since every floor's fuse cell is needed
-    /// to run the exit elevator on the last floor.
+    /// to run the exit elevator on the last floor. With a keypad on it (Puzzles.PuzzleLock, added at load), the cell
+    /// only goes in once the keypad's code has been worked out.
     /// </summary>
     public class FuseSocket : MonoBehaviour, IPartyInteractable, Net.INetAction
     {
@@ -27,13 +28,25 @@ namespace HollowTower
         {
             if (Powered) return "Stairwell lock: powered";
             var inv = body.GetComponent<PlayerInventory>();
-            if (inv != null && inv.Find(itemId) != null) return "[E] Insert the fuse cell";
+            bool hasCell = inv != null && inv.Find(itemId) != null;
+            var keypad = GetComponent<Puzzles.PuzzleLock>();
+            if (keypad != null && !keypad.Solved)
+                return keypad.Status(hasCell ? "[E] Crack the keypad code, then insert the fuse cell" : "Stairwell lock: no power - needs a fuse cell and the keypad code");
+            if (hasCell) return "[E] Insert the fuse cell";
             return "Stairwell lock: no power - needs a fuse cell";
         }
 
         public void Interact(int player, RemasteredPlayerController body)
         {
             if (Powered) return;
+            var keypad = GetComponent<Puzzles.PuzzleLock>();
+            if (keypad != null && !keypad.Solved)
+            {
+                var inv = body.GetComponent<PlayerInventory>();
+                if (inv == null || inv.Find(itemId) == null) return;   // the cell first, then the code
+                keypad.TryOpen(player, () => Net.NetWorld.Act(this, 1, player));
+                return;
+            }
             Net.NetWorld.Act(this, 1, player);
         }
 

@@ -12,7 +12,7 @@ namespace HollowTower
     /// </summary>
     public class UsableItem : MonoBehaviour, Net.INetAction
     {
-        public enum Kind { Sweets, Soda, Popper, GlowStick }
+        public enum Kind { Sweets, Soda, Popper, GlowStick, Tonic }
         public Kind kind;
 
         /// <summary>Every item, carried (inactive) or not: VitalsDirector ticks the glow sticks.</summary>
@@ -31,6 +31,7 @@ namespace HollowTower
                 switch (kind)
                 {
                     case Kind.Sweets: return "[Q] eat - calms you";
+                    case Kind.Tonic: return "[Q] drink - steadies your mind";
                     case Kind.Soda: return "[Q] drink - get your wind back";
                     case Kind.Popper: return "[Q] throw - draws them away";
                     default: return cracked ? "glowing (" + Mathf.CeilToInt(glowLeft) + "s)" : "[Q] crack - light";
@@ -82,6 +83,11 @@ namespace HollowTower
                     if (vitals != null && mine) vitals.AddSanity(40f);
                     SfxBank.At(ItemSfx.Rustle, body.transform.position + Vector3.up * 1.5f, 0.7f, Random.Range(0.95f, 1.1f), 6f);
                     if (party != null) party.Flash("Sugar. The shaking stops, a little.", 2f);
+                    return true;
+                case Kind.Tonic:
+                    if (vitals != null && mine) vitals.AddSanity(45f);
+                    SfxBank.At(ItemSfx.Fizz, body.transform.position + Vector3.up * 1.5f, 0.5f, 0.7f, 6f);
+                    if (party != null) party.Flash("Bitter. Your hands stop shaking.", 2f);
                     return true;
                 case Kind.Soda:
                     if (vitals != null && mine) { vitals.RefillStamina(); vitals.freeSprintUntil = Time.time + 10f; }

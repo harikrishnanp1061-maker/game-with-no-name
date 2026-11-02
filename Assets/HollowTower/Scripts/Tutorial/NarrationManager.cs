@@ -60,6 +60,7 @@ public class NarrationManager : MonoBehaviour
 
     void OnGUI()
     {
+            HollowTower.UiStyle.Use();
         if (!_showSubtitles || string.IsNullOrEmpty(subtitle) || Time.time > subtitleUntil) return;
         if (style == null) style = new GUIStyle(GUI.skin.label) { fontSize = 18, alignment = TextAnchor.MiddleCenter, wordWrap = true };
         var r = new Rect(Screen.width * 0.15f, Screen.height - _subtitlePaddingBottom - 60f, Screen.width * 0.7f, 60f);

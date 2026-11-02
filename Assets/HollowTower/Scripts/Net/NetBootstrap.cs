@@ -38,12 +38,14 @@ namespace HollowTower.Net
             go.SetActive(false);   // add everything before NetworkManager wakes up
             var b = go.AddComponent<NetBootstrap>();
             b.Transport = go.AddComponent<UnityTransport>();
+            b.Transport.MaxPacketQueueSize = 1024;   // a level load sends a burst (every monster, door, puzzle seed): 128 overflowed
+            b.Transport.MaxPayloadSize = 32 * 1024;
             b.Manager = go.AddComponent<NetworkManager>();
             b.Manager.NetworkConfig = new NetworkConfig
             {
                 NetworkTransport = b.Transport,
                 EnableSceneManagement = true,
-                ConnectionApproval = false,
+                ConnectionApproval = true,   // the lobby lets people in; a game in progress (or a full one) turns them away
                 TickRate = 30,
             };
             b.Discovery = go.AddComponent<LanDiscovery>();
@@ -55,10 +57,25 @@ namespace HollowTower.Net
             b.Transport.DisconnectTimeoutMS = 60000;   // loading the tower freezes a machine for a while: don't drop it
             b.Transport.HeartbeatTimeoutMS = 1500;
             b.Manager.OnClientDisconnectCallback += b.OnDisconnect;
+            b.Manager.ConnectionApprovalCallback = b.Approve;
             return b;
         }
 
         void Awake() { Instance = this; }
+
+        /// <summary>The host's door: open while its lobby is up (it stops announcing the game once it starts) and not full.</summary>
+        void Approve(NetworkManager.ConnectionApprovalRequest req, NetworkManager.ConnectionApprovalResponse resp)
+        {
+            resp.CreatePlayerObject = false;
+            resp.Pending = false;
+            if (req.ClientNetworkId == NetworkManager.ServerClientId) { resp.Approved = true; return; }   // the host itself
+            bool open = Discovery != null && Discovery.IsBroadcasting && SceneManager.GetActiveScene().name == NetLobby.LobbyScene;
+            int others = Manager.ConnectedClientsIds.Count;   // including the host
+            if (!open) { resp.Approved = false; resp.Reason = "That game has already started - ask the host to make a new one"; return; }
+            int cap = NetLobby.Instance != null ? NetLobby.Instance.Capacity : NetLobby.MaxPlayers;
+            if (others >= cap) { resp.Approved = false; resp.Reason = "That game is full (" + cap + " players)"; return; }
+            resp.Approved = true;
+        }
         void OnDestroy() { if (Instance == this) Instance = null; }
 
         public bool Host(string sessionName)

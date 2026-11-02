@@ -30,6 +30,12 @@ namespace HollowTower
         [Tooltip("The tutorial's pits: a fall puts you back at the edge instead of killing you.")]
         public bool respawn;
 
+        /// <summary>
+        /// Something living down a pit (the tutorial's PitStalker) can claim a fall: it gets the body where it landed and
+        /// returns how many seconds to keep them down there with the lights up before they go back to the edge (0: not its pit).
+        /// </summary>
+        public static System.Func<RemasteredPlayerController, Vector3, float> PitScare;
+
         static readonly List<PitHazards> all = new List<PitHazards>();
         readonly HashSet<RemasteredPlayerController> falling = new HashSet<RemasteredPlayerController>();
 
@@ -123,6 +129,16 @@ namespace HollowTower
             if (respawn)
             {
                 // the tutorial: a lesson, not a death - back at the edge, and the narrator has something to say
+                float scare = PitScare != null ? PitScare(body, body.transform.position) : 0f;
+                if (scare > 0f)
+                {
+                    // the lights come back up on whatever is down here with them, then it all goes black again
+                    for (float t = 0f; t < 1f; t += Time.deltaTime / 0.25f) { if (steered && party != null) party.SetFade(1f - t); yield return null; }
+                    if (steered && party != null) party.SetFade(0f);
+                    yield return new WaitForSeconds(Mathf.Max(0f, scare - 0.6f));
+                    for (float t = 0f; t < 1f; t += Time.deltaTime / 0.35f) { if (steered && party != null) party.SetFade(t); yield return null; }
+                    if (steered && party != null) party.SetFade(1f);
+                }
                 yield return new WaitForSeconds(0.6f);
                 body.transform.position = edge;
                 body.SetFrozen(false);

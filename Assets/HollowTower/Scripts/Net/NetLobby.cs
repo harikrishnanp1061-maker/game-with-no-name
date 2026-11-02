@@ -35,6 +35,9 @@ namespace HollowTower.Net
         public const string LobbyScene = "Lobby";
         public const string FirstLevel = "Tutorial";
         public const string TowerLevel = "HollowTower_Remastered";
+        public const string CampusLevel = "Campus_Final";   // the final level: after floor 2's exit elevator
+        /// <summary>DEV: where PLAY SOLO and the host's START go by default. Set back to FirstLevel for release.</summary>
+        public const string DevStartLevel = FirstLevel;   // release: the game starts at the tutorial
 
         public static NetLobby Instance { get; private set; }
         public event Action Changed;
@@ -127,14 +130,26 @@ namespace HollowTower.Net
         {
             if (!IsServer || !CanStart) return;
             if (LanDiscovery.Instance != null) LanDiscovery.Instance.StopBroadcasting();
-            NetworkManager.SceneManager.LoadScene(level, LoadSceneMode.Single);
+            if (level != FirstLevel) { CinemaScreen.I.ShowLoading(); NetworkManager.SceneManager.LoadScene(level, LoadSceneMode.Single); return; }
+            // the first-entry film plays on every machine; when the host's ends (or the host skips it) everyone goes in
+            pendingLevel = level;
+            CutsceneRpc();
+        }
+
+        string pendingLevel;
+
+        [Rpc(SendTo.Everyone)]
+        void CutsceneRpc()
+        {
+            bool host = IsServer;
+            CinemaScreen.I.PlayCutscene(host ? (System.Action)(() => { if (pendingLevel != null) { var l = pendingLevel; pendingLevel = null; NetworkManager.SceneManager.LoadScene(l, LoadSceneMode.Single); } }) : null, host);
         }
 
         /// <summary>Host: everyone on to the next level together (the tutorial's elevator).</summary>
         public static void LoadLevel(string scene)
         {
-            if (Net.Active && Net.Manager.IsServer) Net.Manager.SceneManager.LoadScene(scene, LoadSceneMode.Single);
-            else if (!Net.Active) SceneManager.LoadScene(scene);
+            if (Net.Active && Net.Manager.IsServer) { CinemaScreen.I.ShowLoading(); Net.Manager.SceneManager.LoadScene(scene, LoadSceneMode.Single); }
+            else if (!Net.Active) { CinemaScreen.I.ShowLoading(); SceneManager.LoadScene(scene); }
         }
 
         /// <summary>Which of the four players (0-3) a machine is, or -1.</summary>

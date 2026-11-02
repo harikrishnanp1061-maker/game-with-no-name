@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/HollowTowerRemastered/Scenes/HollowTower_Remastered.unity
     guid: fde365e24fcbfee4f952465bf72cb53a
+  - enabled: 1
+    path: Assets/Campus/Scenes/Campus_Final.unity
+    guid: 8b3d7983870e65947ba7fea7b9148bf8
   m_configObjects: {}

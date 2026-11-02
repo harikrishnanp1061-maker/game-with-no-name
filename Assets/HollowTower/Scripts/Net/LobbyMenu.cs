@@ -16,8 +16,8 @@ namespace HollowTower.Net
         public const string GameName = "LAST BELL";
 
         string playerName, address = "192.168.", status = "";
-        string startAt = NetLobby.FirstLevel;
-        bool soloTwoPlayer;
+        string startAt = NetLobby.DevStartLevel;
+        int soloSize = 4;
         GUIStyle title, tag, bigBtn, btn, label, small, field, seatName;
         Texture2D white;
         Vector2 scroll;
@@ -27,6 +27,14 @@ namespace HollowTower.Net
         void Start()
         {
             playerName = NetBootstrap.PlayerName;
+            AudioListener.volume = PlayerPrefs.GetFloat("LastBell_Volume", 1f);
+            if (!CinemaScreen.IntroDone) CinemaScreen.I.ShowIntro();
+            // behind the menu: slow passes through the levels themselves (recorded in the game's own scenes)
+            backdrop = gameObject.AddComponent<UnityEngine.Video.VideoPlayer>();
+            backdropRT = new RenderTexture(1280, 720, 0);
+            backdrop.renderMode = UnityEngine.Video.VideoRenderMode.RenderTexture; backdrop.targetTexture = backdropRT;
+            backdrop.url = CinemaScreen.Url("lobby_backdrop.mp4"); backdrop.isLooping = true; backdrop.audioOutputMode = UnityEngine.Video.VideoAudioOutputMode.None;
+            backdrop.Play();
             var b = NetBootstrap.Ensure();
             b.Status += s => status = s;
             b.Discovery.StartListening();
@@ -53,89 +61,183 @@ namespace HollowTower.Net
             if (autoStart != null && Net.Manager.IsServer && lobby.Seats.Count > 1 && lobby.CanStart) { lobby.StartGame(autoStart); autoStart = null; }
         }
 
+        enum Page { Main, Solo, Multi, Settings, HowTo }
+        string devStart;
+        UnityEngine.Video.VideoPlayer backdrop; RenderTexture backdropRT;
+        Page page = Page.Main;
+
         void Styles()
         {
             if (title != null) return;
             white = new Texture2D(1, 1); white.SetPixel(0, 0, Color.white); white.Apply();
-            title = new GUIStyle(GUI.skin.label) { fontSize = 64, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
-            tag = new GUIStyle(GUI.skin.label) { fontSize = 15, fontStyle = FontStyle.Italic, alignment = TextAnchor.MiddleCenter };
-            bigBtn = new GUIStyle(GUI.skin.button) { fontSize = 22, fontStyle = FontStyle.Bold };
+            // everything inherits the LAST BELL skin (UiStyle.Use was called first)
+            title = UiStyle.Text(48);
+            tag = UiStyle.Text(16);
+            bigBtn = new GUIStyle(GUI.skin.button) { fontSize = 22 };
             btn = new GUIStyle(GUI.skin.button) { fontSize = 16 };
-            label = new GUIStyle(GUI.skin.label) { fontSize = 16 };
-            small = new GUIStyle(GUI.skin.label) { fontSize = 13, wordWrap = true };
-            field = new GUIStyle(GUI.skin.textField) { fontSize = 18 };
-            seatName = new GUIStyle(GUI.skin.label) { fontSize = 18, fontStyle = FontStyle.Bold };
-        }
-
-        void Panel(Rect r, float a = 0.7f)
-        {
-            GUI.color = new Color(0.07f, 0.07f, 0.09f, a);
-            GUI.DrawTexture(r, white);
-            GUI.color = Color.white;
+            label = new GUIStyle(UiStyle.Text(17, TextAnchor.MiddleLeft));
+            small = new GUIStyle(UiStyle.Text(14, TextAnchor.UpperLeft)); small.normal.textColor = UiStyle.Dim;
+            field = new GUIStyle(GUI.skin.textField) { fontSize = 18, alignment = TextAnchor.MiddleLeft, padding = new RectOffset(12, 12, 4, 4) };
+            seatName = new GUIStyle(UiStyle.Text(19, TextAnchor.MiddleLeft));
         }
 
         void OnGUI()
         {
+            UiStyle.Use();
             Styles();
-            // background: near-black with a slow red pulse, like an emergency light down a hall
-            float pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 0.8f);
-            GUI.color = new Color(0.03f + 0.03f * pulse, 0.02f, 0.025f);
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), white);
-            GUI.color = new Color(0.9f, 0.18f, 0.22f);
-            GUI.Label(new Rect(0, 26, Screen.width, 80), GameName, title);
-            GUI.color = new Color(0.8f, 0.78f, 0.75f, 0.8f);
-            GUI.Label(new Rect(0, 100, Screen.width, 24), "The bell rang hours ago. You're still inside.", tag);
+            float W = Screen.width, H = Screen.height;
+            // black, with the faintest red breathing at the edges, like an emergency light down a hall
+            GUI.color = Color.black;
+            GUI.DrawTexture(new Rect(0, 0, W, H), white);
             GUI.color = Color.white;
+            if (backdrop != null && backdrop.frame > 0) GUI.DrawTexture(new Rect(0, 0, W, H), backdropRT, ScaleMode.ScaleAndCrop, false);
+            GUI.color = new Color(0f, 0f, 0f, page == Page.Main && !Net.Active ? 0.35f : 0.55f);   // dim it under the slabs
+            GUI.DrawTexture(new Rect(0, 0, W, H), white);
+            GUI.color = Color.white;
+            if (Net.Active) { Sub(NetLobby.Instance != null ? "THE LOBBY" : "CONNECTING...", () => { if (NetLobby.Instance != null) InLobby(); }); return; }
+            switch (page)
+            {
+                case Page.Main: MainPage(W, H); break;
+                case Page.Solo: Sub("SOLO MODE", SoloPage); break;
+                case Page.Multi: Sub("MULTIPLAYER", Menu); break;
+                case Page.Settings: Sub("SETTINGS", SettingsPage); break;
+                case Page.HowTo: Sub("HOW TO PLAY", HowToPage); break;
+            }
+            if (!string.IsNullOrEmpty(status)) UiStyle.Label(new Rect(0, H - 34, W, 28), status, 14, TextAnchor.MiddleCenter, UiStyle.Dim);
+        }
 
-            float w = Mathf.Min(600f, Screen.width - 40f), x = (Screen.width - w) * 0.5f, y = 140f;
-            var area = new Rect(x, y, w, Screen.height - y - 20f);
-            Panel(new Rect(area.x - 16, area.y - 10, area.width + 32, area.height + 10));
-            GUILayout.BeginArea(area);
-            if (Net.Active && NetLobby.Instance != null) InLobby();
-            else if (Net.Active) GUILayout.Label("Connecting...", label);
-            else Menu();
-            GUILayout.FlexibleSpace();
-            GUI.color = new Color(1f, 0.82f, 0.55f);
-            GUILayout.Label(status, small);
-            GUI.color = Color.white;
+        /// <summary>The front page, laid out like the poster: the bracketed title, two big crooked slabs, two small, quit.</summary>
+        void MainPage(float W, float H)
+        {
+            float u = Mathf.Min(W / 1800f, H / 1000f);
+            float cx = W * 0.5f, top = H * 0.06f;
+            var tr = new Rect(cx - 560 * u, top, 1120 * u, 210 * u);
+            UiStyle.Title(tr, Mathf.RoundToInt(190 * u));
+            UiStyle.Monster(new Rect(tr.xMax - 40 * u, tr.yMax - 120 * u, 150 * u, 112 * u));
+            float bw = 1050 * u, bh = 150 * u, y = tr.yMax + 50 * u;
+            var solo = new Rect(cx - bw * 0.5f, y, bw, bh);
+            UiStyle.Claws(new Rect(solo.x + 30 * u, solo.y - 44 * u, 170 * u, 56 * u));
+            UiStyle.Monster(new Rect(solo.xMax - 190 * u, solo.y - 96 * u, 128 * u, 96 * u), true);
+            if (UiStyle.Button(solo, "SOLO MODE", Mathf.RoundToInt(78 * u), 1.6f)) page = Page.Solo;
+            y += bh + 40 * u;
+            if (UiStyle.Button(new Rect(cx - bw * 0.48f, y, bw * 0.96f, bh * 0.95f), "MULTIPLAYER", Mathf.RoundToInt(78 * u), -0.9f)) page = Page.Multi;
+            y += bh + 44 * u;
+            float sw = bw * 0.44f, sh = bh * 0.62f;
+            var how = new Rect(cx + 20 * u, y, sw, sh);
+            UiStyle.Monster(new Rect(how.x + sw * 0.55f, how.y - 70 * u, 90 * u, 68 * u));
+            if (UiStyle.Button(new Rect(cx - sw - 20 * u, y, sw, sh), "SETTINGS", Mathf.RoundToInt(46 * u), 1.4f)) page = Page.Settings;
+            if (UiStyle.Button(how, "HOW TO PLAY", Mathf.RoundToInt(46 * u), -0.7f)) page = Page.HowTo;
+            y += sh + 40 * u;
+            if (UiStyle.Button(new Rect(cx - bw * 0.25f, y, bw * 0.5f, sh * 0.9f), "QUIT", Mathf.RoundToInt(42 * u), 0.8f)) Application.Quit();
+            UiStyle.Label(new Rect(0, H - 30, W, 24), "The bell rang hours ago. You're still inside.", 15, TextAnchor.MiddleCenter, UiStyle.Dim);
+        }
+
+        /// <summary>A sub-page: the title small at the top, a big crooked panel, BACK.</summary>
+        void Sub(string heading, System.Action body)
+        {
+            float W = Screen.width, H = Screen.height;
+            UiStyle.Title(new Rect(0, 14, W, 90), 76);
+            float w = Mathf.Min(760f, W - 60f), x = (W - w) * 0.5f, y = 140f;
+            var panel = new Rect(x - 24, y - 16, w + 48, H - y - 80);
+            UiStyle.Panel(panel, -0.5f);
+            UiStyle.Label(new Rect(x, y - 6, w, 44), heading, 30);
+            GUILayout.BeginArea(new Rect(x, y + 46, w, panel.height - 90));
+            body();
             GUILayout.EndArea();
+            if (!Net.Active && UiStyle.Button(new Rect(W * 0.5f - 110, H - 70, 220, 52), "BACK", 22, 1.2f)) page = Page.Main;
+        }
+
+        void SoloPage()
+        {
+            GUILayout.Label("How many players? Offline, you steer every body yourself (F1-F4).", small);
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            foreach (int n in new[] { 1, 2, 4 })
+            {
+                GUI.backgroundColor = soloSize == n ? Color.white : new Color(1f, 1f, 1f, 0.55f);
+                if (GUILayout.Button(n + (n == 1 ? " PLAYER" : " PLAYERS") + (soloSize == n ? "  <" : ""), bigBtn, GUILayout.Height(64))) soloSize = n;
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.Space(12);
+            GUILayout.Label(soloSize == 1 ? "One body with every ability: sees hidden doors, pits and enemies, carries the torch, the compass and four slots."
+                          : soloSize == 2 ? "Two bodies, each with two players' abilities." : "All four survivors, each seeing what the others can't.", small);
+            GUILayout.Space(18);
+            if (GUILayout.Button("START", bigBtn, GUILayout.Height(70)))
+            {
+                PlayerParty.Size = soloSize;
+                string level = DevTools.Enabled && devStart != null ? devStart : NetLobby.DevStartLevel;
+                if (level == NetLobby.FirstLevel) CinemaScreen.I.PlayCutscene(() => SceneManager.LoadScene(level), true);
+                else { CinemaScreen.I.ShowLoading(); SceneManager.LoadScene(level); }
+            }
+            if (DevTools.Enabled)
+            {
+                GUILayout.Space(10);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("[DEV] start at:", small, GUILayout.Width(120));
+                foreach (var l in new[] { NetLobby.FirstLevel, NetLobby.TowerLevel, NetLobby.CampusLevel })
+                    if (GUILayout.Toggle((devStart ?? NetLobby.FirstLevel) == l, l == NetLobby.FirstLevel ? "Tutorial" : l == NetLobby.TowerLevel ? "Tower" : "Campus", btn, GUILayout.Height(30))) devStart = l;
+                GUILayout.EndHorizontal();
+            }
+        }
+
+        void SettingsPage()
+        {
+            GUILayout.Label("Volume", label);
+            float v = GUILayout.HorizontalSlider(AudioListener.volume, 0f, 1f, GUILayout.Height(24));
+            if (Mathf.Abs(v - AudioListener.volume) > 0.001f) { AudioListener.volume = v; PlayerPrefs.SetFloat("LastBell_Volume", v); }
+            GUILayout.Space(16);
+            if (GUILayout.Button(Screen.fullScreen ? "FULL SCREEN: ON" : "FULL SCREEN: OFF", bigBtn, GUILayout.Height(56))) Screen.fullScreen = !Screen.fullScreen;
+            GUILayout.Space(10);
+            string[] q = QualitySettings.names;
+            int qi = QualitySettings.GetQualityLevel();
+            if (q.Length > 0 && GUILayout.Button("GRAPHICS: " + q[qi].ToUpper(), bigBtn, GUILayout.Height(56))) QualitySettings.SetQualityLevel((qi + 1) % q.Length, true);
+            GUILayout.Space(10);
+            GUILayout.Label("Your name (shown to friends)", label);
+            string n = GUILayout.TextField(playerName, 24, field, GUILayout.Height(40));
+            if (n != playerName) { playerName = n; NetBootstrap.PlayerName = n; }
+        }
+
+        void HowToPage()
+        {
+            scroll = GUILayout.BeginScrollView(scroll);
+            GUILayout.Label("MOVE  WASD    LOOK  mouse    RUN  Shift    CROUCH  C    USE  E    DROP  G    TORCH  F (P4)", label);
+            GUILayout.Space(8);
+            GUILayout.Label("Four survivors, four gifts - nobody gets out alone, so talk:", label);
+            for (int i = 0; i < 4; i++) GUILayout.Label("P" + (i + 1) + "  -  " + PlayerParty.Abilities[i], small);
+            GUILayout.Space(8);
+            GUILayout.Label("Monsters hunt by sight and sound. Hide, break their line of sight, and never sprint near them. Puzzles are in the world itself - books, mirrors, wheels, statues - and a wrong move is loud.", small);
+            GUILayout.Space(8);
+            GUILayout.Label("On the campus: the security control room watches every camera. One of you sits at the console while the others carry walkie-talkies - hold B to talk.", small);
+            GUILayout.EndScrollView();
         }
 
         void Menu()
         {
             GUILayout.Label("Your name", label);
-            string n = GUILayout.TextField(playerName, 24, field, GUILayout.Height(32));
+            string n = GUILayout.TextField(playerName, 24, field, GUILayout.Height(40));
             if (n != playerName) { playerName = n; NetBootstrap.PlayerName = n; }
-            GUILayout.Space(14);
-
-            if (GUILayout.Button("HOST A GAME", bigBtn, GUILayout.Height(56))) NetBootstrap.Instance.Host(playerName + "'s game");
+            GUILayout.Space(12);
+            if (GUILayout.Button("HOST A GAME", bigBtn, GUILayout.Height(62))) NetBootstrap.Instance.Host(playerName + "'s game");
             GUILayout.Label("Friends on the same Wi-Fi will see your game in their list.", small);
             GUILayout.Space(12);
-
             GUILayout.Label("JOIN A GAME", seatName);
             var found = NetBootstrap.Instance.Discovery.DiscoveredSessions;
-            scroll = GUILayout.BeginScrollView(scroll, GUI.skin.box, GUILayout.Height(120));
-            if (found.Count == 0) GUILayout.Label("  Looking for games on this Wi-Fi...", small);
+            scroll = GUILayout.BeginScrollView(scroll, GUI.skin.box, GUILayout.Height(130));
+            if (found.Count == 0) GUILayout.Label("Looking for games on this Wi-Fi...", small);
             foreach (var s in new List<LanSessionInfo>(found))
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(s.HostName + "   (" + s.CurrentPlayers + "/" + s.MaxPlayers + ")", label);
-                if (s.CurrentPlayers < s.MaxPlayers && GUILayout.Button("JOIN", btn, GUILayout.Width(90), GUILayout.Height(30))) NetBootstrap.Instance.Join(s.HostAddress, s.Port);
+                if (s.CurrentPlayers < s.MaxPlayers && GUILayout.Button("JOIN", btn, GUILayout.Width(100), GUILayout.Height(36))) NetBootstrap.Instance.Join(s.HostAddress, s.Port);
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndScrollView();
             GUILayout.BeginHorizontal();
-            GUILayout.Label("or host's IP:", label, GUILayout.Width(100));
-            address = GUILayout.TextField(address, 40, field, GUILayout.Height(30));
-            if (GUILayout.Button("JOIN", btn, GUILayout.Width(90), GUILayout.Height(30))) NetBootstrap.Instance.Join(address);
+            GUILayout.Label("or host's IP:", label, GUILayout.Width(120));
+            address = GUILayout.TextField(address, 40, field, GUILayout.Height(40));
+            if (GUILayout.Button("JOIN", btn, GUILayout.Width(100), GUILayout.Height(40))) NetBootstrap.Instance.Join(address);
             GUILayout.EndHorizontal();
-            GUILayout.Space(14);
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("PLAY SOLO", btn, GUILayout.Height(40))) { PlayerParty.TwoPlayer = soloTwoPlayer; SceneManager.LoadScene(NetLobby.FirstLevel); }
-            soloTwoPlayer = GUILayout.Toggle(soloTwoPlayer, " 2 players", GUILayout.Width(110), GUILayout.Height(40));
-            GUILayout.EndHorizontal();
-            GUILayout.Label("Solo: no network - you steer every player yourself (F1-F4).", small);
         }
 
         void InLobby()
@@ -176,9 +278,14 @@ namespace HollowTower.Net
                 GUILayout.BeginHorizontal();
                 bool two = GUILayout.Toggle(lobby.TwoPlayer, " 2-player game", GUILayout.Width(150));
                 if (two != lobby.TwoPlayer && (!two || seats.Count <= 2)) lobby.TwoPlayer = two;
-                GUILayout.Label("Start at:", label, GUILayout.Width(70));
-                if (GUILayout.Toggle(startAt == NetLobby.FirstLevel, "Tutorial", GUILayout.Width(90))) startAt = NetLobby.FirstLevel;
-                if (GUILayout.Toggle(startAt == NetLobby.TowerLevel, "The tower", GUILayout.Width(100))) startAt = NetLobby.TowerLevel;
+                if (DevTools.Enabled)
+                {
+                    GUILayout.Label("[DEV] start at:", label, GUILayout.Width(130));
+                    if (GUILayout.Toggle(startAt == NetLobby.FirstLevel, "Tutorial", GUILayout.Width(90))) startAt = NetLobby.FirstLevel;
+                    if (GUILayout.Toggle(startAt == NetLobby.TowerLevel, "The tower", GUILayout.Width(100))) startAt = NetLobby.TowerLevel;
+                    if (GUILayout.Toggle(startAt == NetLobby.CampusLevel, "Campus (3)", GUILayout.Width(110))) startAt = NetLobby.CampusLevel;
+                }
+                else startAt = NetLobby.FirstLevel;
                 GUILayout.EndHorizontal();
                 GUI.enabled = lobby.CanStart;
                 if (GUILayout.Button(lobby.CanStart ? "START" : "Waiting for everyone to be ready", bigBtn, GUILayout.Height(54))) lobby.StartGame(startAt);

@@ -1,0 +1,11 @@
+{
+ "SV_Walk": 1.372,
+ "SV_WalkBack": 1.282,
+ "SV_WalkLeft": 1.254,
+ "SV_WalkRight": 1.101,
+ "SV_Run": 2.788,
+ "SV_Sprint": 4.603,
+ "SV_CrouchWalkF": 1.372,
+ "SV_CrouchWalkL": 1.254,
+ "SV_CrouchWalkR": 1.101
+}

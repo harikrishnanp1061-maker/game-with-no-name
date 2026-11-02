@@ -30,6 +30,9 @@ namespace HollowTower
 
         [Header("Territory")]
         public Vector3[] patrolPoints;
+        [Tooltip("Kept to one room (the tutorial's creature room): it never notices, chases or walks past territory (world xz).")]
+        public bool confined;
+        public Rect territory;
 
         [Header("Senses")]
         public float sightRange = 13f;
@@ -62,7 +65,7 @@ namespace HollowTower
 
         NavMeshAgent agent;
         State state = State.Patrol;
-        float stateTime, lastSeenTime, pauseUntil, nextRepath, nextDoorCheck, travelled, aggroUntil;
+        float stateTime, lastSeenTime, pauseUntil, nextRepath, nextDoorCheck, travelled, aggroUntil, summonUntil;
         RemasteredPlayerController target;
         Vector3 lastKnown;
         bool struck, visible = true;
@@ -101,13 +104,34 @@ namespace HollowTower
             foreach (var m in All)
             {
                 if (m == null || m.state == State.Chase || m.state == State.Attack || m.state == State.Alert || m.state == State.Feed) continue;
-                if (Mathf.Abs(m.transform.position.y - pos.y) > 3f) continue;
+                if (Mathf.Abs(m.transform.position.y - pos.y) > 3f || !m.InTerritory(pos)) continue;
                 if (Vector3.Distance(m.transform.position, pos) <= radius * m.hearing)
                 {
                     m.lastKnown = pos;
                     m.Enter(State.Investigate);
                 }
             }
+        }
+
+        /// <summary>A puzzle box's alarm: the nearest monster on body's floor comes straight for them, knowing where they
+        /// are for the next few seconds wherever they run. False if there is none on that floor.</summary>
+        public static bool Summon(RemasteredPlayerController body, float seconds)
+        {
+            if (DevTools.MonstersPassive) return false;
+            if (!Net.Net.IsAuthority || body == null || body.IsDead) return false;
+            // every monster on that floor answers the alarm, wherever it is (not just the nearest one)
+            bool any = false;
+            foreach (var m in All)
+            {
+                if (m == null || !m.isActiveAndEnabled || Mathf.Abs(m.transform.position.y - body.transform.position.y) > 3f) continue;
+                if (!m.InTerritory(body.transform.position)) continue;   // a monster kept to one room stays there
+                m.summonUntil = Time.time + seconds;
+                m.target = body;
+                m.lastKnown = body.transform.position;
+                if (m.state != State.Chase && m.state != State.Attack && m.agent != null && m.agent.isOnNavMesh) m.Enter(State.Alert);
+                any = true;
+            }
+            return any;
         }
 
         // ------------------------------------------------------------------ brain
@@ -127,6 +151,11 @@ namespace HollowTower
                 return;
             }
             stateTime += Time.deltaTime;
+            if (!InTerritory(transform.position))
+            {
+                NavMeshHit back;
+                if (NavMesh.SamplePosition(ClampToTerritory(transform.position), out back, 2f, NavMesh.AllAreas)) agent.Warp(back.position);
+            }
             var seen = LookForPlayer();
 
             switch (state)
@@ -143,10 +172,12 @@ namespace HollowTower
                     break;
                 case State.Chase:
                     if (target == null || target.IsDead) { target = seen; if (target == null) { Enter(State.Search); break; } }
+                    if (!InTerritory(target.transform.position)) { target = null; Enter(State.Search); break; }   // out of its room: it lets them go
                     if (seen == target) { lastSeenTime = Time.time; lastKnown = target.transform.position; }
+                    else if (Time.time < summonUntil) { lastSeenTime = Time.time; lastKnown = target.transform.position; }   // the alarm told it
                     else if (seen != null && Dist(seen) < Dist(target) - 2f) target = seen;
                     if (Time.time - lastSeenTime > loseAfter) { Enter(State.Search); break; }
-                    if (Time.time > nextRepath) { nextRepath = Time.time + 0.2f; agent.SetDestination(Time.time - lastSeenTime < 0.5f ? target.transform.position : lastKnown); }
+                    if (Time.time > nextRepath && !agent.pathPending) { nextRepath = Time.time + 0.2f; agent.SetDestination(ClampToTerritory(Time.time - lastSeenTime < 0.5f ? target.transform.position : lastKnown)); }
                     if (Dist(target) <= attackRange && Time.time - lastSeenTime < 0.5f) Enter(State.Attack);
                     break;
                 case State.Attack:
@@ -203,6 +234,34 @@ namespace HollowTower
             Footsteps();
         }
 
+        // guarding (PitWardens): its patrol points are spots under floor 2's broken floors, where it waits a long while
+        // looking up at the hole before moving to the next
+        Vector3[] guardLook;
+        Vector2 guardPause;
+        int patrolIndex;
+
+        /// <summary>
+        /// Swaps its patrol for waiting at these spots (each watching the matching look point), pausing guardPause seconds
+        /// at each. warp: appear at the first spot at once (only when nobody is near enough to see it happen).
+        /// </summary>
+        public void GuardSpots(Vector3[] spots, Vector3[] look, Vector2 pause, bool warp)
+        {
+            if (spots == null || spots.Length == 0 || agent == null) return;
+            patrolPoints = spots;
+            guardLook = look;
+            guardPause = pause;
+            patrolIndex = 0;
+            if (warp && agent.isOnNavMesh) agent.Warp(spots[0]);
+            if (state == State.Patrol && agent.isOnNavMesh) { pauseUntil = 0f; agent.SetDestination(spots[0]); }
+        }
+
+        Vector3 NextPatrolPoint()
+        {
+            if (guardLook == null) return patrolPoints[Random.Range(0, patrolPoints.Length)];
+            patrolIndex = patrolPoints.Length > 1 ? (patrolIndex + 1 + Random.Range(0, patrolPoints.Length - 1)) % patrolPoints.Length : 0;
+            return patrolPoints[patrolIndex];
+        }
+
         void Wander()
         {
             if (agent.pathPending) return;
@@ -215,10 +274,12 @@ namespace HollowTower
                 if (Time.time > pauseUntil) Enter(State.Patrol);
                 return;
             }
-            if (pauseUntil == 0f) pauseUntil = Time.time + Random.Range(1.2f, 4f);
+            bool guarding = guardLook != null && patrolIndex < guardLook.Length;
+            if (pauseUntil == 0f) pauseUntil = Time.time + (guarding ? Random.Range(guardPause.x, guardPause.y) : Random.Range(1.2f, 4f));
+            if (guarding) Face(guardLook[patrolIndex]);
             if (Time.time < pauseUntil) return;
             pauseUntil = 0f;
-            if (patrolPoints != null && patrolPoints.Length > 0) agent.SetDestination(patrolPoints[Random.Range(0, patrolPoints.Length)]);
+            if (patrolPoints != null && patrolPoints.Length > 0) agent.SetDestination(NextPatrolPoint());
         }
 
         void Enter(State s)
@@ -232,11 +293,12 @@ namespace HollowTower
             {
                 case State.Patrol:
                     agent.isStopped = false; agent.speed = walkSpeed;
-                    if (patrolPoints != null && patrolPoints.Length > 0) agent.SetDestination(patrolPoints[Random.Range(0, patrolPoints.Length)]);
+                    if (patrolPoints != null && patrolPoints.Length > 0) agent.SetDestination(NextPatrolPoint());
                     break;
                 case State.Investigate:
                 case State.Search:
                     agent.isStopped = false; agent.speed = walkSpeed * (s == State.Search ? 1.6f : 1.3f);
+                    lastKnown = ClampToTerritory(lastKnown);
                     agent.SetDestination(lastKnown);
                     break;
                 case State.Alert:
@@ -260,15 +322,24 @@ namespace HollowTower
             }
         }
 
+        bool InTerritory(Vector3 p) { return !confined || territory.Contains(new Vector2(p.x, p.z)); }
+
+        Vector3 ClampToTerritory(Vector3 p)
+        {
+            if (!confined) return p;
+            return new Vector3(Mathf.Clamp(p.x, territory.xMin + 0.5f, territory.xMax - 0.5f), p.y, Mathf.Clamp(p.z, territory.yMin + 0.5f, territory.yMax - 0.5f));
+        }
+
         RemasteredPlayerController LookForPlayer()
         {
+            if (DevTools.MonstersPassive) { target = null; return null; }
             var party = PlayerParty.Instance;
             RemasteredPlayerController best = null;
             float bestD = float.MaxValue;
             Vector3 eye = transform.position + Vector3.up * 1.7f;
             foreach (var p in party.players)
             {
-                if (p == null || p.IsDead || p.IsFrozen) continue;
+                if (p == null || p.IsDead || p.IsFrozen || !InTerritory(p.transform.position)) continue;
                 Vector3 chest = p.transform.position + Vector3.up * 1.2f;
                 float d = Vector3.Distance(eye, chest);
                 var cc = p.GetComponent<CharacterController>();

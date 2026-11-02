@@ -378,6 +378,7 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             var party = PlayerParty.Instance;
             if (party == null || party.Current == null || party.Spectating || RemasteredMapHUD.IsFullMapOpen) return;
             if (hintStyle == null) hintStyle = new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleLeft };

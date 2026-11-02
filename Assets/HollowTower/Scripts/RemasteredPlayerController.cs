@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HollowTower
 {
@@ -65,6 +65,8 @@ namespace HollowTower
         private Vector3 headBoneScale = Vector3.one;
         private LightShadows torchShadows = LightShadows.Soft;
         private bool frozen;
+        private CharacterAnimDriver animDriver;
+        private Vector3 modelOffset;
 
         // Where this body has recently stood on solid floor (for putting it back after a fall into a pit)
         private readonly Vector3[] safeSpots = new Vector3[24];
@@ -82,6 +84,10 @@ namespace HollowTower
         /// animation from here.</summary>
         [System.NonSerialized] public bool remote;
         public bool IsDead { get; private set; }
+        /// <summary>Crouched this frame (sent to the other machines by NetBody).</summary>
+        public bool IsCrouching { get { return isCrouching; } }
+        /// <summary>Standing on something (the CharacterController's own flag).</summary>
+        public bool IsGrounded { get { return controller != null && controller.isGrounded; } }
         /// <summary>A dead teammate is watching through this body's eyes: hide the head like in first person.</summary>
         public bool ViewedFromInside { get; set; }
 
@@ -105,9 +111,41 @@ namespace HollowTower
             if (animator != null)
             {
                 int death = Animator.StringToHash("Death");
-                if (animator.HasState(0, death)) animator.CrossFade(death, 0.1f, 0);
+                if (animator.HasState(0, death)) animator.CrossFade(death, 0.3f, 0);
                 else animator.SetTrigger("Die");
             }
+        }
+
+        /// <summary>Dev: undoes Die() - the body gets up and can be steered again (PlayerParty.ReviveAt places it).</summary>
+        public void Revive()
+        {
+            if (!IsDead) return;
+            IsDead = false;
+            frozen = false;
+            velocity = Vector3.zero;
+            ViewedFromInside = false;
+            if (controller != null) controller.enabled = true;
+            if (characterModel != null) characterModel.transform.localPosition = Vector3.zero;
+            flashlightEnabled = hasTorch;
+            if (flashlightLight != null) flashlightLight.enabled = hasTorch;
+            if (animator != null)
+            {
+                animator.ResetTrigger("Die");
+                int loco = Animator.StringToHash("Locomotion");
+                if (animator.HasState(0, loco)) animator.CrossFade(loco, 0.25f, 0);
+                else animator.Play(0, 0, 0f);
+            }
+        }
+
+        /// <summary>Turns the body (and a level view) toward a point, e.g. so a fallen player sees what is in the pit.</summary>
+        public void FaceTowards(Vector3 point, float lookPitch = 0f)
+        {
+            Vector3 d = point - transform.position; d.y = 0f;
+            if (d.sqrMagnitude < 1e-4f) return;
+            yaw = Quaternion.LookRotation(d).eulerAngles.y;
+            pitch = lookPitch;
+            transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+            if (cameraHolder != null && !isThirdPerson) cameraHolder.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
 
         /// <summary>Stops all movement and collision (falling into a pit); the pit script moves the body itself.</summary>
@@ -191,6 +229,7 @@ namespace HollowTower
             {
                 animator = GetComponentInChildren<Animator>();
             }
+            if (animator != null) animDriver = animator.GetComponent<CharacterAnimDriver>();
 
             currentCamY = standingCamY;
             yaw = transform.eulerAngles.y;
@@ -201,7 +240,7 @@ namespace HollowTower
             {
                 foreach (var t in characterModel.GetComponentsInChildren<Transform>(true))
                 {
-                    if (t.name.EndsWith(":Head") || t.name == "Head") { headBone = t; headBoneScale = t.localScale; break; }
+                    if (t.name.EndsWith(":Head") || t.name == "Head" || t.name == "head") { headBone = t; headBoneScale = t.localScale; break; }
                 }
                 if (showBodyInFirstPerson)
                 {
@@ -273,7 +312,8 @@ namespace HollowTower
         {
             if (frozen)
             {
-                if (animator != null && !IsDead) animator.SetFloat("Speed", 0f);
+                if (animDriver != null) animDriver.Drive(Vector3.zero, true, false, false, IsDead);
+                else if (animator != null && !IsDead) animator.SetFloat("Speed", 0f);
                 return;
             }
             if (remote) return;
@@ -281,6 +321,13 @@ namespace HollowTower
             if (!isControlled)
             {
                 HandleIdle();
+                UpdateAnimator();
+                return;
+            }
+            if (Puzzles.PuzzlePanel.IsOpen)
+            {
+                // working a puzzle: stands still with the mouse on the panel (the panel keeps the cursor free)
+                velocity.x = velocity.z = 0f;
                 UpdateAnimator();
                 return;
             }
@@ -423,7 +470,7 @@ namespace HollowTower
                 {
                     velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
                     crouchToggled = false;
-                    if (animator != null) animator.SetTrigger("Jump");
+                    if (animDriver != null) animDriver.Jump(); else if (animator != null) animator.SetTrigger("Jump");
                 }
             }
             else
@@ -462,6 +509,25 @@ namespace HollowTower
             // Runs after the Animator: shrink the head in first person so the camera never sees inside it.
             if (headBone != null)
                 headBone.localScale = ((!isControlled && !ViewedFromInside) || isThirdPerson || !showBodyInFirstPerson) ? headBoneScale : headBoneScale * 0.001f;
+            AlignBodyToCamera();
+        }
+
+        /// <summary>
+        /// First person: slide the body (horizontally only) so its hidden head stays just behind the camera when the
+        /// animation leans forward (crouching, sprinting); otherwise the camera would end up inside the neck or chest.
+        /// </summary>
+        void AlignBodyToCamera()
+        {
+            if (characterModel == null || headBone == null || cameraHolder == null || animDriver == null) return;
+            Vector3 want = Vector3.zero;
+            if (isControlled && !isThirdPerson && showBodyInFirstPerson && !IsDead)
+            {
+                Vector3 err = (cameraHolder.position - transform.forward * 0.1f) - headBone.position;
+                Vector3 local = transform.InverseTransformVector(err);
+                want = Vector3.ClampMagnitude(modelOffset + new Vector3(local.x, 0f, local.z), 0.45f);
+            }
+            modelOffset = Vector3.Lerp(modelOffset, want, 1f - Mathf.Exp(-12f * Time.deltaTime));
+            characterModel.transform.localPosition = modelOffset;
         }
 
         void HandleViewToggle()
@@ -480,6 +546,11 @@ namespace HollowTower
         void UpdateAnimator()
         {
             if (animator == null) return;
+            if (animDriver != null)
+            {
+                animDriver.Drive(controller.velocity, controller.isGrounded, isCrouching, hasTorch && flashlightEnabled, IsDead);
+                return;
+            }
 
             Vector3 horizontalVel = new Vector3(controller.velocity.x, 0f, controller.velocity.z);
             float speed = horizontalVel.magnitude;

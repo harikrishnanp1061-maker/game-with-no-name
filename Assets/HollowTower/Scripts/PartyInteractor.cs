@@ -28,7 +28,7 @@ namespace HollowTower
             target = null;
             prompt = null;
             var party = PlayerParty.Instance;
-            if (party == null || party.Current == null || party.Spectating || RemasteredMapHUD.IsFullMapOpen) return;
+            if (party == null || party.Current == null || party.Spectating || RemasteredMapHUD.IsFullMapOpen || Puzzles.PuzzlePanel.IsOpen) return;
             var cam = party.playerCamera != null ? party.playerCamera : Camera.main;
             if (cam == null) return;
 
@@ -60,14 +60,14 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             if (string.IsNullOrEmpty(prompt)) return;
             if (style == null) style = new GUIStyle(GUI.skin.label) { fontSize = 17, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
-            var r = new Rect(0f, Screen.height * 0.5f + 46f, Screen.width, 28f);
-            GUI.color = new Color(0f, 0f, 0f, 0.75f);
-            GUI.Label(new Rect(r.x + 1.5f, r.y + 1.5f, r.width, r.height), prompt, style);
-            GUI.color = new Color(0.92f, 0.95f, 1f, 1f);
-            GUI.Label(r, prompt, style);
-            GUI.color = Color.white;
+            var ts = UiStyle.Text(17);
+            float w = Mathf.Min(Screen.width - 40f, ts.CalcSize(new GUIContent(prompt)).x + 44f);
+            var r = new Rect((Screen.width - w) * 0.5f, Screen.height * 0.5f + 42f, w, 38f);
+            UiStyle.Slab(r, -0.8f);
+            UiStyle.Label(r, prompt, 17);
         }
     }
 }

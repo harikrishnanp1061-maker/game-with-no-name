@@ -130,6 +130,8 @@ namespace HollowTower
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             AssetDatabase.SaveAssets();
+            report.Append("; " + Floor2FalseWalls.Build());
+            report.Append("; " + Floor2Puzzles.Build());
             return imp + "; " + holes + "/" + Pits.Length + " broken floors; " + spots + " hiding spots; " + fuses + "; elevator: " + cleared + " props moved out of the way; " + nav + "; " + guests + " party guests" + report;
         }
 
@@ -455,7 +457,28 @@ namespace HollowTower
                 if (MakeSpot(t.gameObject, label, true)) { n++; taken.Add(t.position); }
             }
 
-            // a cupboard in every party room that has nowhere to hide yet
+            return n + Cupboards(root, rnd, taken);
+        }
+
+        [MenuItem("Hollow Tower/Floor 2/Add Missing Hide Cupboards")]
+        public static void AddCupboardsMenu()
+        {
+            f2 = Floor("Floor_2_School");
+            var root = f2 != null ? f2.Find(RootName) : null;
+            if (root == null) { Debug.LogWarning("[Floor2Hunt] build floor 2's hunt first"); return; }
+            var taken = new List<Vector3>();
+            foreach (var h in Object.FindObjectsByType<PartyHideSpot>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                if (h.transform.position.y > FloorY - 1f) taken.Add(h.transform.position);
+            int n = Cupboards(root, new Random(4242), taken);
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log("[Floor2Hunt] added " + n + " hiding cupboard(s)");
+        }
+
+        /// <summary>A cupboard to hide in, against a wall of every party room that has nowhere to hide yet.</summary>
+        static int Cupboards(Transform root, Random rnd, List<Vector3> taken)
+        {
+            int n = 0;
+            var dressing = f2.Find("College_Dressing");
             var cupboardSrc = FindFirst(dressing, "vintage_cabinet_01");
             var plan = LevelLayout.Plans[1];
             foreach (var room in plan.rooms)
@@ -463,6 +486,7 @@ namespace HollowTower
                 if (room == plan.corridor) continue;
                 var rr = RoomRect(room);
                 if (rr.width < 6f || rr.height < 6f) continue;
+                if (room.name.StartsWith("Stairs")) continue;   // the stair rooms are mostly the stairwell opening
                 bool has = false;
                 foreach (var p in taken) if (rr.Contains(new Vector2(p.x, p.z))) { has = true; break; }
                 if (has || cupboardSrc == null) continue;
@@ -470,12 +494,26 @@ namespace HollowTower
                 if (!WallSpot(rr, rnd, 0.75f, 2.1f, out at, out facing)) continue;
                 var go = Object.Instantiate(cupboardSrc, root);
                 go.name = "HideCupboard_" + room.name;
+                // the copy brings the source cabinet's own hide spot (pointing back into that room): drop it
+                foreach (var old in go.GetComponents<PartyHideSpot>()) Object.DestroyImmediate(old);
                 go.transform.rotation = Quaternion.LookRotation(facing) * Quaternion.Inverse(Quaternion.LookRotation(FrontOf(cupboardSrc))) * cupboardSrc.transform.rotation;
                 Physics.SyncTransforms();
                 var b = Bounds(go);
                 go.transform.position += new Vector3(at.x - b.center.x, FloorY - b.min.y, at.z - b.center.z);
                 Physics.SyncTransforms();
-                if (MakeSpot(go, "cupboard", false)) { n++; taken.Add(go.transform.position); }
+                if (MakeSpot(go, "cupboard", false))
+                {
+                    // the guests walk round it, not through it
+                    var ob = go.AddComponent<UnityEngine.AI.NavMeshObstacle>();
+                    var ob2 = Bounds(go);
+                    ob.shape = UnityEngine.AI.NavMeshObstacleShape.Box;
+                    ob.center = go.transform.InverseTransformPoint(ob2.center);
+                    var sz = go.transform.InverseTransformVector(ob2.size);
+                    ob.size = new Vector3(Mathf.Abs(sz.x), Mathf.Abs(sz.y), Mathf.Abs(sz.z));
+                    ob.carving = true;
+                    n++; taken.Add(go.transform.position);
+                }
+                else Object.DestroyImmediate(go);
             }
             return n;
         }
@@ -548,7 +586,8 @@ namespace HollowTower
                     default: at = new Vector3(rr.xMax - d, FloorY, Mathf.Lerp(rr.yMin, rr.yMax, u)); facing = Vector3.left; break;
                 }
                 Vector3 across = Vector3.Cross(Vector3.up, facing);
-                var half = new Vector3(width * 0.5f, 1.0f, depth * 0.5f + 0.9f);   // its footprint plus room to get in
+                // its footprint plus 0.9 m in front to get in (from its back, 6 cm off the wall, to that gap's far edge)
+                var half = new Vector3(width * 0.5f, 1.0f, depth * 0.5f + 0.45f);
                 var centre = at + Vector3.up * 1.15f + facing * 0.45f;
                 if (Physics.CheckBox(centre, half, Quaternion.LookRotation(facing), ~0, QueryTriggerInteraction.Ignore)) continue;
                 bool doorNear = false;

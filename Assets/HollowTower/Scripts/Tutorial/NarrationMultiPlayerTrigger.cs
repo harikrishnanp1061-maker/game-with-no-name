@@ -33,7 +33,7 @@ public class NarrationMultiPlayerTrigger : MonoBehaviour
             if (p == null || p.IsDead) continue;
             if (b.Contains(p.transform.position + Vector3.up)) { inside++; crossed.Add(i); }
         }
-        int need = Mathf.Min(_requiredPlayerCount, PlayerParty.TwoPlayer ? 2 : 4);
+        int need = Mathf.Min(_requiredPlayerCount, PlayerParty.Size);
         if ((_cumulativeCrossing ? crossed.Count : inside) >= need)
         {
             done = true;

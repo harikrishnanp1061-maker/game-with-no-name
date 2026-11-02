@@ -51,6 +51,8 @@ namespace HollowTower
         public void KillPlayer(RemasteredPlayerController body, string how)
         {
             if (body == null || body.IsDead) return;
+            if (DevTools.BlocksDeath(how)) return;   // DEV: passive monsters
+            if (InGrace) return;                     // the team just got up again
             var inv = body.GetComponent<PlayerInventory>();
             if (inv != null && inv.Items.Count > 0) inv.DropAllAt(body.transform.position);
             var bank = SfxBank.Instance;
@@ -98,7 +100,7 @@ namespace HollowTower
             float bestD = float.MaxValue;
             for (int k = 0; k < players.Length; k++)
             {
-                if (players[k] == null || players[k].IsDead) continue;
+                if (players[k] == null || players[k].IsDead || SitsOut(k)) continue;   // a parked body isn't anyone to watch
                 float d = (players[k].transform.position - from).sqrMagnitude;
                 if (d < bestD) { bestD = d; best = k; }
             }
@@ -341,9 +343,9 @@ namespace HollowTower
             GUI.color = new Color(0f, 0f, 0f, 0.6f);
             GUI.DrawTexture(new Rect(0f, Screen.height * 0.4f, Screen.width, 90f), white);
             GUI.color = new Color(0.9f, 0.25f, 0.2f, 1f);
-            GUI.Label(new Rect(0f, Screen.height * 0.4f + 10f, Screen.width, 40f), "THE TOWER TOOK EVERYONE", bannerStyle);
+            GUI.Label(new Rect(0f, Screen.height * 0.4f + 10f, Screen.width, 40f), "EVERYONE IS DOWN", bannerStyle);
             GUI.color = new Color(1f, 1f, 1f, 0.85f);
-            GUI.Label(new Rect(0f, Screen.height * 0.4f + 52f, Screen.width, 26f), "[R] start again", smallStyle);
+            GUI.Label(new Rect(0f, Screen.height * 0.4f + 52f, Screen.width, 26f), RespawnIn > 0f ? "Back to the start of this floor in " + Mathf.CeilToInt(RespawnIn) + "..." : (Net.Net.Active && !Net.Net.IsAuthority ? "Waiting for the host..." : "Getting up..."), smallStyle);
             GUI.color = Color.white;
         }
     }

@@ -52,7 +52,9 @@ namespace HollowTower
                 Holder = inv;
                 EverTaken = true;
                 gameObject.SetActive(false);
-                if (SfxBank.Instance != null) SfxBank.At(SfxBank.Instance.itemPickup, transform.position, 0.8f);
+                var equip = UserSfx.Get("item_equip");
+                if (equip != null) SfxBank.At(equip, transform.position, 0.9f);
+                else if (SfxBank.Instance != null) SfxBank.At(SfxBank.Instance.itemPickup, transform.position, 0.8f);
                 party.Flash("Player " + (a + 1) + " took the " + displayName.ToLower());
                 return true;
             }
@@ -113,12 +115,14 @@ namespace HollowTower
             }
         }
 
-        /// <summary>Any torch in the party (P4's, or the one a dead P4 lends a teammate) shining on this, unblocked.</summary>
-        bool InTorchBeam()
+        bool InTorchBeam() { return TorchOn(transform.position + Vector3.up * 0.12f, transform); }
+
+        /// <summary>Any torch in the party (P4's, or the one a dead P4 lends a teammate) shining on point c, unblocked
+        /// by anything but the players and the thing itself (self).</summary>
+        public static bool TorchOn(Vector3 c, Transform self)
         {
             var party = PlayerParty.Instance;
             if (party == null) return false;
-            Vector3 c = transform.position + Vector3.up * 0.12f;
             foreach (var l in party.Torches())
             {
                 Vector3 d = c - l.transform.position;
@@ -127,7 +131,7 @@ namespace HollowTower
                 if (Vector3.Angle(l.transform.forward, d) > l.spotAngle * 0.5f) continue;
                 bool blocked = false;
                 foreach (var h in Physics.RaycastAll(l.transform.position, d / dist, dist - 0.2f, ~0, QueryTriggerInteraction.Ignore))
-                    if (h.collider.GetComponentInParent<RemasteredPlayerController>() == null && !h.collider.transform.IsChildOf(transform)) { blocked = true; break; }
+                    if (h.collider.GetComponentInParent<RemasteredPlayerController>() == null && !h.collider.transform.IsChildOf(self)) { blocked = true; break; }
                 if (!blocked) return true;
             }
             return false;

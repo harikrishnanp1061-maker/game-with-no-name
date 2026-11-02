@@ -42,6 +42,7 @@ namespace HollowTower
             if (bank != null)
             {
                 bank.breathing = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Player/Player_Breathing_Exhausted.mp3");
+                EditorTools.SfxRepair.Assign(bank);   // the original panting file is near-silent; use the levelled copy
                 EditorUtility.SetDirty(bank);
             }
 

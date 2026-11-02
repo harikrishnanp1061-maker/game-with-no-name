@@ -142,6 +142,7 @@ namespace HollowTower
         // the view from inside: dark, through the door's slats
         void OnGUI()
         {
+            UiStyle.Use();
             var party = PlayerParty.Instance;
             if (Occupant == null || party == null || party.Current != Occupant) return;
             if (pixel == null) { pixel = new Texture2D(1, 1); pixel.SetPixel(0, 0, Color.white); pixel.Apply(); }

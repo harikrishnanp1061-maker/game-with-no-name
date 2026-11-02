@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -184,6 +184,7 @@ namespace HollowTower
 
         void Update()
         {
+            if (!DevTools.Enabled) { if (RemasteredMapHUD.IsFullMapOpen) RemasteredMapHUD.IsFullMapOpen = false; return; }
             // Toggle complete HUD visibility
             if (InputWrap.Down(hideHUDKey))
             {
@@ -201,11 +202,7 @@ namespace HollowTower
                 IsFullMapOpen = fullMapOpen;
             }
 
-            // Switch between Remastered and Original GitHub Game
-            if (InputWrap.Down(switchSceneKey))
-            {
-                ToggleScene();
-            }
+            // (the old "switch to the GitHub scene" key is gone: that scene isn't in the game, and F9 is the dev task panel)
 
             // Quick Floor Teleportation Hotkeys (1-4)
             if (InputWrap.Down(floor1Key)) TeleportToFloor(0);
@@ -259,6 +256,18 @@ namespace HollowTower
         {
             targetFloor = Mathf.Clamp(targetFloor, 0, FloorCount - 1);
             currentFloor = targetFloor;
+
+            if (targetFloor == 1)
+            {
+                // where the party really arrives: the top of the stair ramp from floor 1 (it climbs westward to x 7.8),
+                // facing out along the start of floor 2's route
+                TeleportPlayerTo(new Vector3(6.8f, StoryHeight + 0.15f, 84f));
+                var rpc = Body.GetComponent<RemasteredPlayerController>();
+                if (rpc != null) rpc.FaceTowards(new Vector3(6.4f, Body.position.y, 78f));
+                if (TowerFloorCulling.Instance != null) TowerFloorCulling.Instance.ForceFloorUpdate(targetFloor);
+                ShowFeedback("Teleported to F2: top of the stairs");
+                return;
+            }
 
             // Central safe teleport spot (Elevator lobby / main corridor)
             float targetX = 72.0f; // Central X (Column 18)
@@ -353,6 +362,7 @@ namespace HollowTower
 
         void OnGUI()
         {
+            if (!DevTools.Enabled) return;
             InitStyles();
 
             // When map is completely hidden by 'H', display a tiny discreet prompt in bottom right
@@ -399,11 +409,7 @@ namespace HollowTower
             
             // Top row: Scene switch, Map Toggle, Hide Map
             GUILayout.BeginHorizontal();
-            string targetLabel = isRemaster ? "[" + switchSceneKey + "] GitHub" : "[" + switchSceneKey + "] Remaster";
-            if (GUILayout.Button(targetLabel, buttonStyle, GUILayout.Width(96), GUILayout.Height(24)))
-            {
-                ToggleScene();
-            }
+            if (GUILayout.Button("[F9] Tasks", buttonStyle, GUILayout.Width(96), GUILayout.Height(24))) DevTools.ToggleTasks();
 
             string mapLabel = fullMapOpen ? "[M] Close" : "[M] Map";
             if (GUILayout.Button(mapLabel, buttonStyle, GUILayout.Width(76), GUILayout.Height(24)))
@@ -434,6 +440,9 @@ namespace HollowTower
                     TeleportToFloor(f);
                 }
             }
+            // TEMPORARY dev aid: dead teammates get up beside you
+            if (GUILayout.Button("[F7] Revive", buttonStyle, GUILayout.Width(92), GUILayout.Height(22)) && PlayerParty.Instance != null)
+                PlayerParty.Instance.ReviveTeammatesHere();
             GUILayout.EndHorizontal();
 
             GUILayout.EndArea();
@@ -465,6 +474,9 @@ namespace HollowTower
             HandleMapClick(mapRect, currentFloor);
 
             if (currentFloor == 0) DrawDevRoute(mapRect);
+            else if (currentFloor == 1) DrawDevRouteF2(mapRect);
+
+            DrawTaskMarkers(mapRect, currentFloor, false);
 
             // Player Marker
             DrawPlayerMarker(mapRect);
@@ -527,7 +539,9 @@ namespace HollowTower
 
                     // Draw Elevator indicators
                     DrawElevatorMarkers(subRect, f);
+                    DrawTaskMarkers(subRect, f, true);
                     if (f == 0) DrawDevRoute(subRect);
+                    else if (f == 1) DrawDevRouteF2(subRect);
 
                     if (f == currentFloor)
                     {
@@ -537,6 +551,26 @@ namespace HollowTower
             }
 
             GUILayout.EndArea();
+        }
+
+        /// <summary>DEV: every task on this floor (DevTasks) - puzzles purple, done ones green, the way out gold.</summary>
+        void DrawTaskMarkers(Rect mapRect, int floorIndex, bool labels)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            foreach (var k in DevTasks.All)
+            {
+                if (DevTasks.FloorOf(k.Pos.y) != floorIndex) continue;
+                Color c = k.done ? new Color(0.35f, 1f, 0.45f) : k.exit ? new Color(1f, 0.82f, 0.2f) : new Color(1f, 0.35f, 1f);
+                Vector2 p = MapPoint(mapRect, new Vector2(k.Pos.x, k.Pos.z));
+                GUI.color = Color.black; GUI.DrawTexture(new Rect(p.x - 6, p.y - 6, 12, 12), Texture2D.whiteTexture);
+                GUI.color = c; GUI.DrawTexture(new Rect(p.x - 4, p.y - 4, 8, 8), Texture2D.whiteTexture);
+                GUI.color = Color.white;
+                if (!labels) continue;
+                var st = new GUIStyle(GUI.skin.label) { fontSize = 9, fontStyle = FontStyle.Bold, alignment = TextAnchor.UpperCenter };
+                st.normal.textColor = c;
+                string n = k.name.Contains(":") ? k.name.Substring(k.name.IndexOf(':') + 1).Trim() : k.name;
+                GUI.Label(new Rect(p.x - 60, p.y + 5, 120, 14), (k.done ? "done: " : "") + n, st);
+            }
         }
 
         void DrawElevatorMarkers(Rect mapRect, int floorIndex)
@@ -592,6 +626,72 @@ namespace HollowTower
                 Vector2 p = MapPoint(mapRect, w);
                 DrawLiftBadge(p.x, p.y, "false wall", new Color(1f, 0.45f, 0.05f, 1f));
             }
+        }
+
+        // TEMPORARY dev aid: floor 2's route (world x, z), from floor 2's NavMesh so it steps round every hole. Orange: top
+        // of the stairs to the darkroom fuse cell. Yellow: on to the library fuse cell. Cyan: to the exit lift, over the
+        // collapsed corridor on P2's plank walkway. Hidden pits magenta, open pits red (Floor2HuntBuilder's holes).
+        static readonly Vector2[] RouteF2ToDarkroom =
+        {
+            new Vector2(7f, 84f), new Vector2(6.4f, 80.3f), new Vector2(24.3f, 77.5f), new Vector2(27.5f, 71.9f), new Vector2(37.3f, 68.6f),
+            new Vector2(40.4f, 63.6f), new Vector2(44.9f, 62.9f), new Vector2(47.7f, 58.6f), new Vector2(68.4f, 57.6f), new Vector2(68.5f, 38.7f),
+            new Vector2(60.5f, 39f), new Vector2(59.4f, 37.7f),
+        };
+        static readonly Vector2[] RouteF2ToLibrary =
+        {
+            new Vector2(59.4f, 37.7f), new Vector2(60.5f, 39f), new Vector2(67.7f, 38.5f), new Vector2(71.5f, 68.2f), new Vector2(87.9f, 69f),
+            new Vector2(97.8f, 69f), new Vector2(109.2f, 68.6f), new Vector2(116.2f, 68.5f), new Vector2(119.5f, 58.8f), new Vector2(126.8f, 58.6f),
+            new Vector2(129.1f, 59f), new Vector2(131.4f, 62.1f),
+        };
+        static readonly Vector2[] RouteF2ToExit =
+        {
+            new Vector2(131.4f, 62.1f), new Vector2(129.4f, 59.4f), new Vector2(126.8f, 58.6f), new Vector2(119.7f, 58.6f), new Vector2(116.5f, 68.2f),
+            new Vector2(109.2f, 68.6f), new Vector2(97.8f, 69f), new Vector2(87.9f, 69f), new Vector2(71.9f, 68.5f), new Vector2(70.9f, 58f),
+            new Vector2(70.7f, 41.4f), new Vector2(71.5f, 27.8f), new Vector2(84.3f, 26.1f), new Vector2(91.7f, 26.1f), new Vector2(109.2f, 27.3f),
+            new Vector2(116.2f, 24.5f), new Vector2(119.5f, 6.7f), new Vector2(141.6f, 6f),
+        };
+        static readonly Rect[] F2HiddenPits =
+        {
+            Rect.MinMaxRect(40.7f, 68.7f, 43.3f, 71.3f), Rect.MinMaxRect(116.7f, 44.7f, 119.3f, 47.3f), Rect.MinMaxRect(24.8f, 36.8f, 27.2f, 39.2f),
+            Rect.MinMaxRect(80.7f, 56.7f, 83.3f, 59.3f), Rect.MinMaxRect(132.7f, 56.7f, 135.3f, 59.3f),
+        };
+        static readonly Rect[] F2OpenPits = { Rect.MinMaxRect(36.8f, 36.8f, 39.2f, 39.2f), Rect.MinMaxRect(104.8f, 12.8f, 107.3f, 15.2f) };
+        static readonly Rect F2Collapse = Rect.MinMaxRect(84.3f, 24f, 91.7f, 28f);
+
+        void DrawDevRouteF2(Rect mapRect)
+        {
+            var magenta = new Color(1f, 0.25f, 0.85f, 1f);
+            var red = new Color(1f, 0.2f, 0.15f, 1f);
+            foreach (var r in F2HiddenPits) DrawWorldRect(mapRect, r, magenta);
+            foreach (var r in F2OpenPits) DrawWorldRect(mapRect, r, red);
+            DrawWorldRect(mapRect, F2Collapse, red);
+            DrawPolyline(mapRect, RouteF2ToDarkroom, new Color(1f, 0.55f, 0.1f, 0.95f));
+            DrawPolyline(mapRect, RouteF2ToLibrary, new Color(1f, 0.92f, 0.2f, 0.95f));
+            DrawPolyline(mapRect, RouteF2ToExit, new Color(0.2f, 0.9f, 1f, 0.95f));
+            DrawPolyline(mapRect, new[] { new Vector2(84.3f, 26.1f), new Vector2(91.7f, 26.1f) }, new Color(0.3f, 1f, 0.4f, 1f));   // P2's planks
+            Vector2 a = MapPoint(mapRect, new Vector2(7f, 84f)), d = MapPoint(mapRect, new Vector2(60f, 37.7f)), l = MapPoint(mapRect, new Vector2(131.4f, 61.5f));
+            Vector2 w = MapPoint(mapRect, new Vector2(88f, 28.6f)), hp = MapPoint(mapRect, new Vector2(118f, 49f));
+            DrawLiftBadge(a.x, a.y, "[STAIRS UP]", new Color(0.3f, 0.9f, 1f, 1f));
+            DrawLiftBadge(d.x, d.y, "[FUSE: DARKROOM]", new Color(1f, 0.6f, 0.15f, 1f));
+            DrawLiftBadge(l.x, l.y, "[FUSE: LIBRARY]", new Color(1f, 0.92f, 0.2f, 1f));
+            DrawLiftBadge(w.x, w.y, "P2 walkway", new Color(0.3f, 1f, 0.4f, 1f));
+            DrawLiftBadge(hp.x, hp.y, "hidden pit", magenta);
+        }
+
+        /// <summary>The outline of a world-space xz rect on the map (at least a few pixels, so small holes still show).</summary>
+        void DrawWorldRect(Rect mapRect, Rect world, Color color)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            Vector2 a = MapPoint(mapRect, new Vector2(world.xMin, world.yMax)), b = MapPoint(mapRect, new Vector2(world.xMax, world.yMin));
+            var r = Rect.MinMaxRect(a.x, a.y, Mathf.Max(b.x, a.x + 4f), Mathf.Max(b.y, a.y + 4f));
+            GUI.color = new Color(color.r, color.g, color.b, 0.35f);
+            GUI.DrawTexture(r, Texture2D.whiteTexture);
+            GUI.color = color;
+            GUI.DrawTexture(new Rect(r.x, r.y, r.width, 1f), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(r.x, r.yMax - 1f, r.width, 1f), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(r.x, r.y, 1f, r.height), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(r.xMax - 1f, r.y, 1f, r.height), Texture2D.whiteTexture);
+            GUI.color = Color.white;
         }
 
         Vector2 MapPoint(Rect mapRect, Vector2 world)

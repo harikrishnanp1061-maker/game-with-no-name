@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HollowTower
 {
@@ -44,13 +44,20 @@ namespace HollowTower
             "Sees hidden doors", "Sees hidden pits", "Sees invisible enemies", "Torch, compass, 4 inventory slots"
         };
 
-        /// <summary>Two-player game: P1 has P1's and P2's abilities, P2 has P3's and P4's; bodies 3 and 4 sit out.
-        /// Set by the lobby (host's choice) or the solo menu before the level loads.</summary>
-        public static bool TwoPlayer;
+        /// <summary>How many players are in the game (1, 2 or 4). One player: P1 has every ability; two players: P1 has
+        /// P1's and P2's abilities, P2 has P3's and P4's. The bodies past that sit out. Set by the lobby (host's choice)
+        /// or the solo menu before the level loads.</summary>
+        public static int Size = 4;
+        public static bool TwoPlayer { get { return Size == 2; } set { Size = value ? 2 : 4; } }
+        public static bool OnePlayer { get { return Size == 1; } }
+
+        /// <summary>Body i is parked out of the game (one- and two-player games).</summary>
+        public static bool SitsOut(int i) { return i >= Size; }
 
         /// <summary>Does body i have ability a (0 hidden doors, 1 hidden pits, 2 invisible enemies, 3 torch/compass/slots)?</summary>
         public static bool BodyHas(int i, int a)
         {
+            if (OnePlayer) return i == 0;
             if (!TwoPlayer) return i == a;
             return i == 0 ? a <= 1 : i == 1 ? a >= 2 : false;
         }
@@ -58,29 +65,30 @@ namespace HollowTower
         /// <summary>What body i can do, for the HUD and lobby.</summary>
         public static string AbilityText(int i)
         {
+            if (OnePlayer) return i == 0 ? "Sees hidden doors, pits and enemies + torch, compass, 4 slots" : "(sits out)";
             if (!TwoPlayer) return Abilities[i];
             return i == 0 ? Abilities[0] + " + " + Abilities[1].ToLower() : i == 1 ? Abilities[2] + " + " + Abilities[3].ToLower() : "(sits out)";
         }
 
-        // two-player: P2's body gets P4's torch and pockets, bodies 3 and 4 are parked out of the way
-        void ApplyTwoPlayer()
+        // one or two players: the last player in the game gets P4's torch and pockets, the others are parked out of the way
+        void ApplySmallParty()
         {
-            var p2 = players[1]; var p4 = players[3];
-            if (p2 != null && p4 != null && p4.flashlightLight != null && !p2.hasTorch)
+            var keeper = players[Size - 1]; var p4 = players[3];
+            if (keeper != null && p4 != null && p4.flashlightLight != null && !keeper.hasTorch)
             {
                 var src = p4.flashlightLight.transform;
-                Transform parent = p2.transform;
+                Transform parent = keeper.transform;
                 if (src.parent != null)
-                    foreach (var t in p2.GetComponentsInChildren<Transform>(true)) if (t.name == src.parent.name) { parent = t; break; }
+                    foreach (var t in keeper.GetComponentsInChildren<Transform>(true)) if (t.name == src.parent.name) { parent = t; break; }
                 var light = Instantiate(src.gameObject, parent);
                 light.transform.localPosition = src.localPosition;
                 light.transform.localRotation = src.localRotation;
-                p2.flashlightLight = light.GetComponent<Light>();
-                p2.hasTorch = true;
-                p2.flashlightEnabled = true;
+                keeper.flashlightLight = light.GetComponent<Light>();
+                keeper.hasTorch = true;
+                keeper.flashlightEnabled = true;
             }
-            if (p2 != null) { var inv = p2.GetComponent<PlayerInventory>(); if (inv != null) inv.capacity = 4; }
-            for (int i = 2; i < players.Length; i++)
+            if (keeper != null) { var inv = keeper.GetComponent<PlayerInventory>(); if (inv != null) inv.capacity = 4; }
+            for (int i = Size; i < players.Length; i++)
             {
                 var b = players[i];
                 if (b == null) continue;
@@ -110,6 +118,7 @@ namespace HollowTower
         {
             Instance = this;
             if (playerCamera == null) playerCamera = Camera.main;
+            if (playerCamera != null && playerCamera.GetComponent<DistanceFade>() == null) playerCamera.gameObject.AddComponent<DistanceFade>();
         }
 
         void OnDestroy()
@@ -119,6 +128,10 @@ namespace HollowTower
 
         void Start()
         {
+            // where everyone stands as the level begins: where the team gets up again if they all go down
+            startPos = new Vector3[players.Length]; startRot = new Quaternion[players.Length];
+            for (int i = 0; i < players.Length; i++)
+                if (players[i] != null) { startPos[i] = players[i].transform.position; startRot[i] = players[i].transform.rotation; }
             // in a session you start in your own lobby seat's body, once the host has handed it over
             if (Net.Net.Active && Net.NetLobby.Instance != null)
             {
@@ -126,7 +139,7 @@ namespace HollowTower
                 if (seat >= 0) startingPlayer = seat;
             }
             if (Net.Net.Active && Net.NetLobby.Instance != null) TwoPlayer = Net.NetLobby.Instance.TwoPlayer;
-            if (TwoPlayer) { ApplyTwoPlayer(); if (startingPlayer > 1) startingPlayer = 0; }
+            if (Size < 4) { ApplySmallParty(); if (SitsOut(startingPlayer)) startingPlayer = 0; }
             for (int i = 0; i < players.Length; i++)
                 if (players[i] != null && i != startingPlayer) players[i].SetControlled(false, null);
             wantedBody = startingPlayer;
@@ -151,17 +164,20 @@ namespace HollowTower
             else if (InputWrap.Down(KeyCode.F2)) SwitchTo(1);
             else if (InputWrap.Down(KeyCode.F3)) SwitchTo(2);
             else if (InputWrap.Down(KeyCode.F4)) SwitchTo(3);
-            if (allDead && InputWrap.Down(KeyCode.R))
+            RecordStarts();
+            if (allDead)
             {
-                // in a session only the host restarts the level, for everyone
-                if (Net.Net.IsAuthority) Net.NetLobby.LoadLevel(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-                else Flash("Waiting for the host to restart", 2f);
-                return;
+                // everyone is down: a few seconds later the whole team gets up again at the start of this floor / level
+                // (the host decides, in a session; progress - doors, puzzles, fuses already placed - is kept)
+                if (allDeadAt < 0f) allDeadAt = Time.time;
+                if (Net.Net.IsAuthority && Time.time > allDeadAt + RespawnDelay) { allDeadAt = Time.time + 5f; RespawnAll(); }
             }
+            else allDeadAt = -1f;
             if (Spectating) UpdateSpectator();
             else
             {
-                if (InputWrap.Down(teleportTeammatesKey) && !RemasteredMapHUD.IsFullMapOpen) TeleportTeammatesToActive();
+                if ((DevTools.Enabled || !Net.Net.Active) && InputWrap.Down(teleportTeammatesKey) && !RemasteredMapHUD.IsFullMapOpen) TeleportTeammatesToActive();
+                if (DevTools.Enabled && InputWrap.Down(KeyCode.F7)) ReviveTeammatesHere();   // dev aid
                 var inv = current != null ? current.GetComponent<PlayerInventory>() : null;
                 if (inv != null && !RemasteredMapHUD.IsFullMapOpen && !current.IsFrozen)
                 {
@@ -190,7 +206,7 @@ namespace HollowTower
         public void SwitchTo(int i, bool force = false)
         {
             if (i < 0 || i >= players.Length || players[i] == null) return;
-            if (TwoPlayer && i > 1) { Flash("Two-player game: only P1 and P2", 2f); return; }
+            if (SitsOut(i)) { Flash(OnePlayer ? "One-player game: only P1" : "Two-player game: only P1 and P2", 2f); return; }
             if (i == currentIndex && !force) return;
             // in a session the host hands bodies out: ask, and switch when it says yes (NetBody / NetGame)
             if (!force && Net.Net.Active && Net.NetGame.Instance != null)
@@ -229,26 +245,118 @@ namespace HollowTower
             if (current == null || current.IsDead) return;
             var t = current.transform;
             // the tutorial's half circle behind first, then beside and in front when a wall is in the way
-            Vector3 f = t.forward, r = t.right;
-            Vector3[] offsets = { -f * 1.5f - r * 1.2f, -f * 2.0f, -f * 1.5f + r * 1.2f, -r * 1.2f, r * 1.2f, f * 1.5f - r * 1.2f, f * 1.5f + r * 1.2f, f * 2.0f, -f * 1.0f, f * 1.0f };
             var used = new System.Collections.Generic.List<Vector3>();
             foreach (var p in players)
             {
                 if (p == null || p == current || p.IsDead || !Net.NetBody.Mine(p)) continue;   // someone else's player isn't ours to move
-                Vector3 target = t.position - f * 0.9f;
-                foreach (var o in offsets)
-                {
-                    Vector3 c = t.position + o;
-                    bool taken = false;
-                    foreach (var u in used) if ((u - c).sqrMagnitude < 0.8f) taken = true;
-                    if (!taken && IsClear(c)) { target = c; break; }
-                }
-                used.Add(target);
+                Vector3 target = SpotNearCurrent(used);
                 var cc = p.GetComponent<CharacterController>();
                 if (cc != null) cc.enabled = false;
                 p.transform.SetPositionAndRotation(target, t.rotation);
                 if (cc != null) cc.enabled = true;
             }
+        }
+
+        /// <summary>A free spot beside the steered player (behind first, then beside and in front), not one already in used.</summary>
+        Vector3 SpotNearCurrent(System.Collections.Generic.List<Vector3> used)
+        {
+            var t = current.transform;
+            Vector3 f = t.forward, r = t.right;
+            Vector3[] offsets = { -f * 1.5f - r * 1.2f, -f * 2.0f, -f * 1.5f + r * 1.2f, -r * 1.2f, r * 1.2f, f * 1.5f - r * 1.2f, f * 1.5f + r * 1.2f, f * 2.0f, -f * 1.0f, f * 1.0f };
+            Vector3 target = t.position - f * 0.9f;
+            foreach (var o in offsets)
+            {
+                Vector3 c = t.position + o;
+                bool taken = false;
+                foreach (var u in used) if ((u - c).sqrMagnitude < 0.8f) taken = true;
+                if (!taken && IsClear(c)) { target = c; break; }
+            }
+            used.Add(target);
+            return target;
+        }
+
+        // ------------------------------------------------------------------ everyone down: back to the start
+        public const float RespawnDelay = 4f;
+        float allDeadAt = -1f, graceUntil;
+        Vector3[] startPos; Quaternion[] startRot;
+        /// <summary>Seconds until the team gets up again (0 when not everyone is down).</summary>
+        public float RespawnIn { get { return allDead && allDeadAt > 0f ? Mathf.Max(0f, allDeadAt + RespawnDelay - Time.time) : 0f; } }
+        /// <summary>Just respawned: nothing can kill anyone for a few seconds.</summary>
+        public bool InGrace { get { return Time.time < graceUntil; } }
+
+        void RecordStarts() { }   // (recorded in Start)
+
+        void RespawnAll()
+        {
+            if (startPos == null) return;
+            string scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            // the tower's second floor starts at the top of the stairs from floor 1; everywhere else, where the level began
+            bool floor2 = scene == Net.NetLobby.TowerLevel && LastDeathY() > LevelBuilder.Story - 0.6f;
+            Vector3 f2 = new Vector3(6.8f, LevelBuilder.Story + 0.15f, 84f);
+            Quaternion f2Rot = Quaternion.LookRotation(new Vector3(-0.4f, 0f, -6f));
+            int n = 0;
+            for (int i = 0; i < players.Length; i++)
+            {
+                var p = players[i];
+                if (p == null || !p.IsDead || SitsOut(i)) continue;
+                Vector3 at = floor2 ? f2 + new Vector3((n % 2) * 0.9f - 0.45f, 0f, -(n / 2) * 0.9f) : startPos[i];
+                Quaternion rot = floor2 ? f2Rot : startRot[i];
+                UnityEngine.AI.NavMeshHit hit;
+                if (floor2 && UnityEngine.AI.NavMesh.SamplePosition(at, out hit, 1.5f, UnityEngine.AI.NavMesh.AllAreas)) at = hit.position + Vector3.up * 0.1f;
+                if (!Net.NetBody.RequestRevive(p, at, rot)) ReviveAt(i, at, rot);
+                n++;
+            }
+            if (n > 0) Flash("Everyone is back - at the start of " + (floor2 ? "floor 2" : scene == Net.NetLobby.TowerLevel ? "floor 1" : "the level") + ". Your things are where you fell.", 5f);
+        }
+
+        float LastDeathY()
+        {
+            float y = 0f;
+            for (int i = 0; i < players.Length; i++) if (players[i] != null && !SitsOut(i)) y = Mathf.Max(y, players[i].transform.position.y);
+            return y;
+        }
+
+        // ------------------------------------------------------------------ dev: revive
+        /// <summary>
+        /// TEMPORARY dev aid (F7 / the map HUD's Revive button): every dead teammate gets up beside the player being steered.
+        /// In a session the host confirms it and every machine sees the same (NetBody.RequestRevive).
+        /// </summary>
+        public int ReviveTeammatesHere()
+        {
+            if (current == null || current.IsDead) { Flash("Steer a living player to revive the others", 2.5f); return 0; }
+            var used = new System.Collections.Generic.List<Vector3>();
+            int n = 0;
+            for (int i = 0; i < players.Length; i++)
+            {
+                var p = players[i];
+                if (p == null || !p.IsDead || SitsOut(i)) continue;
+                Vector3 at = SpotNearCurrent(used);
+                if (!Net.NetBody.RequestRevive(p, at, current.transform.rotation)) ReviveAt(i, at, current.transform.rotation);
+                n++;
+            }
+            Flash(n == 0 ? "Nobody to revive" : "Revived " + n + " player" + (n == 1 ? "" : "s") + " beside Player " + (currentIndex + 1), 2.5f);
+            return n;
+        }
+
+        /// <summary>Brings player i back to life at a spot (on every machine; the one steering that body moves it).</summary>
+        public void ReviveAt(int i, Vector3 at, Quaternion rot)
+        {
+            if (i < 0 || i >= players.Length || players[i] == null || !players[i].IsDead) return;
+            var p = players[i];
+            p.Revive();
+            graceUntil = Time.time + 6f;   // a moment to get your bearings before anything can kill you again
+            if (Net.NetBody.Mine(p))
+            {
+                var cc = p.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
+                p.transform.SetPositionAndRotation(at, rot);
+                if (cc != null) cc.enabled = true;
+                p.FaceTowards(at + rot * Vector3.forward);
+            }
+            allDead = false;
+            watching[i] = -1;
+            if (p == current) { SwitchTo(i, true); SetFade(0f); }   // they were spectating: back into their own eyes
+            else p.SetControlled(false, null);
         }
 
         /// <summary>Room for a standing player at pos, reachable in a straight line from the controlled one.</summary>
@@ -276,6 +384,7 @@ namespace HollowTower
         // ------------------------------------------------------------------ HUD: who you are, and who else is out there
         void OnGUI()
         {
+            UiStyle.Use();
             if (players == null || current == null) return;
             if (white == null) { white = new Texture2D(1, 1); white.SetPixel(0, 0, Color.white); white.Apply(); }
             if (chipStyle == null)
@@ -301,15 +410,14 @@ namespace HollowTower
                 var c = Colors[i];
                 bool dead = players[i].IsDead;
                 if (dead) c = Color.Lerp(c, new Color(0.35f, 0.35f, 0.35f), 0.6f);
-                GUI.color = on ? new Color(c.r, c.g, c.b, 0.9f) : new Color(0f, 0f, 0f, 0.55f);
-                GUI.DrawTexture(r, white);
-                GUI.color = on ? Color.black : c;
+                UiStyle.Slab(r, on ? -1.5f : 0.6f);
+                if (on) { GUI.color = new Color(c.r, c.g, c.b, 0.9f); GUI.DrawTexture(new Rect(r.x + 6f, r.yMax - 9f, r.width - 12f, 3f), white); GUI.color = Color.white; }
                 string where = dead ? " DEAD" : on ? "" : " F" + (FloorOf(players[i].transform.position.y) + 1);
-                GUI.Label(r, "[F" + (i + 1) + "] P" + (i + 1) + where, chipStyle);
+                UiStyle.Label(r, "[F" + (i + 1) + "] P" + (i + 1) + where, 13, TextAnchor.MiddleCenter, on ? Color.white : c);
                 x += 80f;
             }
             GUI.color = new Color(1f, 1f, 1f, 0.7f);
-            GUI.Label(new Rect(x + 4f, y, 200f, 32f), "[" + teleportTeammatesKey + "] bring teammates", chipStyle);
+            if (DevTools.Enabled || !Net.Net.Active) UiStyle.Label(new Rect(x + 4f, y, 200f, 32f), "[" + teleportTeammatesKey + "] bring teammates", 13, TextAnchor.MiddleLeft, UiStyle.Dim);
             GUI.color = new Color(Colors[currentIndex].r, Colors[currentIndex].g, Colors[currentIndex].b, 0.85f);
             GUI.Label(new Rect(14f, y - 24f, 320f, 22f), "P" + (currentIndex + 1) + ": " + AbilityText(currentIndex), chipStyle);
 
@@ -324,10 +432,14 @@ namespace HollowTower
             }
             if (messageTimer > 0f && !string.IsNullOrEmpty(message))
             {
-                GUI.color = new Color(0f, 0f, 0f, 0.6f * Mathf.Clamp01(messageTimer));
-                GUI.DrawTexture(new Rect(Screen.width * 0.5f - 280f, Screen.height * 0.42f, 560f, 30f), white);
-                GUI.color = new Color(1f, 0.95f, 0.85f, Mathf.Clamp01(messageTimer));
-                GUI.Label(new Rect(Screen.width * 0.5f - 280f, Screen.height * 0.42f, 560f, 30f), message, smallStyle);
+                float mw = Mathf.Min(760f, Screen.width - 40f);
+                var ts = UiStyle.Text(16);
+                float mh = Mathf.Max(40f, ts.CalcHeight(new GUIContent(message), mw - 40f) + 16f);
+                var mr = new Rect((Screen.width - mw) * 0.5f, Screen.height * 0.4f, mw, mh);
+                GUI.color = new Color(1f, 1f, 1f, Mathf.Clamp01(messageTimer));
+                UiStyle.Slab(mr, 0.7f);
+                UiStyle.Label(new Rect(mr.x + 20f, mr.y, mr.width - 40f, mr.height), message, 16);
+                GUI.color = Color.white;
             }
             if (allDead) DrawGameOver();
             GUI.color = Color.white;

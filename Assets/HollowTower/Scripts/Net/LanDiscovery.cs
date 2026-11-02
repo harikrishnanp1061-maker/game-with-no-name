@@ -179,6 +179,12 @@ namespace HollowTower.Net
 
                 IPEndPoint endpoint = new IPEndPoint(IPAddress.Broadcast, DiscoveryPort);
                 _broadcastClient.Send(bytes, bytes.Length, endpoint);
+                // Windows sends 255.255.255.255 out of one adapter only: also announce on every network's own
+                // broadcast address, so a laptop with a VPN / virtual adapter is still found on the Wi-Fi
+                foreach (var b in SubnetBroadcasts())
+                {
+                    try { _broadcastClient.Send(bytes, bytes.Length, new IPEndPoint(b, DiscoveryPort)); } catch { }
+                }
             }
             catch (SocketException ex)
             {
@@ -283,18 +289,25 @@ namespace HollowTower.Net
 
                     // Prefer sender IP if advertised IP is invalid or loopback
                     string senderIp = remoteEndPoint.Address.ToString();
-                    string effectiveIp = (advertisedIp == "127.0.0.1" || string.IsNullOrEmpty(advertisedIp))
-                        ? senderIp
-                        : advertisedIp;
+                    // the address the announcement really came from is the one that reaches the host from here
+                    // (the advertised one can be a VPN / virtual adapter); on the same PC use the advertised one
+                    string effectiveIp = IPAddress.IsLoopback(remoteEndPoint.Address) || string.IsNullOrEmpty(senderIp)
+                        ? (string.IsNullOrEmpty(advertisedIp) ? "127.0.0.1" : advertisedIp)
+                        : senderIp;
 
                     lock (_discoveredSessions)
                     {
-                        string key = $"{effectiveIp}:{port}";
-                        if (!_discoveredSessions.TryGetValue(key, out LanSessionInfo session))
+                        // one entry per game, however many networks its announcement arrived on; the host's own
+                        // advertised (Wi-Fi) address wins over a virtual adapter's
+                        string key = $"{hostName}|{advertisedIp}:{port}";
+                        bool isNew = !_discoveredSessions.TryGetValue(key, out LanSessionInfo session);
+                        if (isNew)
                         {
                             session = new LanSessionInfo();
                             _discoveredSessions[key] = session;
+                            Debug.Log($"[LanDiscovery] Found '{hostName}' at {effectiveIp}:{port}");
                         }
+                        else if (session.HostAddress == advertisedIp && effectiveIp != advertisedIp) effectiveIp = advertisedIp;
 
                         session.HostName = hostName;
                         session.HostAddress = effectiveIp;
@@ -368,6 +381,36 @@ namespace HollowTower.Net
         /// <summary>
         /// Retrieves the most likely routeable local IPv4 address on this machine.
         /// </summary>
+        private static List<IPAddress> _subnets;
+        private static float _subnetsAt = -100f;
+
+        /// <summary>The broadcast address of every IPv4 network this machine is on (refreshed every 10 s).</summary>
+        private static List<IPAddress> SubnetBroadcasts()
+        {
+            if (_subnets != null && Time.unscaledTime - _subnetsAt < 10f) return _subnets;
+            _subnetsAt = Time.unscaledTime;
+            var list = new List<IPAddress>();
+            try
+            {
+                foreach (var ni in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    if (ni.OperationalStatus != System.Net.NetworkInformation.OperationalStatus.Up) continue;
+                    if (ni.NetworkInterfaceType == System.Net.NetworkInformation.NetworkInterfaceType.Loopback) continue;
+                    foreach (var ua in ni.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ua.Address.AddressFamily != AddressFamily.InterNetwork || ua.IPv4Mask == null) continue;
+                        byte[] ip = ua.Address.GetAddressBytes(), mask = ua.IPv4Mask.GetAddressBytes(), b = new byte[4];
+                        for (int i = 0; i < 4; i++) b[i] = (byte)(ip[i] | ~mask[i]);
+                        var addr = new IPAddress(b);
+                        if (!addr.Equals(IPAddress.Broadcast) && !list.Contains(addr)) list.Add(addr);
+                    }
+                }
+            }
+            catch { }
+            _subnets = list;
+            return list;
+        }
+
         public static string ResolveLocalIPv4()
         {
             try

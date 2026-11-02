@@ -126,6 +126,7 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             var party = PlayerParty.Instance;
             var cur = party != null ? party.Current : null;
             if (cur == null || cur.IsDead || RemasteredMapHUD.IsFullMapOpen) return;
@@ -138,10 +139,12 @@ namespace HollowTower
                 hint = new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter };
             }
 
-            float x = 18f, y = Screen.height - 58f;
+            bool tired = v.Stamina < PlayerVitals.MaxStamina - 0.5f || v.Winded;
+            float x = 30f, y = Screen.height - (tired ? 152f : 128f);
+            UiStyle.Slab(new Rect(14f, y - 10f, 214f, tired ? 58f : 34f), -0.7f);
             Bar(x, y, "SANITY", v.Sanity / PlayerVitals.MaxSanity, Color.Lerp(new Color(0.85f, 0.15f, 0.25f), new Color(0.65f, 0.55f, 1f), v.Sanity / 100f), v.Sanity < 25f);
-            if (v.Stamina < PlayerVitals.MaxStamina - 0.5f || v.Winded)
-                Bar(x, y + 22f, v.Winded ? "WINDED" : "STAMINA", v.Stamina / PlayerVitals.MaxStamina, v.Winded ? new Color(0.9f, 0.4f, 0.2f) : new Color(1f, 0.85f, 0.3f), v.Winded);
+            if (tired)
+                Bar(x, y + 24f, v.Winded ? "WINDED" : "STAMINA", v.Stamina / PlayerVitals.MaxStamina, v.Winded ? new Color(0.9f, 0.4f, 0.2f) : new Color(1f, 0.85f, 0.3f), v.Winded);
 
             // what Q does with the selected item, over the inventory
             var inv = cur.GetComponent<PlayerInventory>();
@@ -162,14 +165,18 @@ namespace HollowTower
 
         void Bar(float x, float y, string name, float k, Color c, bool pulse)
         {
-            const float w = 170f, h = 9f;
+            // the word on the left in the rounded lettering, a white-rimmed groove with the level in it
+            const float w = 110f, h = 10f;
             float a = pulse ? 0.55f + 0.45f * Mathf.Abs(Mathf.Sin(Time.time * 5f)) : 1f;
-            GUI.color = new Color(0f, 0f, 0f, 0.55f);
-            GUI.DrawTexture(new Rect(x - 2f, y - 2f, w + 4f, h + 4f), white);
-            GUI.color = new Color(c.r, c.g, c.b, 0.9f * a);
-            GUI.DrawTexture(new Rect(x, y, w * Mathf.Clamp01(k), h), white);
-            GUI.color = new Color(1f, 1f, 1f, 0.8f * a);
-            GUI.Label(new Rect(x + w + 8f, y - 5f, 90f, 18f), name, label);
+            UiStyle.Label(new Rect(x, y - 7f, 80f, 22f), name, 13, TextAnchor.MiddleLeft, new Color(1f, 1f, 1f, a));
+            float bx = x + 76f;
+            GUI.color = new Color(0.9f, 0.9f, 0.88f, 0.9f);
+            GUI.DrawTexture(new Rect(bx - 2f, y - 2f, w + 4f, h + 4f), white);
+            GUI.color = Color.black;
+            GUI.DrawTexture(new Rect(bx - 1f, y - 1f, w + 2f, h + 2f), white);
+            GUI.color = new Color(c.r, c.g, c.b, 0.95f * a);
+            GUI.DrawTexture(new Rect(bx, y, w * Mathf.Clamp01(k), h), white);
+            GUI.color = Color.white;
         }
     }
 }

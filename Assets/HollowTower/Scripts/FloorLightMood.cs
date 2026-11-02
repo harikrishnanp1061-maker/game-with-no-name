@@ -43,6 +43,7 @@ namespace HollowTower
 
         static void Spawn()
         {
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == Net.NetLobby.CampusLevel) return;   // the campus has its own night
             if (FindAnyObjectByType<FloorLightMood>() == null) new GameObject("FloorLightMood").AddComponent<FloorLightMood>();
         }
 

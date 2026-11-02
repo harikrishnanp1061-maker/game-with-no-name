@@ -137,6 +137,7 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             // Simple elevator call prompt if player is nearby
             Camera cam = Camera.main;
             if (cam == null) return;

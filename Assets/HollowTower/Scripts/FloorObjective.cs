@@ -88,7 +88,7 @@ namespace HollowTower
             for (int i = 0; i < party.players.Length; i++)
             {
                 var p = party.players[i];
-                if (p == null) continue;
+                if (p == null || PlayerParty.SitsOut(i)) continue;   // parked bodies stay parked
                 var cc = p.GetComponent<CharacterController>();
                 if (cc != null) cc.enabled = false;
                 p.transform.SetPositionAndRotation(new Vector3(checkpointRoom.xMax - 1.5f, 0.1f, checkpointRoom.yMin + 1.5f + i * 1.6f), Quaternion.Euler(0f, -90f, 0f));
@@ -99,7 +99,7 @@ namespace HollowTower
             {
                 bool given = false;
                 for (int k = 3; k >= 0 && !given; k--)
-                    if (party.players[k] != null) given = fuse.Return(party.players[k].GetComponent<PlayerInventory>());
+                    if (party.players[k] != null && !PlayerParty.SitsOut(k)) given = fuse.Return(party.players[k].GetComponent<PlayerInventory>());
             }
             party.Flash("Back at the stairwell checkpoint");
         }
@@ -111,20 +111,30 @@ namespace HollowTower
         {
             if (floorIndex == 1)
             {
-                // the nearest cell still lying somewhere, else the elevator
+                // the elevator wants three cells: this floor's two and the one carried up from floor 1. Until the party
+                // holds (or has put in) enough, the needle points at the nearest cell still lying anywhere - floor 1's
+                // too, if it was dropped - and only then at the elevator.
                 var view = PlayerParty.Active;
+                var all = new System.Collections.Generic.List<PartyItem>();
+                if (cells != null) all.AddRange(cells);
+                foreach (var o in FloorObjective.all) if (o != this && o.fuse != null && !all.Contains(o.fuse)) all.Add(o.fuse);
+                int have = elevator != null ? elevator.CellsIn : 0;
                 PartyItem best = null; float bd = float.MaxValue;
-                if (cells != null)
-                    foreach (var c in cells)
-                    {
-                        if (c == null || c.Holder != null || !c.gameObject.activeInHierarchy) continue;
-                        float d = view != null ? Vector3.Distance(view.position, c.transform.position) : 0f;
-                        if (d < bd) { bd = d; best = c; }
-                    }
-                if (best != null) { label = "FUSE"; return best.transform.position; }
+                foreach (var c in all)
+                {
+                    if (c == null || !c.gameObject.activeInHierarchy) continue;   // inactive: already in the elevator
+                    if (c.Holder != null) { have++; continue; }
+                    float d = view != null ? Vector3.Distance(view.position, c.transform.position) : 0f;
+                    if (view != null && Mathf.Abs(view.position.y - c.transform.position.y) > 2.5f) d += 40f;   // this floor's cells first
+                    if (d < bd) { bd = d; best = c; }
+                }
+                int need = elevator != null ? elevator.cellsNeeded : 3;
+                if (best != null && have < need) { label = "FUSE"; return best.transform.position; }
                 label = "ELEVATOR";
                 return elevator != null ? elevator.transform.position : (Vector3?)null;
             }
+            // floor 1, the stairwell powered: the stairs - unless the cell (which the elevator upstairs needs) was put down
+            if (socket != null && socket.Powered && fuse != null && fuse.Holder == null && fuse.gameObject.activeInHierarchy) { label = "FUSE"; return fuse.transform.position; }
             if ((socket != null && socket.Powered) || (tutorialLift != null && tutorialLift.Powered)) { label = exitLabel; return stairs != null ? stairs.position : (Vector3?)null; }
             if (fuse != null && fuse.Holder != null) { label = socketLabel; return socket != null ? socket.transform.position : tutorialLift != null ? tutorialLift.transform.position : (Vector3?)null; }
             label = "FUSE";
@@ -150,6 +160,7 @@ namespace HollowTower
 
         void OnGUI()
         {
+            UiStyle.Use();
             var party = PlayerParty.Instance;
             if (party == null || party.Current == null || RemasteredMapHUD.IsFullMapOpen || Current != this) return;
             if (white == null) { white = new Texture2D(1, 1); white.SetPixel(0, 0, Color.white); white.Apply(); }
@@ -160,11 +171,9 @@ namespace HollowTower
             }
 
             float cx = Screen.width * 0.5f;
-            GUI.color = new Color(0f, 0f, 0f, 0.5f);
-            GUI.DrawTexture(new Rect(cx - 230f, 10f, 460f, 26f), white);
-            GUI.color = new Color(1f, 0.92f, 0.7f, 1f);
-            GUI.Label(new Rect(cx - 230f, 10f, 460f, 26f), Objective(), titleStyle);
-            GUI.color = Color.white;
+            var ob = new Rect(cx - 330f, 10f, 660f, 40f);
+            UiStyle.Slab(ob, -0.4f);
+            UiStyle.Label(ob, Objective(), 15);
 
             // P4's compass is a model held in the hand now (CompassModel), not a dial on the screen
         }
